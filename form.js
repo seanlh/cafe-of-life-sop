@@ -1,5 +1,5 @@
 /* =====================================================================
-   Cafe of Life SOP — Form + Pencil Layer
+   Café of Life SOP — Form + Pencil Layer
    - Real checkbox inputs (auto-injected into .checklist li)
    - Text + textarea + contenteditable persistence
    - Apple Pencil drawing layer (pointerType === 'pen')
@@ -322,6 +322,99 @@
     });
   }
 
+  // ---------- HAMBURGER DRAWER ----------
+  const SECTIONS = [
+    { num: '',   title: 'Cover',                  sub: 'Contents · welcome',          href: 'index.html' },
+    { num: '01', title: 'Office Information',     sub: 'Contact · schedule · systems',href: '01-office-info.html' },
+    { num: '02', title: 'Opening Procedures',     sub: 'Before the first patient',    href: '02-opening.html' },
+    { num: '03', title: 'New Patient Phone Call', sub: 'Smile before you answer',     href: '03-new-patient-call.html' },
+    { num: '04', title: 'Day 1 — First Visit',    sub: 'New patient · green block',   href: '04-day-1.html' },
+    { num: '05', title: 'Day 2 — ROF',            sub: 'Report of Findings · $55',    href: '05-day-2-rof.html' },
+    { num: '06', title: 'Day 3 — Onboarding',     sub: 'Auto debit · app · schedule', href: '06-day-3.html' },
+    { num: '07', title: 'Adjustment Visit',       sub: '$65 · fee schedule',          href: '07-adjustment.html' },
+    { num: '08', title: 'SoftWave',               sub: 'Call to confirm · deposit',   href: '08-softwave.html' },
+    { num: '09', title: 'Checkout — Every Visit', sub: 'Check · Collect · Schedule',  href: '09-checkout.html' },
+    { num: '10', title: 'Closing Procedures',     sub: 'After the last patient',      href: '10-closing.html' },
+    { num: '11', title: 'Systems & Forms',        sub: 'Quick lookup',                href: '11-systems-forms.html' },
+    { num: '12', title: 'Rules & Color Guide',    sub: 'Appt colors · alerts',        href: '12-rules-colors.html' },
+    { num: '13', title: 'Daily Huddle Sheet',     sub: 'Printable form',              href: '13-huddle-sheet.html' }
+  ];
+
+  function initDrawer() {
+    // Remove old "Contents" link in topnav since the hamburger replaces it
+    document.querySelectorAll('.topnav .nav-links a').forEach(a => {
+      if (a.getAttribute('href') === 'index.html' && a.textContent.trim() === 'Contents') {
+        a.remove();
+      }
+    });
+
+    // Hamburger button
+    const btn = document.createElement('button');
+    btn.className = 'sop-hamburger';
+    btn.setAttribute('aria-label', 'Open contents menu');
+    btn.innerHTML =
+      '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
+      '<line x1="4" y1="7" x2="20" y2="7"/>' +
+      '<line x1="4" y1="12" x2="20" y2="12"/>' +
+      '<line x1="4" y1="17" x2="20" y2="17"/>' +
+      '</svg>';
+    document.body.appendChild(btn);
+
+    // Backdrop
+    const backdrop = document.createElement('div');
+    backdrop.className = 'sop-backdrop';
+    document.body.appendChild(backdrop);
+
+    // Drawer
+    const drawer = document.createElement('aside');
+    drawer.className = 'sop-drawer';
+    drawer.setAttribute('aria-label', 'Contents');
+    const items = SECTIONS.map(s => {
+      const isCurrent = s.href === PAGE_ID || (PAGE_ID === '' && s.href === 'index.html');
+      return (
+        '<a href="' + s.href + '" class="sop-drawer-item' + (isCurrent ? ' current' : '') + '">' +
+          '<span class="drawer-num">' + (s.num || '✿') + '</span>' +
+          '<span class="drawer-text">' +
+            '<span class="drawer-title">' + s.title + '</span>' +
+            '<span class="drawer-sub">' + s.sub + '</span>' +
+          '</span>' +
+        '</a>'
+      );
+    }).join('');
+    drawer.innerHTML =
+      '<header class="sop-drawer-head">' +
+        '<div class="drawer-brand">' +
+          '<span class="drawer-bloom">✿</span>' +
+          '<span class="drawer-name">Café of Life<em>Chiropractic &amp; Wellness</em></span>' +
+        '</div>' +
+        '<button class="sop-drawer-close" aria-label="Close menu">' +
+          '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>' +
+        '</button>' +
+      '</header>' +
+      '<nav class="sop-drawer-nav">' + items + '</nav>';
+    document.body.appendChild(drawer);
+
+    function open() {
+      drawer.classList.add('open');
+      backdrop.classList.add('open');
+      btn.classList.add('hidden');
+      document.body.classList.add('sop-drawer-open');
+    }
+    function close() {
+      drawer.classList.remove('open');
+      backdrop.classList.remove('open');
+      btn.classList.remove('hidden');
+      document.body.classList.remove('sop-drawer-open');
+    }
+
+    btn.addEventListener('click', open);
+    backdrop.addEventListener('click', close);
+    drawer.querySelector('.sop-drawer-close').addEventListener('click', close);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+  }
+
   // ---------- FIRST-RUN HINT ----------
   function initHint() {
     const HINT_KEY = 'cofl_sop_hint_v1';
@@ -348,6 +441,7 @@
     initPencil();
     initToolbar();
     initSaveBar();
+    initDrawer();
     initHint();
   }
 
