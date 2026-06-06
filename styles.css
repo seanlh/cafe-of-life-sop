@@ -196,17 +196,54 @@ h3.sub-heading.with-bar::after {
   background: rgba(153, 96, 110, 0.3);
 }
 
-/* ---------- TWO-COLUMN LAYOUT ---------- */
+/* ---------- COLUMN LAYOUTS ---------- */
 .cols-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 28px;
 }
 
-.cols-2 > .col {
+.cols-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+}
+
+.cols-2 > .col,
+.cols-3 > .col {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+/* Compact reference tables (huddle sheet) */
+.color-table.compact th,
+.color-table.compact td {
+  padding: 3px 6px;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.color-table.compact .chip {
+  width: 18px;
+  height: 12px;
+}
+
+.color-table.compact .alert-tag,
+.color-table.compact .alert-whitered,
+.color-table.compact .alert-yellowred,
+.color-table.compact .alert-blackred,
+.color-table.compact .alert-greyblock,
+.color-table.compact .alert-greyred {
+  font-size: 9.5px;
+  padding: 1px 5px;
+  letter-spacing: 0.02em;
+}
+
+.info-table.compact th,
+.info-table.compact td {
+  padding: 3px 6px;
+  font-size: 11px;
 }
 
 /* ---------- INFO TABLE (key-value) ---------- */
@@ -889,7 +926,7 @@ textarea.sop-text {
 
 .sop-toolbar {
   position: fixed;
-  bottom: 22px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 60px);
   left: 50%;
   transform: translateX(-50%);
   background: var(--plum);
@@ -960,7 +997,7 @@ textarea.sop-text {
 
 .sop-savebar {
   position: fixed;
-  top: 16px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 64px);
   right: 16px;
   background: var(--paper);
   border: 1px solid rgba(102, 44, 57, 0.18);
