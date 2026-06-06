@@ -10,8 +10,50 @@
 (function () {
   'use strict';
 
-  const PAGE_ID = location.pathname.split('/').pop() || 'index.html';
+  const PAGE_FILE = location.pathname.split('/').pop() || 'index.html';
+  const PAGE_ID = PAGE_FILE + (location.search || '');
   const STORAGE_KEY = 'cofl_sop_' + PAGE_ID;
+
+  // ---------- NOTES REGISTRY ----------
+  const NOTES_PAGE = '14-notes.html';
+  const NOTES_INDEX_KEY = 'cofl_sop_notes_index_v1';
+
+  function getNotesIndex() {
+    try {
+      const v = JSON.parse(localStorage.getItem(NOTES_INDEX_KEY));
+      return Array.isArray(v) ? v : [];
+    } catch { return []; }
+  }
+  function saveNotesIndex(idx) {
+    try { localStorage.setItem(NOTES_INDEX_KEY, JSON.stringify(idx)); } catch {}
+  }
+  function newNoteId() {
+    return 'n' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  }
+  function addNote() {
+    const idx = getNotesIndex();
+    const id = newNoteId();
+    idx.push({ id: id, created: Date.now() });
+    saveNotesIndex(idx);
+    return id;
+  }
+  function deleteNote(id) {
+    saveNotesIndex(getNotesIndex().filter(n => n.id !== id));
+    try { localStorage.removeItem('cofl_sop_' + NOTES_PAGE + '?id=' + id); } catch {}
+  }
+  function getNoteTitle(id, fallback) {
+    try {
+      const data = JSON.parse(localStorage.getItem('cofl_sop_' + NOTES_PAGE + '?id=' + id));
+      const t = data && typeof data.in_note_title === 'string' ? data.in_note_title.trim() : '';
+      if (t) return t;
+    } catch {}
+    return fallback;
+  }
+  function escapeHTML(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
 
   // ---------- STATE ----------
   let state = loadState();
@@ -394,6 +436,29 @@
         '</a>'
       );
     }).join('');
+    const notesIdx = getNotesIndex();
+    const notesItems = notesIdx.map((n, i) => {
+      const fallback = 'Note ' + (i + 1);
+      const title = getNoteTitle(n.id, fallback);
+      const href = NOTES_PAGE + '?id=' + n.id;
+      const isCurrent = href === PAGE_ID;
+      return (
+        '<a href="' + href + '" class="sop-drawer-item notes-item' + (isCurrent ? ' current' : '') + '">' +
+          '<span class="drawer-num">✎</span>' +
+          '<span class="drawer-text">' +
+            '<span class="drawer-title">' + escapeHTML(title) + '</span>' +
+            '<span class="drawer-sub">Blank notes</span>' +
+          '</span>' +
+        '</a>'
+      );
+    }).join('');
+    const notesSection =
+      '<div class="sop-drawer-section-label">Notes</div>' +
+      notesItems +
+      '<button class="sop-drawer-add" type="button" aria-label="Add a new note">' +
+        '<span class="add-plus">+</span><span>Add a note</span>' +
+      '</button>';
+
     drawer.innerHTML =
       '<header class="sop-drawer-head">' +
         '<div class="drawer-brand">' +
@@ -404,8 +469,14 @@
           '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>' +
         '</button>' +
       '</header>' +
-      '<nav class="sop-drawer-nav">' + items + '</nav>';
+      '<nav class="sop-drawer-nav">' + items + notesSection + '</nav>';
     document.body.appendChild(drawer);
+
+    drawer.querySelector('.sop-drawer-add').addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = addNote();
+      location.href = NOTES_PAGE + '?id=' + id;
+    });
 
     function outsideHandler(e) {
       if (drawer.contains(e.target)) return;
@@ -474,8 +545,50 @@
     document.addEventListener('touchmove', handler, { passive: false });
   }
 
+  // ---------- NOTES PAGE ----------
+  function getCurrentNoteId() {
+    const p = new URLSearchParams(location.search);
+    return p.get('id');
+  }
+
+  // Returns true if the page is being redirected and init should bail out.
+  function ensureNoteRouted() {
+    if (PAGE_FILE !== NOTES_PAGE) return false;
+    const id = getCurrentNoteId();
+    if (id) return false;
+    const idx = getNotesIndex();
+    const targetId = idx.length ? idx[0].id : addNote();
+    location.replace(NOTES_PAGE + '?id=' + targetId);
+    return true;
+  }
+
+  function initNotesPage() {
+    if (PAGE_FILE !== NOTES_PAGE) return;
+    const id = getCurrentNoteId();
+    if (!id) return;
+    const idx = getNotesIndex();
+    const pos = idx.findIndex(n => n.id === id);
+    const num = pos >= 0 ? pos + 1 : idx.length + 1;
+    const meta = document.querySelector('.notes-meta');
+    if (meta) meta.textContent = 'Note ' + num + ' of ' + Math.max(idx.length, 1);
+    const delBtn = document.querySelector('.notes-delete-btn');
+    if (delBtn) {
+      delBtn.addEventListener('click', () => {
+        if (!confirm('Delete this note? Pencil strokes and title will be cleared.')) return;
+        deleteNote(id);
+        const remaining = getNotesIndex();
+        if (remaining.length) {
+          location.href = NOTES_PAGE + '?id=' + remaining[0].id;
+        } else {
+          location.href = NOTES_PAGE;
+        }
+      });
+    }
+  }
+
   // ---------- INIT ----------
   function init() {
+    if (ensureNoteRouted()) return;
     blockStylusScroll();
     // Order matters: restore contenteditable text first, THEN inject checkboxes
     initEditables();
@@ -485,6 +598,7 @@
     initToolbar();
     initSaveBar();
     initDrawer();
+    initNotesPage();
     initHint();
   }
 

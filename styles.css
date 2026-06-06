@@ -1424,4 +1424,150 @@ body.sop-drawer-open {
     color: var(--plum) !important;
     text-decoration: none !important;
   }
+
+  .notes-delete-btn,
+  .sop-drawer-add,
+  .sop-drawer-section-label {
+    display: none !important;
+  }
+
+  .lined-paper {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 31px,
+      rgba(102, 44, 57, 0.35) 32px
+    ) !important;
+  }
+}
+
+/* ===========================================================
+   NOTES PAGE (14-notes.html)
+   =========================================================== */
+.notes-page .notes-head {
+  margin-bottom: 14px;
+}
+
+.notes-title-input {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  margin: 6px auto 0;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--plum);
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px dashed rgba(102, 44, 57, 0.25);
+  padding: 4px 8px 8px;
+  outline: none;
+  letter-spacing: 0.01em;
+}
+
+.notes-title-input::placeholder {
+  color: var(--rose);
+  opacity: 0.55;
+  font-style: italic;
+}
+
+.notes-title-input:focus {
+  border-bottom-color: var(--burgundy);
+}
+
+.lined-paper {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    rgba(102, 44, 57, 0.18) 32px
+  );
+  background-size: 100% 32px;
+  background-position: 0 4px;
+  min-height: 900px;
+  margin: 8px -4px 0;
+  padding: 0;
+  border-top: 1px solid rgba(102, 44, 57, 0.2);
+  border-radius: 4px;
+  position: relative;
+}
+
+.notes-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.notes-delete-btn {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: var(--burgundy);
+  background: transparent;
+  border: 1px solid rgba(102, 44, 57, 0.35);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.notes-delete-btn:hover {
+  background: var(--burgundy);
+  color: #fff;
+  border-color: var(--burgundy);
+}
+
+/* ===========================================================
+   DRAWER: NOTES SECTION + ADD BUTTON
+   =========================================================== */
+.sop-drawer-section-label {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rose);
+  padding: 18px 14px 6px;
+  margin-top: 6px;
+  border-top: 1px dashed rgba(102, 44, 57, 0.18);
+}
+
+.sop-drawer-item.notes-item .drawer-num {
+  font-size: 14px;
+  font-style: normal;
+}
+
+.sop-drawer-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 12px 6px;
+  padding: 11px 14px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--burgundy);
+  background: transparent;
+  border: 1.5px dashed rgba(102, 44, 57, 0.45);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.sop-drawer-add:hover {
+  background: var(--burgundy);
+  color: #fff;
+  border-color: var(--burgundy);
+  border-style: solid;
+}
+
+.sop-drawer-add .add-plus {
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 700;
 }
