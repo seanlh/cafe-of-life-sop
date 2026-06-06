@@ -350,7 +350,7 @@
     { num: '10', title: 'Closing Procedures',     sub: 'After the last patient',      href: '10-closing.html' },
     { num: '11', title: 'Systems & Forms',        sub: 'Quick lookup',                href: '11-systems-forms.html' },
     { num: '12', title: 'Rules & Color Guide',    sub: 'Appt colors · alerts',        href: '12-rules-colors.html' },
-    { num: '13', title: 'Daily Huddle Sheet',     sub: 'Printable form',              href: '13-huddle-sheet.html' }
+    { num: '13', title: 'Daily Huddle Sheet',     sub: 'The day at a glance',         href: '13-huddle-sheet.html' }
   ];
 
   function initDrawer() {
