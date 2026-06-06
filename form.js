@@ -394,17 +394,28 @@
       '<nav class="sop-drawer-nav">' + items + '</nav>';
     document.body.appendChild(drawer);
 
+    function outsideHandler(e) {
+      if (drawer.contains(e.target)) return;
+      if (btn.contains(e.target)) return;
+      close();
+    }
+
     function open() {
       drawer.classList.add('open');
       backdrop.classList.add('open');
       btn.classList.add('hidden');
       document.body.classList.add('sop-drawer-open');
+      // Defer so the opening tap itself doesn't trigger the outside handler
+      setTimeout(() => {
+        document.addEventListener('pointerdown', outsideHandler, true);
+      }, 0);
     }
     function close() {
       drawer.classList.remove('open');
       backdrop.classList.remove('open');
       btn.classList.remove('hidden');
       document.body.classList.remove('sop-drawer-open');
+      document.removeEventListener('pointerdown', outsideHandler, true);
     }
 
     btn.addEventListener('click', open);

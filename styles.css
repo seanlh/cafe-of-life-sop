@@ -71,7 +71,7 @@ body {
 .topnav {
   max-width: 8.5in;
   margin: 16px auto 0;
-  padding: 12px 18px;
+  padding: 12px 18px 12px 70px; /* leave room for the fixed hamburger button */
   display: flex;
   justify-content: space-between;
   align-items: center;
