@@ -432,8 +432,27 @@
     });
   }
 
+  // ---------- STYLUS SCROLL BLOCK ----------
+  // On iPad Safari, the pencil produces touch events that start scrolling
+  // BEFORE the pointerdown handler runs. preventDefault on touchstart/move
+  // when touchType === 'stylus' stops the scroll without affecting finger scroll.
+  function blockStylusScroll() {
+    const handler = (e) => {
+      const touches = e.touches || [];
+      for (let i = 0; i < touches.length; i++) {
+        if (touches[i].touchType === 'stylus') {
+          e.preventDefault();
+          return;
+        }
+      }
+    };
+    document.addEventListener('touchstart', handler, { passive: false });
+    document.addEventListener('touchmove', handler, { passive: false });
+  }
+
   // ---------- INIT ----------
   function init() {
+    blockStylusScroll();
     // Order matters: restore contenteditable text first, THEN inject checkboxes
     initEditables();
     initCheckboxes();
