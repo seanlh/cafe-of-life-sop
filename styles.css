@@ -1051,6 +1051,18 @@ textarea.sop-text {
   background: var(--burgundy);
 }
 
+.sb-reset.sb-reset-all {
+  background: transparent;
+  color: var(--burgundy);
+  border: 1.2px solid var(--burgundy);
+  padding: 5px 10px;
+}
+
+.sb-reset.sb-reset-all:hover {
+  background: var(--burgundy);
+  color: var(--paper);
+}
+
 /* ===========================================================
    HAMBURGER + LEFT DRAWER
    =========================================================== */

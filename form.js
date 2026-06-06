@@ -311,14 +311,27 @@
     const bar = document.createElement('div');
     bar.className = 'sop-savebar';
     bar.innerHTML =
-      '<span class="sb-status"><span class="dot"></span>Auto-saved on this iPad</span>' +
-      '<button class="sb-reset">Reset page</button>';
+      '<span class="sb-status"><span class="dot"></span>Auto-saved</span>' +
+      '<button class="sb-reset" data-scope="page">Reset page</button>' +
+      '<button class="sb-reset sb-reset-all" data-scope="all">Reset all</button>';
     document.body.appendChild(bar);
-    bar.querySelector('.sb-reset').addEventListener('click', () => {
-      if (confirm('Clear all form fields AND pencil notes on this page?')) {
-        localStorage.removeItem(STORAGE_KEY);
-        location.reload();
-      }
+
+    bar.querySelectorAll('.sb-reset').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.scope === 'page') {
+          if (confirm('Clear all form fields AND pencil notes on this page?')) {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+          }
+          return;
+        }
+        if (confirm('Clear EVERYTHING across the entire binder — every page\'s checkboxes, text, and pencil notes? This cannot be undone.')) {
+          Object.keys(localStorage)
+            .filter(k => k.startsWith('cofl_sop_') && k !== 'cofl_sop_hint_v1')
+            .forEach(k => localStorage.removeItem(k));
+          location.reload();
+        }
+      });
     });
   }
 
