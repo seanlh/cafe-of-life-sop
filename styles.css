@@ -725,7 +725,8 @@ h3.sub-heading.with-bar::after {
   border: 1px solid rgba(102, 44, 57, 0.4);
   padding: 6px 6px;
   text-align: left;
-  height: 26px;
+  height: 42px;
+  vertical-align: middle;
 }
 
 .huddle-table th {
@@ -1350,6 +1351,281 @@ body.sop-drawer-open {
 }
 
 /* ---------- PRINT STYLES ---------- */
+/* ===========================================================
+   HUDDLE INTERACTIVE CELLS
+   =========================================================== */
+.huddle-table td.appt-cell,
+.huddle-table td.charge-cell,
+.huddle-table td.pay-cell {
+  padding: 0;
+  position: relative;
+}
+
+/* Appt Type tap target */
+.appt-type-btn {
+  width: 100%;
+  height: 100%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--plum);
+  text-align: left;
+  letter-spacing: 0.01em;
+}
+
+.appt-type-btn:empty::before,
+.appt-type-btn.is-empty::before {
+  content: "+";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(102, 44, 57, 0.35);
+  color: rgba(102, 44, 57, 0.45);
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.appt-type-btn .appt-chip {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+}
+
+.appt-type-btn .appt-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.appt-type-btn:hover {
+  background: rgba(255, 197, 211, 0.18);
+}
+
+.appt-type-btn:active {
+  background: rgba(255, 197, 211, 0.35);
+}
+
+/* Charge ghost (default from selected type) */
+.charge-cell .charge-ghost {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(102, 44, 57, 0.32);
+  pointer-events: none;
+  letter-spacing: 0.01em;
+}
+
+/* Pay tap-cycle */
+.pay-btn {
+  width: 100%;
+  height: 100%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.pay-btn:hover {
+  background: rgba(255, 197, 211, 0.18);
+}
+
+.pay-btn:active {
+  background: rgba(255, 197, 211, 0.35);
+}
+
+.pay-btn.state-1 { background: rgba(106, 191, 122, 0.16); }   /* card */
+.pay-btn.state-2 { background: rgba(106, 191, 122, 0.16); }   /* cash */
+.pay-btn.state-3 { background: rgba(181, 181, 181, 0.22); }   /* PIF */
+.pay-btn.state-4 { background: rgba(217, 83, 79, 0.18); }     /* owes */
+
+/* ===========================================================
+   APPT TYPE PICKER MODAL
+   =========================================================== */
+.appt-picker-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(51, 12, 21, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+  z-index: 1100;
+}
+
+.appt-picker-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.appt-picker {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  width: min(92vw, 520px);
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--paper);
+  border-radius: 14px;
+  box-shadow: 0 24px 48px -8px rgba(51, 12, 21, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 1101;
+  padding: 18px 18px 22px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.appt-picker.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.appt-picker-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.appt-picker-head h3 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 20px;
+  color: var(--plum);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.appt-picker-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid rgba(102, 44, 57, 0.25);
+  color: var(--burgundy);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.appt-picker-close:hover {
+  background: var(--burgundy);
+  color: #fff;
+  border-color: var(--burgundy);
+}
+
+.appt-picker-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.appt-pick {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--pink-soft, rgba(255, 197, 211, 0.18));
+  border: 1px solid rgba(102, 44, 57, 0.15);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--plum);
+  text-align: left;
+  transition: background 0.12s ease, border-color 0.12s ease, transform 0.08s ease;
+}
+
+.appt-pick:hover {
+  background: rgba(255, 197, 211, 0.45);
+  border-color: var(--burgundy);
+}
+
+.appt-pick:active {
+  transform: scale(0.98);
+}
+
+.appt-pick .appt-chip {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+}
+
+.appt-pick .appt-pick-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.appt-pick .appt-pick-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.appt-pick .appt-pick-price {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--rose);
+  margin-top: 1px;
+}
+
+.appt-pick-clear {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  padding: 9px 12px;
+  background: transparent;
+  border: 1.5px dashed rgba(102, 44, 57, 0.35);
+  border-radius: 10px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--burgundy);
+  cursor: pointer;
+}
+
+.appt-pick-clear:hover {
+  background: var(--burgundy);
+  color: #fff;
+  border-style: solid;
+}
+
 @page {
   size: letter;
   margin: 0.45in;
@@ -1368,7 +1644,9 @@ body.sop-drawer-open {
   .sop-hint,
   .sop-hamburger,
   .sop-backdrop,
-  .sop-drawer {
+  .sop-drawer,
+  .appt-picker-backdrop,
+  .appt-picker {
     display: none !important;
   }
 
@@ -1438,6 +1716,25 @@ body.sop-drawer-open {
       transparent 31px,
       rgba(102, 44, 57, 0.35) 32px
     ) !important;
+  }
+
+  .appt-type-btn,
+  .pay-btn {
+    background: transparent !important;
+    border: none !important;
+    color: var(--ink) !important;
+  }
+
+  .appt-type-btn:empty::before,
+  .appt-type-btn.is-empty::before {
+    display: none !important;
+  }
+
+  .pay-btn.state-1,
+  .pay-btn.state-2,
+  .pay-btn.state-3,
+  .pay-btn.state-4 {
+    background: transparent !important;
   }
 }
 

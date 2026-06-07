@@ -545,6 +545,200 @@
     document.addEventListener('touchmove', handler, { passive: false });
   }
 
+  // ---------- HUDDLE SHEET ----------
+  const HUDDLE_PAGE = '13-huddle-sheet.html';
+
+  // Appt types pulled from §12 Rules & Colors + §07 fee schedule.
+  // `charge` is the default that auto-fills; null = no fixed default.
+  const APPT_TYPES = [
+    { key: 'newpt',     name: 'New Patient',         short: 'New Pt',  chip: 'chip-green',     charge: null },
+    { key: 'adj',       name: 'Adjustment',          short: 'Adj',     chip: 'chip-blue',      charge: 65   },
+    { key: 'adjwell',   name: 'Adj / Wellness',      short: 'Adj/Wel', chip: 'chip-lightblue', charge: null },
+    { key: 'reexam',    name: 'Re-Exam',             short: 'Re-Exam', chip: 'chip-yellow',    charge: 45   },
+    { key: 'react',     name: 'New Injury / React.', short: 'React.',  chip: 'chip-brown',     charge: null },
+    { key: 'rof',       name: 'ROF',                 short: 'ROF',     chip: 'chip-red',       charge: 55   },
+    { key: 'maint',     name: 'Maintenance',         short: 'Maint',   chip: 'chip-pink',      charge: null },
+    { key: 'exercise',  name: 'Exercise Consult',    short: 'Exerc.',  chip: 'chip-grey',      charge: 95   },
+    { key: 'softwave',  name: 'SoftWave',            short: 'SW',      chip: 'chip-purple',    charge: null },
+    { key: 'xray',      name: 'X-Ray',               short: 'X-Ray',   chip: 'chip-black',     charge: 25   },
+    { key: 'day3',      name: 'Day 3',               short: 'Day 3',   chip: 'chip-burgundy',  charge: null }
+  ];
+  const APPT_BY_KEY = Object.fromEntries(APPT_TYPES.map(t => [t.key, t]));
+
+  // Pay cycle: blank → card → cash → PIF → owes → blank
+  const PAY_STATES = [
+    { key: 0, icon: '',   label: 'Not set' },
+    { key: 1, icon: '💳', label: 'Card auto-debited' },
+    { key: 2, icon: '💵', label: 'Cash / check' },
+    { key: 3, icon: '⊘',  label: 'PIF — paid in full today' },
+    { key: 4, icon: '⚠',  label: 'Owes balance' }
+  ];
+
+  function applyApptToButton(btn, apptKey) {
+    btn.innerHTML = '';
+    btn.classList.remove('is-empty');
+    if (!apptKey) {
+      btn.classList.add('is-empty');
+      return;
+    }
+    const type = APPT_BY_KEY[apptKey];
+    if (!type) {
+      btn.classList.add('is-empty');
+      return;
+    }
+    const chipClass = type.chip === 'chip-black'
+      ? 'appt-chip'
+      : 'appt-chip ' + type.chip;
+    const chip = document.createElement('span');
+    chip.className = chipClass;
+    if (type.chip === 'chip-black') chip.style.background = '#1d1d1d';
+    const label = document.createElement('span');
+    label.className = 'appt-label';
+    label.textContent = type.short;
+    btn.appendChild(chip);
+    btn.appendChild(label);
+  }
+
+  function applyChargeGhost(cell, apptKey) {
+    cell.innerHTML = '';
+    if (!apptKey) return;
+    const type = APPT_BY_KEY[apptKey];
+    if (!type || type.charge == null) return;
+    const ghost = document.createElement('span');
+    ghost.className = 'charge-ghost';
+    ghost.textContent = '$' + type.charge;
+    cell.appendChild(ghost);
+  }
+
+  function applyPayState(btn, stateIdx) {
+    const s = PAY_STATES[stateIdx] || PAY_STATES[0];
+    btn.textContent = s.icon;
+    btn.title = s.label;
+    btn.classList.remove('state-1', 'state-2', 'state-3', 'state-4');
+    if (stateIdx > 0) btn.classList.add('state-' + stateIdx);
+  }
+
+  let pickerEls = null;
+  function buildPicker() {
+    if (pickerEls) return pickerEls;
+    const backdrop = document.createElement('div');
+    backdrop.className = 'appt-picker-backdrop';
+    const modal = document.createElement('div');
+    modal.className = 'appt-picker';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-label', 'Pick appointment type');
+
+    let gridHtml = '';
+    APPT_TYPES.forEach(t => {
+      const chipStyle = t.chip === 'chip-black' ? ' style="background:#1d1d1d;"' : '';
+      const chipClass = t.chip === 'chip-black' ? 'appt-chip' : 'appt-chip ' + t.chip;
+      const price = t.charge != null ? '$' + t.charge : '—';
+      gridHtml +=
+        '<button type="button" class="appt-pick" data-key="' + t.key + '">' +
+          '<span class="' + chipClass + '"' + chipStyle + '></span>' +
+          '<span class="appt-pick-text">' +
+            '<span class="appt-pick-name">' + t.name + '</span>' +
+            '<span class="appt-pick-price">' + price + '</span>' +
+          '</span>' +
+        '</button>';
+    });
+    gridHtml += '<button type="button" class="appt-pick-clear">Clear this row</button>';
+
+    modal.innerHTML =
+      '<header class="appt-picker-head">' +
+        '<h3>Pick appointment type</h3>' +
+        '<button type="button" class="appt-picker-close" aria-label="Close">✕</button>' +
+      '</header>' +
+      '<div class="appt-picker-grid">' + gridHtml + '</div>';
+
+    document.body.appendChild(backdrop);
+    document.body.appendChild(modal);
+
+    pickerEls = { backdrop, modal, currentRow: null };
+
+    function close() {
+      modal.classList.remove('open');
+      backdrop.classList.remove('open');
+      pickerEls.currentRow = null;
+    }
+
+    backdrop.addEventListener('click', close);
+    modal.querySelector('.appt-picker-close').addEventListener('click', close);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) close();
+    });
+
+    modal.querySelectorAll('.appt-pick').forEach(b => {
+      b.addEventListener('click', () => {
+        if (pickerEls.currentRow == null) return close();
+        setRowAppt(pickerEls.currentRow, b.dataset.key);
+        close();
+      });
+    });
+    modal.querySelector('.appt-pick-clear').addEventListener('click', () => {
+      if (pickerEls.currentRow == null) return close();
+      setRowAppt(pickerEls.currentRow, null);
+      close();
+    });
+
+    pickerEls.close = close;
+    pickerEls.open = (rowIdx) => {
+      pickerEls.currentRow = rowIdx;
+      backdrop.classList.add('open');
+      modal.classList.add('open');
+    };
+    return pickerEls;
+  }
+
+  function setRowAppt(rowIdx, apptKey) {
+    state['huddle_appt_' + rowIdx] = apptKey || '';
+    scheduleSave();
+    const btn = document.querySelector('.appt-type-btn[data-row="' + rowIdx + '"]');
+    const charge = document.querySelector('.charge-cell[data-row="' + rowIdx + '"]');
+    if (btn) applyApptToButton(btn, apptKey);
+    if (charge) applyChargeGhost(charge, apptKey);
+  }
+
+  function setRowPay(rowIdx, stateIdx) {
+    state['huddle_pay_' + rowIdx] = stateIdx;
+    scheduleSave();
+    const btn = document.querySelector('.pay-btn[data-row="' + rowIdx + '"]');
+    if (btn) applyPayState(btn, stateIdx);
+  }
+
+  function initHuddle() {
+    if (PAGE_FILE !== HUDDLE_PAGE) return;
+    const table = document.querySelector('table[data-huddle="true"]');
+    if (!table) return;
+    buildPicker();
+
+    table.querySelectorAll('.appt-type-btn').forEach(btn => {
+      const row = +btn.dataset.row;
+      const saved = state['huddle_appt_' + row] || null;
+      applyApptToButton(btn, saved);
+      const chargeCell = table.querySelector('.charge-cell[data-row="' + row + '"]');
+      if (chargeCell) applyChargeGhost(chargeCell, saved);
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        pickerEls.open(row);
+      });
+    });
+
+    table.querySelectorAll('.pay-btn').forEach(btn => {
+      const row = +btn.dataset.row;
+      const saved = state['huddle_pay_' + row] || 0;
+      applyPayState(btn, saved);
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const current = state['huddle_pay_' + row] || 0;
+        const next = (current + 1) % PAY_STATES.length;
+        setRowPay(row, next);
+      });
+    });
+  }
+
   // ---------- NOTES PAGE ----------
   function getCurrentNoteId() {
     const p = new URLSearchParams(location.search);
@@ -598,6 +792,7 @@
     initToolbar();
     initSaveBar();
     initDrawer();
+    initHuddle();
     initNotesPage();
     initHint();
   }
