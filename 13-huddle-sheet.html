@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>All-Day Daily Tracker &middot; Café of Life SOP</title>
-<link rel="stylesheet" href="styles.css?v=20260623-daily-tracker-v3">
+<link rel="stylesheet" href="styles.css?v=20260623-daily-tracker-v4">
 </head>
 <body>
 
@@ -95,35 +95,31 @@
 
   <details class="huddle-day-section" open>
     <summary>1. Start Shift / First Hour Prep</summary>
-    <div class="huddle-day-grid huddle-start-panel" data-shift-panel="morning">
+    <div class="huddle-day-grid huddle-start-panel huddle-start-two-col" data-shift-panel="morning">
       <div>
-        <h3>Open Office</h3>
+        <h3>Office / Supplies</h3>
         <div class="compact-check-grid">
           <label><input class="sop-bool" name="huddle_open_lights" type="checkbox"> Lights on</label>
           <label><input class="sop-bool" name="huddle_open_alarm_off" type="checkbox"> Alarm OFF</label>
           <label><input class="sop-bool" name="huddle_open_tidy" type="checkbox"> Tidy up office</label>
           <label><input class="sop-bool" name="huddle_open_floor_carpet" type="checkbox"> Clean floor &amp; carpet Tue, Thu, Fri</label>
           <label><input class="sop-bool" name="huddle_open_media_systems" type="checkbox"> Turn on Alexa, TVs, chiro info videos, and diffuser</label>
-          <label><input class="sop-bool" name="huddle_open_computer_systems" type="checkbox"> Turn on computers and log in check-in station</label>
-          <label><input class="sop-bool" name="huddle_open_xray" type="checkbox"> Turn on X-ray computer if needed</label>
           <label><input class="sop-bool" name="huddle_open_ac" type="checkbox"> Turn AC to 72 before patients come in</label>
+          <label><input class="sop-bool" name="huddle_open_supplies" type="checkbox"> Check bathroom, exercise area, SW room, and face paper supplies</label>
         </div>
       </div>
       <div>
-        <h3>Systems / Messages</h3>
+        <h3>Systems / Schedule</h3>
         <div class="compact-check-grid">
+          <label><input class="sop-bool" name="huddle_open_computer_systems" type="checkbox"> Turn on computers and log in check-in station</label>
+          <label><input class="sop-bool" name="huddle_open_xray" type="checkbox"> Turn on X-ray computer if needed</label>
           <label><input class="sop-bool" name="huddle_open_cash_log" type="checkbox"> Fill out Google Sheet Cash Log / enter N/A</label>
           <label><input class="sop-bool" name="huddle_open_voicemail" type="checkbox"> Check voicemail / write down messages</label>
           <label><input class="sop-bool" name="huddle_open_daily_messages" type="checkbox"> Check office email, Google Calendar, and Review Wave Text Service</label>
           <label><input class="sop-bool" name="huddle_open_cp_import" type="checkbox"> Upload Cash Practice payments</label>
           <label><input class="sop-bool" name="huddle_open_declines" type="checkbox"> Check Cash Practice declines / red items</label>
           <label><input class="sop-bool" name="huddle_open_return_calls" type="checkbox"> Return patient voicemail calls / Text</label>
-        </div>
-      </div>
-      <div>
-        <h3>Appointment Planner Prep</h3>
-        <div class="compact-check-grid">
-          <label><input class="sop-bool" name="huddle_sched_entered_rows" type="checkbox"> Entered today’s ChiroTouch appointments into tracker</label>
+          <label><input class="sop-bool" name="huddle_sched_entered_rows" type="checkbox"> Entered today's ChiroTouch appointments into tracker</label>
           <label><input class="sop-bool" name="huddle_sched_times_names" type="checkbox"> Added time and patient name for each appointment</label>
           <label><input class="sop-bool" name="huddle_sched_appt_types" type="checkbox"> Selected appointment type for each patient</label>
           <label><input class="sop-bool" name="huddle_sched_notes_ready" type="checkbox"> Left huddle note space ready for doctor updates</label>
@@ -132,12 +128,11 @@
         </div>
       </div>
     </div>
-    <div class="huddle-day-grid huddle-start-panel" data-shift-panel="afternoon" hidden>
+    <div class="huddle-day-grid huddle-start-panel huddle-start-two-col" data-shift-panel="afternoon" hidden>
       <div>
-        <h3>Start Afternoon Shift</h3>
+        <h3>Office / Supplies</h3>
         <div class="compact-check-grid">
           <label><input class="sop-bool" name="huddle_pm_clock_in" type="checkbox"> Clock in</label>
-          <label><input class="sop-bool" name="huddle_pm_open_systems" type="checkbox"> Open CT, Review Wave, Cash Practice, email, and voicemail</label>
           <label><input class="sop-bool" name="huddle_pm_room_reset" type="checkbox"> Reset rooms</label>
           <label><input class="sop-bool" name="huddle_pm_face_paper" type="checkbox"> Face paper checked</label>
           <label><input class="sop-bool" name="huddle_pm_front_supplies" type="checkbox"> Front desk supplies checked</label>
@@ -146,17 +141,13 @@
         </div>
       </div>
       <div>
-        <h3>Midday Systems</h3>
+        <h3>Systems / Schedule</h3>
         <div class="compact-check-grid">
+          <label><input class="sop-bool" name="huddle_pm_open_systems" type="checkbox"> Open CT, Review Wave, Cash Practice, email, and voicemail</label>
           <label><input class="sop-bool" name="huddle_pm_voicemail" type="checkbox"> Check voicemail / write down messages</label>
           <label><input class="sop-bool" name="huddle_pm_daily_messages" type="checkbox"> Check office email, Google Calendar, and Review Wave Text Service</label>
           <label><input class="sop-bool" name="huddle_pm_declines" type="checkbox"> Check Cash Practice declines / red items</label>
           <label><input class="sop-bool" name="huddle_pm_calls" type="checkbox"> Return patient voicemail calls / Text</label>
-        </div>
-      </div>
-      <div>
-        <h3>Afternoon Schedule Review</h3>
-        <div class="compact-check-grid">
           <label><input class="sop-bool" name="huddle_pm_entered_rows" type="checkbox"> Entered afternoon ChiroTouch appointments into tracker</label>
           <label><input class="sop-bool" name="huddle_pm_times_names" type="checkbox"> Added time and patient name for each appointment</label>
           <label><input class="sop-bool" name="huddle_pm_appt_types" type="checkbox"> Selected appointment type for each patient</label>
@@ -273,6 +264,6 @@
   </div>
 </section>
 
-<script src="form.js?v=20260623-daily-tracker-v3" defer></script>
+<script src="form.js?v=20260623-daily-tracker-v4" defer></script>
 </body>
 </html>

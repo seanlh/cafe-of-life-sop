@@ -844,6 +844,10 @@ h3.sub-heading.with-bar::after {
   grid-template-columns: 1fr;
 }
 
+.huddle-day-grid.huddle-start-two-col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .huddle-day-grid h3,
 .huddle-note-board label {
   margin: 0 0 8px;
@@ -1034,6 +1038,11 @@ input.command-date {
 .shift-start-stack {
   display: grid;
   gap: 10px;
+}
+
+.shift-start-two-col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
 }
 
 .shift-mode-head {
@@ -3917,6 +3926,7 @@ body.sop-drawer-open {
   .command-field-row,
   .command-universal-grid,
   .command-type-req-grid,
+  .shift-start-two-col,
   .loop-stack-wide,
   .end-check-grid,
   .command-open-grid,
