@@ -841,7 +841,7 @@
       groups: [
         { title: 'Day 1 - Front Office', items: ['Meet & Greet NP', 'Copy Insurance Card & Photo ID', 'Day 1 Handout & Q’s', 'Take Payment', 'Take Photo of Patient', 'Complete File in CT (referred from?)', 'Pt gift bag', 'Office Tour'] },
         { title: 'Day 1 - Back Office', items: ['Pt Sign the 3 Sheets', 'Confirm NP Appointment', 'Verify Insurance', 'Dr. First Call Sheet', 'Schedule ROF & ROF Handout', 'Put File in ROF Holder'] },
-        { title: 'Before Patient Leaves', items: ['Next appointment confirmed out loud', 'Done'] }
+        { title: 'Before Patient Leaves', items: ['Next appointment confirmed out loud'] }
       ]
     },
     adj: {
@@ -849,7 +849,7 @@
       groups: [
         { title: 'Before Patient Arrives', items: ['Ledger / balance checked', 'Alerts/red letters checked', 'Future appointments checked'] },
         { title: 'During Appointment', items: ['Collect payment if due before service', 'Ask permission to use card on file if applicable', 'Doctor performs adjustment'] },
-        { title: 'Before Patient Leaves', items: ['Receipt signed/scanned/shredded if applicable', 'Next appointment scheduled', 'Date/time confirmed out loud', 'Notes/action items completed', 'Done'] }
+        { title: 'Before Patient Leaves', items: ['Receipt signed/scanned/shredded if applicable', 'Next appointment scheduled', 'Next appointment confirmed out loud', 'Notes/action items completed'] }
       ]
     },
     reexam: {
@@ -857,7 +857,7 @@
       groups: [
         { title: 'Before Patient Arrives', items: ['Re-exam confirmed', 'Fee/payment status checked', 'Notes/progress reviewed'] },
         { title: 'During Appointment', items: ['Fee collected if due', 'Doctor completes re-exam', 'Progress/next phase discussed'] },
-        { title: 'Before Patient Leaves', items: ['Next appointments scheduled', 'Notes completed', 'Date/time confirmed out loud', 'Done'] }
+        { title: 'Before Patient Leaves', items: ['Next appointments scheduled', 'Notes completed', 'Next appointment confirmed out loud'] }
       ]
     },
     rof: {
@@ -865,7 +865,7 @@
       groups: [
         { title: 'Before ROF Begins - Back Office', items: ['Take ROF payment $55', 'Day 3 Literature & Questions', 'Day 1 & 3 Lit & Questions (Spouse)'] },
         { title: 'Doctor', items: ['X-Ray Analysis', 'Care Plan'] },
-        { title: 'After ROF Ends - Front Office', items: ['Take 1st Care Plan Pmt / Give Receipt', 'Schedule Patient Appt (1-4 wks.)', 'Set up Re-Ex and Ex Consult appt', 'Patient Sign Care Plan', 'Make Schedule Copy for Patient', 'Review missed appt / text policy', 'Schedule Spouse NP Appointment', 'Schedule Kids NP Appointment', 'Give 2 health passes (7 day expiration)', '***Offer Spouse Exam / Xrays today!', 'Date/time confirmed out loud', 'Done'] },
+        { title: 'After ROF Ends - Front Office', items: ['Take 1st Care Plan Pmt / Give Receipt', 'Schedule Patient Appt (1-4 wks.)', 'Set up Re-Ex and Ex Consult appt', 'Patient Sign Care Plan', 'Make Schedule Copy for Patient', 'Review missed appt / text policy', 'Schedule Spouse NP Appointment', 'Schedule Kids NP Appointment', 'Give 2 health passes (7 day expiration)', '***Offer Spouse Exam / Xrays today!', 'Next appointment confirmed out loud'] },
         { title: 'After ROF Ends - Back Office', items: ['Review Care Plan/ Financials', 'ROF NOTE', 'Set up Alert Packages', 'Change payment type', 'Send NP History Email for Family', 'Send APP Link (Rev Wave)'] }
       ]
     },
@@ -874,7 +874,7 @@
       groups: [
         { title: 'Before Patient Arrives', items: ['Ledger / balance checked', 'Wellness plan/status checked', 'Future appointments checked'] },
         { title: 'During Appointment', items: ['Payment handled if due', 'Adjustment/wellness visit completed'] },
-        { title: 'Before Patient Leaves', items: ['Next appointment scheduled', 'Date/time confirmed out loud', 'Notes/action items completed', 'Done'] }
+        { title: 'Before Patient Leaves', items: ['Next appointment scheduled', 'Next appointment confirmed out loud', 'Notes/action items completed'] }
       ]
     },
     exercise: {
@@ -882,13 +882,13 @@
       groups: [
         { title: 'Before Patient Arrives', items: ['Consult confirmed', 'Fee/payment status checked', 'Patient file reviewed'] },
         { title: 'During Appointment', items: ['Fee collected if due', 'Exercise consult completed', 'Home exercises reviewed'] },
-        { title: 'Before Patient Leaves', items: ['Next appointment scheduled', 'Notes completed', 'Date/time confirmed out loud', 'Done'] }
+        { title: 'Before Patient Leaves', items: ['Next appointment scheduled', 'Notes completed', 'Next appointment confirmed out loud'] }
       ]
     },
     day3: {
       title: 'Day 3',
       groups: [
-        { title: 'Front Office', items: ['Schedule Auto-Debit', 'Assign Pin / show subjective', 'Show Patient Office Flow', 'Map out patient schedule 1-6 months per notes', 'Schedule Patient Appt (1-6 mos.)', 'Make Schedule Copy for Patient', 'Review 24 hr & 2 hr text & 2 hr appt policy $25', 'Txt patient Scheduling App', 'Next appointment confirmed out loud', 'Done'] },
+        { title: 'Front Office', items: ['Schedule Auto-Debit', 'Assign Pin / show subjective', 'Show Patient Office Flow', 'Map out patient schedule 1-6 months per notes', 'Schedule Patient Appt (1-6 mos.)', 'Make Schedule Copy for Patient', 'Review 24 hr & 2 hr text & 2 hr appt policy $25', 'Txt patient Scheduling App', 'Next appointment confirmed out loud'] },
         { title: 'Back Office', items: ['Complete Payment Type Checklist', 'Insurance (separate checklist)', 'PIP (separate checklist)'] }
       ]
     },
@@ -897,7 +897,7 @@
       groups: [
         { title: 'Before Patient Arrives', items: ['Appointment confirmed by call, not text only', '$25 deposit verified', 'SoftWave intake/consent ready if needed', 'Treatment area confirmed', 'Cancellation policy confirmed', 'SoftWave aftercare handout ready'] },
         { title: 'During Appointment', items: ['Payment collected if needed', 'Discovery completed', 'Approx. 500 pulses if applicable', 'Recommendation discussed'] },
-        { title: 'Before Patient Leaves', items: ['Give SoftWave aftercare: What Just Happened in Your Body', 'Review stem cell boost / healing response basics', 'No ice / Advil / ibuprofen reminder', 'Avoid intense exercise 2-3 days', 'Next SoftWave scheduled', 'Date/time confirmed out loud', 'Done'] }
+        { title: 'Before Patient Leaves', items: ['Give SoftWave aftercare: What Just Happened in Your Body', 'Review stem cell boost / healing response basics', 'No ice / Advil / ibuprofen reminder', 'Avoid intense exercise 2-3 days', 'Next SoftWave scheduled', 'Next appointment confirmed out loud'] }
       ]
     },
     softwave: {
@@ -905,11 +905,11 @@
       groups: [
         { title: 'Before Patient Arrives', items: ['Session/package checked', 'Payment status checked', 'Treatment area confirmed', 'Cancellation policy checked', 'SoftWave aftercare handout ready if needed'] },
         { title: 'During Appointment', items: ['Payment collected if due', 'Treatment completed', '600-800 pulses if applicable'] },
-        { title: 'Before Patient Leaves', items: ['Give/review SoftWave aftercare if needed', 'No ice / Advil / ibuprofen reminder', 'Avoid intense exercise 2-3 days', 'Next SoftWave scheduled', 'Date/time confirmed out loud', 'Done'] }
+        { title: 'Before Patient Leaves', items: ['Give/review SoftWave aftercare if needed', 'No ice / Advil / ibuprofen reminder', 'Avoid intense exercise 2-3 days', 'Next SoftWave scheduled', 'Next appointment confirmed out loud'] }
       ]
     }
   };
-  const UNIVERSAL_PATIENT_CHECKS = ['Payment handled', 'Ledger / balance checked', 'Alerts checked', 'Next appointment scheduled', 'Date/time confirmed out loud', 'Notes/action items completed'];
+  const UNIVERSAL_PATIENT_CHECKS = ['Payment handled', 'Ledger / balance checked', 'Alerts checked', 'Next appointment scheduled', 'Next appointment confirmed out loud', 'Notes/action items completed'];
 
   // Pay cycle: blank -> card -> cash -> PIF -> owes -> blank
   const PAY_STATES = [
@@ -1051,7 +1051,6 @@
       'in_huddle_notes_' + rowIdx,
       'in_huddle_post_' + rowIdx,
       'huddle_nextappt_' + rowIdx,
-      'bool_huddle_status_' + rowIdx,
       'huddle_appt_' + rowIdx,
       'huddle_time_' + rowIdx
     ];
@@ -1115,8 +1114,6 @@
     if (timeBtn) applyTimeToButton(timeBtn, state['huddle_time_' + rowIdx] || '');
     const nextBtn = document.querySelector('.nextappt-btn[data-row="' + rowIdx + '"]');
     if (nextBtn) applyNextApptToButton(nextBtn, state['huddle_nextappt_' + rowIdx] || null);
-    const status = document.querySelector('[name="huddle_status_' + rowIdx + '"]');
-    if (status) status.checked = !!state['bool_huddle_status_' + rowIdx];
     renderRowRequirements(rowIdx, apptKey);
   }
 
@@ -1256,6 +1253,7 @@
     scheduleSave();
     const btn = document.querySelector('.nextappt-btn[data-row="' + rowIdx + '"]');
     if (btn) applyNextApptToButton(btn, obj);
+    renderRowRequirements(rowIdx, state['huddle_appt_' + rowIdx] || null);
     updateHuddleNotDone();
   }
 
@@ -1421,17 +1419,19 @@
         '<td class="appt-cell"><button class="appt-type-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick appointment type"></button></td>' +
         '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_balance_' + i + '" autocomplete="off" aria-label="Balance or payment note row ' + (i + 1) + '"></textarea></td>' +
         '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_notes_' + i + '" autocomplete="off" aria-label="Huddle note row ' + (i + 1) + '"></textarea></td>' +
-        '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_post_' + i + '" autocomplete="off" aria-label="Post-shift update or question row ' + (i + 1) + '"></textarea></td>' +
         '<td class="nextappt-cell"><button class="nextappt-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick next appointment"></button></td>' +
-        '<td class="huddle-status-cell"><label class="huddle-status-done"><input class="sop-bool huddle-done-check" name="huddle_status_' + i + '" type="checkbox" data-row="' + i + '"> Done</label></td>' +
-        '<td class="huddle-row-actions">' +
-          '<button type="button" data-huddle-row-delete data-row="' + i + '" aria-label="Remove row">Remove</button>' +
-        '</td>' +
+        '<td class="input-cell post-update-cell"><textarea class="sop-text cell-input autogrow" name="huddle_post_' + i + '" autocomplete="off" aria-label="Post-shift update or question row ' + (i + 1) + '"></textarea></td>' +
       '</tr>' +
       '<tr class="huddle-requirements-row" data-req-row="' + i + '" hidden>' +
-        '<td class="huddle-requirements-cell" colspan="9"></td>' +
+        '<td class="huddle-requirements-cell" colspan="7"></td>' +
       '</tr>'
     );
+  }
+
+  function requirementItemLabel(rowIdx, item) {
+    if (item !== 'Next appointment confirmed out loud') return item;
+    const nextText = formatNextAppt(state['huddle_nextappt_' + rowIdx]);
+    return nextText ? item + ': ' + nextText : item + ': add next appt date/time';
   }
 
   function rowRequirementKey(rowIdx, apptKey, itemId) {
@@ -1456,7 +1456,7 @@
         return (
           '<label class="huddle-req-item">' +
             '<input class="huddle-req-check" type="checkbox" data-key="' + key + '"' + checked + '>' +
-            '<span>' + escapeHTML(item) + '</span>' +
+            '<span>' + escapeHTML(requirementItemLabel(rowIdx, item)) + '</span>' +
           '</label>'
         );
       }).join('');
@@ -1510,7 +1510,7 @@
     ['ledger_balance', 'Ledger / balance checked'],
     ['alerts', 'Alerts checked'],
     ['nextappt', 'Next appointment scheduled'],
-    ['confirmed', 'Date/time confirmed out loud'],
+    ['confirmed', 'Next appointment confirmed out loud'],
     ['notesdone', 'Notes/action items completed'],
     ['done', 'DONE']
   ];
@@ -1676,14 +1676,15 @@
     const missing = [];
     for (let i = 0; i < huddleRowCount(); i++) {
       if (!rowHasVisibleHuddleContent(i)) continue;
-      if (state['bool_huddle_status_' + i]) continue;
+      const next = state['huddle_nextappt_' + i];
+      if (next && (next.date || next.time)) continue;
       const name = (state['in_huddle_patient_' + i] || '').trim() || 'Row ' + (i + 1);
       const time = (state['huddle_time_' + i] || '').trim();
       missing.push((time ? time + ' · ' : '') + name);
     }
     box.hidden = missing.length === 0;
     box.innerHTML = missing.length
-      ? '<strong>Patients not marked Done:</strong> ' + missing.map(escapeHTML).join(' · ')
+      ? '<strong>Patients missing next appointment:</strong> ' + missing.map(escapeHTML).join(' · ')
       : '';
   }
 
@@ -1740,14 +1741,6 @@
         });
       });
 
-      root.querySelectorAll('.huddle-done-check').forEach(btn => {
-        if (btn.dataset.huddleBound) return;
-        btn.dataset.huddleBound = 'true';
-        btn.addEventListener('change', () => {
-          updateHuddleNotDone();
-        });
-      });
-
       root.querySelectorAll('[name^="huddle_patient_"], [name^="huddle_balance_"], [name^="huddle_notes_"], [name^="huddle_post_"]').forEach(el => {
         if (el.dataset.huddleContentBound) return;
         el.dataset.huddleContentBound = 'true';
@@ -1756,13 +1749,6 @@
         });
       });
 
-      root.querySelectorAll('[data-huddle-row-delete]').forEach(btn => {
-        if (btn.dataset.huddleBound) return;
-        btn.dataset.huddleBound = 'true';
-        btn.addEventListener('click', () => {
-          deleteHuddleRow(+btn.dataset.row);
-        });
-      });
     }
 
     initHuddleControls(table);

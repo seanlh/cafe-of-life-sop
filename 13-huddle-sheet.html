@@ -205,10 +205,8 @@
         <th style="width:14%;">Appt Type</th>
         <th style="width:16%;">Balance / Payment Note</th>
         <th>Huddle Note</th>
-        <th>Post-Shift Update / Question</th>
         <th style="width:14%;">Next Appointment</th>
-        <th style="width:9%;">Status</th>
-        <th style="width:7%;">Remove</th>
+        <th>Post-Shift Update / Question</th>
       </tr>
     </thead>
     <tbody data-huddle-rows="5"></tbody>
@@ -262,8 +260,12 @@
           <label><input class="sop-bool" name="huddle_end_rooms_monitors" type="checkbox"> Clean rooms / and monitors</label>
           <label><input class="sop-bool" name="huddle_end_turn_off_lights_alexa_tvs" type="checkbox"> Turn off lights, Alexa, TVs</label>
           <label><input class="sop-bool" name="huddle_end_rw_missed" type="checkbox"> Check RW Messages / Missed Calls</label>
+          <label><input class="sop-bool" name="huddle_end_scan_sign_in" type="checkbox"> Scan sign-in sheet to folder</label>
           <label><input class="sop-bool" name="huddle_end_next_charts" type="checkbox"> Prepare patient charts for next day (NP, re-exams, ROF, SW SOAPS)</label>
-          <label><input class="sop-bool" name="huddle_end_email_dr_call_list" type="checkbox"> Email Dr. Jen call list with date of service, include NP, ROF and schedule info, attach schedule of next 3 business days</label>
+          <label><input class="sop-bool" name="huddle_end_email_dr_call_list" type="checkbox"> Email Dr. Jen call list with date of service, include NP, ROF and schedule info</label>
+          <label><input class="sop-bool" name="huddle_end_email_daily_report" type="checkbox"> Email Dr. Jen daily end-of-day report</label>
+          <label><input class="sop-bool" name="huddle_end_email_weekly_report" type="checkbox"> Email Dr. Jen weekly end-of-day report when due</label>
+          <label><input class="sop-bool" name="huddle_end_email_next_3_days" type="checkbox"> Attach appointments / schedule for next 3 business days</label>
           <label><input class="sop-bool" name="huddle_end_money_report" type="checkbox"> Print Money Report-Give $ to Dr. Jen</label>
           <label><input class="sop-bool" name="huddle_end_count_cash" type="checkbox"> Count Cash in the cash box and give it to Dr. Jen (have Dr Jen sign that she received cash) AND fill out google sheet "cash log"</label>
           <label><input class="sop-bool" name="huddle_end_alarm" type="checkbox"> Set Alarm AWAY</label>
