@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>13 &middot; Daily Huddle Sheet &middot; Café of Life SOP</title>
-<link rel="stylesheet" href="styles.css?v=20260623-shiftstart">
+<link rel="stylesheet" href="styles.css?v=20260623-live-log">
 </head>
 <body>
 
@@ -59,6 +59,69 @@
     </thead>
     <tbody data-huddle-rows="15"></tbody>
   </table>
+  </div>
+
+  <h2 class="section-heading"><span class="icon">&#127799;</span> Appointment Requirements</h2>
+  <div class="appt-requirements-grid huddle-requirements-grid">
+    <article class="appt-require-card np">
+      <h3>New Patient</h3>
+      <p>Needs before visit:</p>
+      <label><input class="sop-bool" name="huddle_req_np_confirmed" type="checkbox"> Appointment confirmed</label>
+      <label><input class="sop-bool" name="huddle_req_np_deposit" type="checkbox"> Deposit / payment checked</label>
+      <label><input class="sop-bool" name="huddle_req_np_intake" type="checkbox"> New intake form received or sent</label>
+      <label><input class="sop-bool" name="huddle_req_np_alerts" type="checkbox"> Alerts, balance, red letters checked</label>
+      <div class="if-missing">If missing: call patient, write attempt in notes, add to Open Loops / Command Center.</div>
+    </article>
+
+    <article class="appt-require-card day1">
+      <h3>Day 1</h3>
+      <p>Before they leave:</p>
+      <label><input class="sop-bool" name="huddle_req_day1_forms" type="checkbox"> Intake, ID / insurance, forms handled</label>
+      <label><input class="sop-bool" name="huddle_req_day1_payment" type="checkbox"> Payment, ledger, balance checked</label>
+      <label><input class="sop-bool" name="huddle_req_day1_scan" type="checkbox"> Scan / file items handled</label>
+      <label><input class="sop-bool" name="huddle_req_day1_next" type="checkbox"> Next appointment scheduled</label>
+      <div class="if-missing">If missing: do not mark Done; write the exact missing item in the row notes.</div>
+    </article>
+
+    <article class="appt-require-card rof">
+      <h3>ROF / Day 2</h3>
+      <p>Care plan moment:</p>
+      <label><input class="sop-bool" name="huddle_req_rof_payment" type="checkbox"> ROF fee / payment handled</label>
+      <label><input class="sop-bool" name="huddle_req_rof_plan" type="checkbox"> Plan offered and commitment noted</label>
+      <label><input class="sop-bool" name="huddle_req_rof_note" type="checkbox"> ROF note added in CT</label>
+      <label><input class="sop-bool" name="huddle_req_rof_next" type="checkbox"> Next appointment scheduled</label>
+      <div class="if-missing">If undecided: write undecided, add follow-up, update once they choose.</div>
+    </article>
+
+    <article class="appt-require-card day3">
+      <h3>Day 3</h3>
+      <p>Setup check:</p>
+      <label><input class="sop-bool" name="huddle_req_day3_autodebit" type="checkbox"> Auto debit / payment setup checked</label>
+      <label><input class="sop-bool" name="huddle_req_day3_app" type="checkbox"> App / expectations handled</label>
+      <label><input class="sop-bool" name="huddle_req_day3_alerts" type="checkbox"> CT notes, alerts, red letters updated</label>
+      <label><input class="sop-bool" name="huddle_req_day3_next" type="checkbox"> Future appointments scheduled</label>
+      <div class="if-missing">If missing: add it to post-shift follow-up before you leave.</div>
+    </article>
+
+    <article class="appt-require-card softwave">
+      <h3>SoftWave</h3>
+      <p>Call confirmation:</p>
+      <label><input class="sop-bool" name="huddle_req_sw_call" type="checkbox"> Confirmed by call, not text</label>
+      <label><input class="sop-bool" name="huddle_req_sw_details" type="checkbox"> Area, deposit / payment, cancellation policy confirmed</label>
+      <label><input class="sop-bool" name="huddle_req_sw_doc" type="checkbox"> Call documented</label>
+      <label><input class="sop-bool" name="huddle_req_sw_next" type="checkbox"> Aftercare and next SoftWave handled</label>
+      <div class="if-missing">If missing: call, document attempt, flag it so it does not get skipped.</div>
+    </article>
+
+    <article class="appt-require-card special">
+      <h3>Special / Other</h3>
+      <p>Catch-fall check:</p>
+      <label><input class="sop-bool" name="huddle_req_special_money" type="checkbox"> Ledger, balance, payment checked</label>
+      <label><input class="sop-bool" name="huddle_req_special_color" type="checkbox"> CT color / red letter update checked</label>
+      <label><input class="sop-bool" name="huddle_req_special_price" type="checkbox"> Special pricing documented</label>
+      <label><input class="sop-bool" name="huddle_req_special_next" type="checkbox"> Next action written clearly</label>
+      <div class="if-missing">If unsure: write the question and mark Waiting on Dr. / manager.</div>
+    </article>
   </div>
 
   <div class="cols-3" style="margin-top:18px; gap:14px;">
@@ -136,6 +199,6 @@
   </div>
 </section>
 
-<script src="form.js?v=20260623-shiftstart" defer></script>
+<script src="form.js?v=20260623-live-log" defer></script>
 </body>
 </html>

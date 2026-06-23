@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>15 &middot; Command Center &middot; Caf&eacute; of Life SOP</title>
-<link rel="stylesheet" href="styles.css?v=20260623-shiftstart">
+<link rel="stylesheet" href="styles.css?v=20260623-live-log">
 </head>
 <body>
 
@@ -98,6 +98,180 @@
   <div class="command-huddle-grid">
     <label>Before shift notes<textarea class="sop-text autogrow" name="command_huddle_notes" placeholder="Things Dr. Jen / team said before patients, special instructions, schedule warnings, anything said fast that you need to remember."></textarea></label>
     <label>Watch / cannot forget<textarea class="sop-text autogrow" name="command_cannot_forget" placeholder="Red letters, money issues, callbacks, forms, tomorrow prep, special pricing, anything you would be asked about later."></textarea></label>
+  </div>
+
+  <h2 class="section-heading"><span class="icon">&#127799;</span> Appointment Requirements</h2>
+  <div class="appt-requirements-grid">
+    <article class="appt-require-card np">
+      <h3>New Patient</h3>
+      <p>Needs before visit:</p>
+      <label><input class="sop-bool" name="command_req_np_confirmed" type="checkbox"> Appointment confirmed</label>
+      <label><input class="sop-bool" name="command_req_np_deposit" type="checkbox"> Deposit / payment requirement checked</label>
+      <label><input class="sop-bool" name="command_req_np_intake" type="checkbox"> New intake form received or sent</label>
+      <label><input class="sop-bool" name="command_req_np_alerts" type="checkbox"> Alerts, balance, and red letters checked</label>
+      <div class="if-missing">If missing: call patient, note attempt in CT, add to Open Loops, and tell Dr. Jen / manager if it affects the visit.</div>
+    </article>
+
+    <article class="appt-require-card day1">
+      <h3>Day 1 / First Visit</h3>
+      <p>Before patient leaves:</p>
+      <label><input class="sop-bool" name="command_req_day1_forms" type="checkbox"> Intake, forms, ID / insurance handled</label>
+      <label><input class="sop-bool" name="command_req_day1_payment" type="checkbox"> Payment, ledger, and balance checked</label>
+      <label><input class="sop-bool" name="command_req_day1_scan" type="checkbox"> Needed scans / documents filed</label>
+      <label><input class="sop-bool" name="command_req_day1_next" type="checkbox"> Next appointment scheduled and said out loud</label>
+      <div class="if-missing">If missing: stop before checkout is final, finish the missing item, then mark Done.</div>
+    </article>
+
+    <article class="appt-require-card rof">
+      <h3>ROF / Day 2</h3>
+      <p>Needs during ROF:</p>
+      <label><input class="sop-bool" name="command_req_rof_payment" type="checkbox"> ROF fee / payment handled</label>
+      <label><input class="sop-bool" name="command_req_rof_plan" type="checkbox"> Care plan offered and commitment noted</label>
+      <label><input class="sop-bool" name="command_req_rof_note" type="checkbox"> ROF note added in CT</label>
+      <label><input class="sop-bool" name="command_req_rof_next" type="checkbox"> Next appointment scheduled</label>
+      <div class="if-missing">If undecided: write undecided, add follow-up, and update later when they choose.</div>
+    </article>
+
+    <article class="appt-require-card day3">
+      <h3>Day 3</h3>
+      <p>Setup checklist:</p>
+      <label><input class="sop-bool" name="command_req_day3_autodebit" type="checkbox"> Auto debit / payment setup checked</label>
+      <label><input class="sop-bool" name="command_req_day3_app" type="checkbox"> App / schedule expectations handled</label>
+      <label><input class="sop-bool" name="command_req_day3_notes" type="checkbox"> CT notes, red letters, and alerts updated</label>
+      <label><input class="sop-bool" name="command_req_day3_next" type="checkbox"> Future appointments scheduled</label>
+      <div class="if-missing">If not finished: put the exact missing item in Post-Shift Huddle so it cannot disappear.</div>
+    </article>
+
+    <article class="appt-require-card softwave">
+      <h3>SoftWave</h3>
+      <p>Must be confirmed by call:</p>
+      <label><input class="sop-bool" name="command_req_sw_call" type="checkbox"> Call completed, not just text</label>
+      <label><input class="sop-bool" name="command_req_sw_area" type="checkbox"> Appointment, area, deposit / payment, cancellation policy confirmed</label>
+      <label><input class="sop-bool" name="command_req_sw_doc" type="checkbox"> Call documented</label>
+      <label><input class="sop-bool" name="command_req_sw_next" type="checkbox"> Aftercare given and next SoftWave scheduled</label>
+      <div class="if-missing">If missing: call before visit, document attempt, and flag in Open Loops.</div>
+    </article>
+
+    <article class="appt-require-card special">
+      <h3>Adjustment / Special Case</h3>
+      <p>Quick safety sweep:</p>
+      <label><input class="sop-bool" name="command_req_special_ledger" type="checkbox"> Ledger, balance, and payment checked</label>
+      <label><input class="sop-bool" name="command_req_special_alerts" type="checkbox"> Red letters / CT color updates reviewed</label>
+      <label><input class="sop-bool" name="command_req_special_price" type="checkbox"> Special pricing documented if applicable</label>
+      <label><input class="sop-bool" name="command_req_special_next" type="checkbox"> Next appointment handled</label>
+      <div class="if-missing">If something feels off: mark Waiting on Dr., write the exact question, and do not mark Done yet.</div>
+    </article>
+  </div>
+
+  <h2 class="section-heading"><span class="icon">&#127799;</span> Live Shift Log</h2>
+  <div class="shift-log-note">Use this for Dr. walk-ups, CT chat messages, front desk surprises, money questions, forms, and anything that needs to survive the rush.</div>
+  <div class="shift-log-stack">
+    <article class="shift-log-card">
+      <div class="shift-log-head">
+        <input class="sop-text" name="shift_log_time_1" type="text" placeholder="Time">
+        <select class="sop-select" name="shift_log_source_1">
+          <option value="">Source</option><option>Dr. walk-up</option><option>CT chat</option><option>Patient at desk</option><option>Phone call</option><option>Review Wave</option><option>Cash Practice</option><option>Team huddle</option><option>Other</option>
+        </select>
+        <input class="sop-text" name="shift_log_patient_1" type="text" placeholder="Patient / topic">
+      </div>
+      <textarea class="sop-text autogrow" name="shift_log_what_1" placeholder="What happened / exact instruction."></textarea>
+      <textarea class="sop-text autogrow" name="shift_log_next_1" placeholder="Next action: add note, change color, call back, collect payment, ask Dr., scan form, etc."></textarea>
+      <div class="shift-log-checks">
+        <label><input class="sop-bool" name="shift_log_ct_1" type="checkbox"> CT note/update</label>
+        <label><input class="sop-bool" name="shift_log_color_1" type="checkbox"> Color/letter update</label>
+        <label><input class="sop-bool" name="shift_log_money_1" type="checkbox"> Money/payment</label>
+        <label><input class="sop-bool" name="shift_log_huddle_1" type="checkbox"> Mention in huddle</label>
+        <label><input class="sop-bool" name="shift_log_done_1" type="checkbox"> Done</label>
+      </div>
+    </article>
+
+    <article class="shift-log-card">
+      <div class="shift-log-head">
+        <input class="sop-text" name="shift_log_time_2" type="text" placeholder="Time">
+        <select class="sop-select" name="shift_log_source_2">
+          <option value="">Source</option><option>Dr. walk-up</option><option>CT chat</option><option>Patient at desk</option><option>Phone call</option><option>Review Wave</option><option>Cash Practice</option><option>Team huddle</option><option>Other</option>
+        </select>
+        <input class="sop-text" name="shift_log_patient_2" type="text" placeholder="Patient / topic">
+      </div>
+      <textarea class="sop-text autogrow" name="shift_log_what_2" placeholder="What happened / exact instruction."></textarea>
+      <textarea class="sop-text autogrow" name="shift_log_next_2" placeholder="Next action."></textarea>
+      <div class="shift-log-checks">
+        <label><input class="sop-bool" name="shift_log_ct_2" type="checkbox"> CT note/update</label>
+        <label><input class="sop-bool" name="shift_log_color_2" type="checkbox"> Color/letter update</label>
+        <label><input class="sop-bool" name="shift_log_money_2" type="checkbox"> Money/payment</label>
+        <label><input class="sop-bool" name="shift_log_huddle_2" type="checkbox"> Mention in huddle</label>
+        <label><input class="sop-bool" name="shift_log_done_2" type="checkbox"> Done</label>
+      </div>
+    </article>
+
+    <article class="shift-log-card">
+      <div class="shift-log-head">
+        <input class="sop-text" name="shift_log_time_3" type="text" placeholder="Time">
+        <select class="sop-select" name="shift_log_source_3">
+          <option value="">Source</option><option>Dr. walk-up</option><option>CT chat</option><option>Patient at desk</option><option>Phone call</option><option>Review Wave</option><option>Cash Practice</option><option>Team huddle</option><option>Other</option>
+        </select>
+        <input class="sop-text" name="shift_log_patient_3" type="text" placeholder="Patient / topic">
+      </div>
+      <textarea class="sop-text autogrow" name="shift_log_what_3" placeholder="What happened / exact instruction."></textarea>
+      <textarea class="sop-text autogrow" name="shift_log_next_3" placeholder="Next action."></textarea>
+      <div class="shift-log-checks">
+        <label><input class="sop-bool" name="shift_log_ct_3" type="checkbox"> CT note/update</label>
+        <label><input class="sop-bool" name="shift_log_color_3" type="checkbox"> Color/letter update</label>
+        <label><input class="sop-bool" name="shift_log_money_3" type="checkbox"> Money/payment</label>
+        <label><input class="sop-bool" name="shift_log_huddle_3" type="checkbox"> Mention in huddle</label>
+        <label><input class="sop-bool" name="shift_log_done_3" type="checkbox"> Done</label>
+      </div>
+    </article>
+
+    <article class="shift-log-card">
+      <div class="shift-log-head">
+        <input class="sop-text" name="shift_log_time_4" type="text" placeholder="Time">
+        <select class="sop-select" name="shift_log_source_4">
+          <option value="">Source</option><option>Dr. walk-up</option><option>CT chat</option><option>Patient at desk</option><option>Phone call</option><option>Review Wave</option><option>Cash Practice</option><option>Team huddle</option><option>Other</option>
+        </select>
+        <input class="sop-text" name="shift_log_patient_4" type="text" placeholder="Patient / topic">
+      </div>
+      <textarea class="sop-text autogrow" name="shift_log_what_4" placeholder="What happened / exact instruction."></textarea>
+      <textarea class="sop-text autogrow" name="shift_log_next_4" placeholder="Next action."></textarea>
+      <div class="shift-log-checks">
+        <label><input class="sop-bool" name="shift_log_ct_4" type="checkbox"> CT note/update</label>
+        <label><input class="sop-bool" name="shift_log_color_4" type="checkbox"> Color/letter update</label>
+        <label><input class="sop-bool" name="shift_log_money_4" type="checkbox"> Money/payment</label>
+        <label><input class="sop-bool" name="shift_log_huddle_4" type="checkbox"> Mention in huddle</label>
+        <label><input class="sop-bool" name="shift_log_done_4" type="checkbox"> Done</label>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="section-heading"><span class="icon">&#127799;</span> Quick How-To Steps</h2>
+  <div class="quick-steps-grid">
+    <article>
+      <h3>Dr. walks patient up</h3>
+      <ol>
+        <li>Pause and write the patient name in Live Shift Log.</li>
+        <li>Write the exact instruction before doing anything else.</li>
+        <li>Check payment, ledger, balance, alerts, and next appointment.</li>
+        <li>If CT needs a note/color/red letter, mark it before Done.</li>
+      </ol>
+    </article>
+    <article>
+      <h3>CT chat comes in</h3>
+      <ol>
+        <li>Log source as CT chat with patient/topic.</li>
+        <li>Copy the action into Next action.</li>
+        <li>Mark Waiting on Dr. / huddle if you need clarification.</li>
+        <li>Do not clear it until the patient card or CT is updated.</li>
+      </ol>
+    </article>
+    <article>
+      <h3>Money or special pricing</h3>
+      <ol>
+        <li>Check Cash Practice and patient ledger.</li>
+        <li>Write the amount, card last 4, or special price detail.</li>
+        <li>Mark green font / money issue if needed.</li>
+        <li>Tell Dr. Jen / manager if it affects checkout.</li>
+      </ol>
+    </article>
   </div>
 
   <h2 class="section-heading"><span class="icon">&#127799;</span> Patient Update Log</h2>
@@ -329,6 +503,6 @@
   </div>
 </section>
 
-<script src="form.js?v=20260623-shiftstart" defer></script>
+<script src="form.js?v=20260623-live-log" defer></script>
 </body>
 </html>

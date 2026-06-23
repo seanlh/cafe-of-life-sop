@@ -830,14 +830,16 @@
   }
   const TIME_SLOTS = buildTimeSlots();
   const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const DAYS_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
   function formatDateShort(dateStr) {
     if (!dateStr) return '';
     const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
     if (!m) return dateStr;
     const y = +m[1], mo = +m[2], d = +m[3];
+    const date = new Date(y, mo - 1, d);
     const thisYear = new Date().getFullYear();
-    return MONTHS_SHORT[mo - 1] + ' ' + d + (y === thisYear ? '' : ', ' + y);
+    return DAYS_SHORT[date.getDay()] + ', ' + MONTHS_SHORT[mo - 1] + ' ' + d + (y === thisYear ? '' : ', ' + y);
   }
   function formatNextAppt(obj) {
     if (!obj) return '';
