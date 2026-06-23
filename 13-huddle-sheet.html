@@ -175,63 +175,73 @@
       <h2>Daily Patient Tracker</h2>
       <p>Enter today's appointments once, work each row live, then use the same rows for huddle and post-shift closeout.</p>
     </div>
-    <button class="command-add-row huddle-add-row" type="button" data-huddle-add-row>Add patient row</button>
+    <div class="huddle-tracker-buttons">
+      <button class="command-add-row huddle-add-row" type="button" data-huddle-add-row>Add patient row</button>
+      <button class="command-add-row huddle-end-day-btn" type="button" data-open-end-day>End of Day</button>
+    </div>
   </div>
 
   <div class="huddle-scroll">
   <table class="huddle-table" data-huddle="true">
     <thead>
       <tr>
-        <th style="width:10%;">Time</th>
-        <th style="width:16%;">Patient Name</th>
-        <th style="width:14%;">Appt Type</th>
+        <th style="width:9%;">Time</th>
+        <th style="width:15%;">Patient Name</th>
+        <th style="width:10%;">Provider</th>
+        <th style="width:13%;">Appt Type</th>
         <th style="width:16%;">Payment / Balance Note</th>
-        <th>Huddle Note</th>
-        <th style="width:14%;">Next Appointment</th>
+        <th style="width:13%;">Ledger / PIF / PPV</th>
+        <th>Notes / Alerts / Huddle</th>
+        <th style="width:12%;">Next Appointment</th>
         <th>Post-Shift Update / Question</th>
+        <th style="width:10%;">Actions</th>
       </tr>
     </thead>
-    <tbody data-huddle-rows="8"></tbody>
+    <tbody data-huddle-rows="0"></tbody>
   </table>
   </div>
 
-  <details class="huddle-day-section" open>
-    <summary>2. Huddle Notes / Open Loops</summary>
-    <div class="huddle-loop-board">
-      <div class="huddle-loop-group">
-        <h3>Pre-Huddle Notes</h3>
-        <div class="huddle-note-board">
-          <label>Questions for Dr. Jen before patients<textarea class="sop-text autogrow" name="huddle_pre_doctor_questions"></textarea></label>
-          <label>Payment / decline issues to ask<textarea class="sop-text autogrow" name="huddle_pre_payment_questions"></textarea></label>
-          <label>Special patient notes for huddle<textarea class="sop-text autogrow" name="huddle_pre_special_patient_notes"></textarea></label>
-          <label>Forms / SOAPs / records missing<textarea class="sop-text autogrow" name="huddle_pre_forms_missing"></textarea></label>
-        </div>
-      </div>
-      <div class="huddle-loop-group">
-        <h3>Live Open Loops</h3>
-        <div class="huddle-note-board">
-          <label>Callbacks / missed calls<textarea class="sop-text autogrow" name="huddle_loop_callbacks"></textarea></label>
-          <label>Review Wave / forms<textarea class="sop-text autogrow" name="huddle_loop_review_wave_forms"></textarea></label>
-          <label>Cash Practice / payment issues<textarea class="sop-text autogrow" name="huddle_loop_cash_practice"></textarea></label>
-          <label>Scheduling issues<textarea class="sop-text autogrow" name="huddle_loop_scheduling"></textarea></label>
-          <label>Waiting on doctor<textarea class="sop-text autogrow" name="huddle_loop_waiting_doctor"></textarea></label>
-          <label>Patient questions<textarea class="sop-text autogrow" name="huddle_loop_patient_questions"></textarea></label>
-        </div>
-      </div>
-      <div class="huddle-loop-group">
-        <h3>Post-Huddle Questions / Updates</h3>
-        <div class="huddle-note-board">
-          <label>Doctor answers / instructions<textarea class="sop-text autogrow" name="huddle_post_huddle_doctor_answers"></textarea></label>
-          <label>Payment updates after huddle<textarea class="sop-text autogrow" name="huddle_post_huddle_payment_updates"></textarea></label>
-          <label>ROF / care plan updates<textarea class="sop-text autogrow" name="huddle_post_huddle_rof_updates"></textarea></label>
-          <label>Carry forward to post-shift huddle<textarea class="sop-text autogrow" name="huddle_post_huddle_carry_forward"></textarea></label>
-        </div>
-      </div>
+  <details class="huddle-day-section huddle-notebook-section" open>
+    <summary>2. Shift Notes / Huddle Notebook</summary>
+    <div class="huddle-notebook-toolbar">
+      <button type="button" class="command-mini" data-huddle-add-timestamp>Add timestamp</button>
+      <button type="button" class="command-mini" data-huddle-add-bullet>Add bullet</button>
+      <button type="button" class="command-mini" data-open-end-day>Open end-of-day review</button>
+    </div>
+    <label class="huddle-main-notebook-label">
+      All-day notes, huddle notes, patient reminders, copied row notes
+      <textarea class="sop-text autogrow huddle-main-notebook" name="huddle_shift_notebook" data-huddle-main-notes placeholder="Type freely here all day. Patient row buttons can append notes here with a timestamp."></textarea>
+    </label>
+    <div class="huddle-notebook-folders">
+      <details open>
+        <summary>Huddle Notes</summary>
+        <textarea class="sop-text autogrow" name="huddle_sub_huddle_notes" placeholder="Morning huddle, afternoon huddle, doctor reminders, important patient updates"></textarea>
+      </details>
+      <details>
+        <summary>Questions for Dr. Jen</summary>
+        <textarea class="sop-text autogrow" name="huddle_sub_questions_dr_jen" placeholder="Running list during shift. Check off in the patient row or write ANSWERED here."></textarea>
+      </details>
+      <details>
+        <summary>Follow-up Tomorrow</summary>
+        <textarea class="sop-text autogrow" name="huddle_sub_followup_tomorrow" placeholder="Things future-me needs tomorrow."></textarea>
+      </details>
+      <details>
+        <summary>Problems / Issues</summary>
+        <textarea class="sop-text autogrow" name="huddle_sub_problems_issues" placeholder="Billing, insurance, missing paperwork, patients to call back."></textarea>
+      </details>
+      <details>
+        <summary>Unable to Read / Confirm</summary>
+        <textarea class="sop-text autogrow" name="huddle_sub_unable_confirm" placeholder="Anything unclear, missing, or not confirmed."></textarea>
+      </details>
+      <details>
+        <summary>End of Shift Review</summary>
+        <textarea class="sop-text autogrow" name="huddle_sub_end_shift_review" placeholder="What went well, what needs work, notes for future me."></textarea>
+      </details>
     </div>
   </details>
 
-  <details class="huddle-day-section">
-    <summary>3. Post-Shift Huddle / End Shift Review</summary>
+  <details class="huddle-day-section" id="end-of-day">
+    <summary>3. End of Day Checklist / Post-Shift Review</summary>
     <div class="huddle-not-done" data-huddle-not-done hidden></div>
     <div class="huddle-note-board post-shift-board">
       <label>Patient updates from today<textarea class="sop-text autogrow" name="huddle_post_patient_updates"></textarea></label>
@@ -243,7 +253,7 @@
     </div>
     <div class="huddle-day-grid huddle-closing-grid">
       <div>
-        <h3>Closing the day</h3>
+        <h3>Systems / Closeout</h3>
         <div class="compact-check-grid">
           <label><input class="sop-bool" name="huddle_end_messages" type="checkbox"> Check voicemail, office email, Google Calendar, <a class="process-link" href="03-new-patient-call.html">Review Wave</a>, RW messages, and missed calls</label>
           <label><input class="sop-bool" name="huddle_end_cash_log_na" type="checkbox"> Fill out google sheet <a class="process-link" href="10-closing.html">Cash Log</a>. Enter NA under total payments received.</label>
@@ -254,7 +264,7 @@
         </div>
       </div>
       <div>
-        <h3>Closing Duties</h3>
+        <h3>Office / Reset</h3>
         <div class="compact-check-grid">
           <label><input class="sop-bool" name="huddle_end_room_reset" type="checkbox"> Garbage, clean adjustment tables / conditioner, rooms, and monitors</label>
           <label><input class="sop-bool" name="huddle_end_turn_off_lights_alexa_tvs" type="checkbox"> Turn off lights, Alexa, TVs</label>
@@ -269,6 +279,24 @@
     </div>
   </details>
 
+  <details class="huddle-day-section huddle-sop-library">
+    <summary>4. SOP Library / Process Links</summary>
+    <div class="sop-library-grid">
+      <a href="02-opening.html">Opening Shift</a>
+      <a href="10-closing.html">Closing Shift</a>
+      <a href="03-new-patient-call.html">Answering Phone / NP Intake</a>
+      <a href="04-day-1.html">Day 1 / Office Tour</a>
+      <a href="05-day-2-rof.html">ROF / Day 2</a>
+      <a href="06-day-3.html">Day 3</a>
+      <a href="09-checkout.html">Payments / Checkout</a>
+      <a href="11-systems-forms.html">Cash Practice Import / Systems</a>
+      <a href="08-softwave.html">SoftWave</a>
+      <a href="07-adjustment.html">Re-Exam / Exercise Consult</a>
+      <a href="11-systems-forms.html">Insurance / PIP / Superbill / Records</a>
+      <a href="12-rules-colors.html">Scripts / Appointment Colors</a>
+    </div>
+  </details>
+
   <div class="page-footer">
     <a class="nav-link-back" href="index.html">&lsaquo; Contents</a>
     <span class="page-num huddle-meta">All-Day Daily Tracker</span>
@@ -276,6 +304,6 @@
   </div>
 </section>
 
-<script src="form.js?v=20260623-process-links-v1" defer></script>
+<script src="form.js?v=20260623-live-tracker-v2" defer></script>
 </body>
 </html>

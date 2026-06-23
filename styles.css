@@ -961,6 +961,23 @@ h3.sub-heading.with-bar::after {
   line-height: 1.35;
 }
 
+.huddle-tracker-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.huddle-end-day-btn {
+  border-color: rgba(102, 44, 57, 0.35);
+  background: var(--burgundy);
+  color: #fff;
+}
+
+.huddle-end-day-btn:hover {
+  background: var(--plum);
+}
+
 .huddle-header textarea.sop-text {
   min-height: 38px;
   max-height: 140px;
@@ -3113,6 +3130,42 @@ body.sop-drawer-open {
   background: rgba(255, 248, 244, 0.72) !important;
 }
 
+.huddle-status-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 6px;
+  text-align: left;
+}
+
+.huddle-status-grid label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  color: var(--plum);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.huddle-status-grid input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: var(--burgundy);
+  flex: 0 0 auto;
+}
+
+.huddle-provider-input {
+  text-align: center;
+}
+
+.huddle-row-actions .huddle-send-note {
+  background: rgba(255, 197, 211, 0.28);
+  border-color: rgba(102, 44, 57, 0.28);
+}
+
 .huddle-status-done {
   display: inline-flex;
   align-items: center;
@@ -3210,6 +3263,30 @@ body.sop-drawer-open {
   text-transform: uppercase;
 }
 
+.huddle-req-links {
+  display: grid;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.huddle-req-link {
+  display: block;
+  padding: 5px 7px;
+  border: 1px solid rgba(102, 44, 57, 0.18);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.76);
+  color: var(--burgundy);
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.1;
+  text-decoration: none;
+}
+
+.huddle-req-link:hover {
+  background: rgba(255, 197, 211, 0.24);
+  color: var(--plum);
+}
+
 .huddle-req-items {
   display: grid;
   grid-template-columns: repeat(4, minmax(150px, 1fr));
@@ -3292,6 +3369,108 @@ body.sop-drawer-open {
   color: var(--plum);
   font-size: 12px;
   font-weight: 800;
+}
+
+.huddle-notebook-section {
+  border-left-color: var(--plum);
+}
+
+.huddle-notebook-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+
+.command-mini {
+  min-height: 32px;
+  padding: 7px 10px;
+  border: 1px solid rgba(102, 44, 57, 0.18);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--burgundy);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.command-mini:hover {
+  background: rgba(255, 197, 211, 0.22);
+}
+
+.huddle-main-notebook-label {
+  display: grid;
+  gap: 7px;
+  color: var(--plum);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.huddle-main-notebook {
+  min-height: 260px !important;
+  resize: vertical !important;
+  overflow: auto !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+}
+
+.huddle-notebook-folders {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.huddle-notebook-folders details {
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid rgba(102, 44, 57, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.huddle-notebook-folders summary {
+  cursor: pointer;
+  color: var(--burgundy);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.huddle-notebook-folders textarea {
+  width: 100%;
+  min-height: 84px;
+  margin-top: 8px;
+  resize: vertical;
+}
+
+.sop-library-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.sop-library-grid a {
+  display: block;
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid rgba(102, 44, 57, 0.16);
+  border-left: 4px solid var(--burgundy);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.76);
+  color: var(--plum);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.sop-library-grid a:hover {
+  background: rgba(255, 197, 211, 0.2);
+  color: var(--burgundy);
 }
 
 .huddle-top-key {
@@ -4020,6 +4199,22 @@ body.sop-drawer-open {
 
   .huddle-req-panel,
   .huddle-req-items {
+    grid-template-columns: 1fr;
+  }
+
+  .huddle-tracker-buttons,
+  .huddle-notebook-toolbar {
+    justify-content: stretch;
+  }
+
+  .huddle-notebook-toolbar .command-mini,
+  .huddle-tracker-buttons .command-add-row {
+    width: 100%;
+  }
+
+  .huddle-status-grid,
+  .huddle-notebook-folders,
+  .sop-library-grid {
     grid-template-columns: 1fr;
   }
 

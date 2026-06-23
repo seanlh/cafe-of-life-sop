@@ -927,6 +927,73 @@
       ]
     }
   };
+  const HUDDLE_PROCESS_LINKS = {
+    newpt: [
+      ['NP call/intake', '03-new-patient-call.html'],
+      ['Day 1 process', '04-day-1.html'],
+      ['Payments', '09-checkout.html'],
+      ['Forms/imports', '11-systems-forms.html']
+    ],
+    adj: [
+      ['Adjustment', '07-adjustment.html'],
+      ['Checkout', '09-checkout.html'],
+      ['Colors/alerts', '12-rules-colors.html']
+    ],
+    reexam: [
+      ['Re-exam', '07-adjustment.html#re-exam'],
+      ['Checkout', '09-checkout.html'],
+      ['Systems/forms', '11-systems-forms.html']
+    ],
+    rof: [
+      ['ROF / Day 2', '05-day-2-rof.html'],
+      ['Payments', '09-checkout.html'],
+      ['Care plan setup', '06-day-3.html'],
+      ['ROF note', '05-day-2-rof.html#rof-note']
+    ],
+    maint: [
+      ['Day 3 / care plan', '06-day-3.html'],
+      ['Adjustment', '07-adjustment.html'],
+      ['Checkout', '09-checkout.html']
+    ],
+    exercise: [
+      ['Adjustment / consults', '07-adjustment.html'],
+      ['Checkout', '09-checkout.html'],
+      ['Colors/alerts', '12-rules-colors.html']
+    ],
+    day3: [
+      ['Day 3', '06-day-3.html'],
+      ['Care plan setup', '06-day-3.html'],
+      ['Checkout', '09-checkout.html'],
+      ['Systems/forms', '11-systems-forms.html']
+    ],
+    swdisc: [
+      ['SoftWave', '08-softwave.html'],
+      ['Checkout', '09-checkout.html'],
+      ['Colors/alerts', '12-rules-colors.html']
+    ],
+    swcrm: [
+      ['SoftWave', '08-softwave.html'],
+      ['Checkout', '09-checkout.html'],
+      ['Colors/alerts', '12-rules-colors.html']
+    ],
+    swtx: [
+      ['SoftWave', '08-softwave.html'],
+      ['Checkout', '09-checkout.html'],
+      ['Colors/alerts', '12-rules-colors.html']
+    ],
+    xray: [
+      ['Systems/forms', '11-systems-forms.html'],
+      ['Colors/alerts', '12-rules-colors.html']
+    ],
+    software: [
+      ['Systems/forms', '11-systems-forms.html'],
+      ['Colors/alerts', '12-rules-colors.html']
+    ],
+    misc: [
+      ['Office info', '01-office-info.html'],
+      ['Closing', '10-closing.html']
+    ]
+  };
   const UNIVERSAL_PATIENT_CHECKS = ['Ledger / balance checked', 'Payment collected or marked no payment today', 'Alerts / red letters checked', 'Next appointment scheduled', 'Next appointment confirmed out loud', 'Notes/action items completed'];
 
   // Pay cycle: blank -> card -> cash -> PIF -> owes -> blank
@@ -1122,15 +1189,23 @@
 
   function huddleBaseRowCount() {
     const tbody = document.querySelector('tbody[data-huddle-rows]');
-    return tbody ? (+tbody.dataset.huddleRows || 15) : 15;
+    if (!tbody) return 0;
+    const raw = tbody.dataset.huddleRows;
+    return raw == null ? 0 : Math.max(0, +raw || 0);
   }
 
   function huddleRowKeys(rowIdx) {
     const keys = [
       'in_huddle_patient_' + rowIdx,
+      'in_huddle_provider_' + rowIdx,
       'in_huddle_balance_' + rowIdx,
       'in_huddle_notes_' + rowIdx,
       'in_huddle_post_' + rowIdx,
+      'bool_huddle_ledger_' + rowIdx,
+      'bool_huddle_card_' + rowIdx,
+      'bool_huddle_pif_' + rowIdx,
+      'bool_huddle_ppv_' + rowIdx,
+      'bool_huddle_unable_confirm_' + rowIdx,
       'huddle_nextappt_' + rowIdx,
       'huddle_appt_' + rowIdx,
       'huddle_time_' + rowIdx,
@@ -1184,10 +1259,15 @@
   }
 
   function refreshHuddleRow(rowIdx) {
-    ['patient', 'balance', 'notes', 'post'].forEach(field => {
+    ['patient', 'provider', 'balance', 'notes', 'post'].forEach(field => {
       const el = document.querySelector('[name="huddle_' + field + '_' + rowIdx + '"]');
       const key = 'in_huddle_' + field + '_' + rowIdx;
       if (el) el.value = state[key] || '';
+    });
+    ['ledger', 'card', 'pif', 'ppv', 'unable_confirm'].forEach(field => {
+      const el = document.querySelector('[name="huddle_' + field + '_' + rowIdx + '"]');
+      const key = 'bool_huddle_' + field + '_' + rowIdx;
+      if (el) el.checked = !!state[key];
     });
     const apptKey = state['huddle_appt_' + rowIdx] || null;
     const apptBtn = document.querySelector('.appt-type-btn[data-row="' + rowIdx + '"]');
@@ -1209,6 +1289,7 @@
     restoreHuddleRowState(b, aValues);
     refreshHuddleRow(a);
     refreshHuddleRow(b);
+    updateHuddleNotDone();
     scheduleSave();
   }
 
@@ -1226,7 +1307,7 @@
     for (let i = rowIdx; i < total - 1; i++) copyHuddleRowState(i + 1, i);
     clearHuddleRowState(total - 1);
     const tbody = document.querySelector('tbody[data-huddle-rows]');
-    if (tbody && total > 1 && total > huddleBaseRowCount()) {
+    if (tbody && total > huddleBaseRowCount()) {
       removeLastHuddleRow(tbody);
       state.huddle_row_count = total - 1;
     } else {
@@ -1320,7 +1401,10 @@
     const btn = document.querySelector('.appt-type-btn[data-row="' + rowIdx + '"]');
     if (btn) applyApptToButton(btn, apptKey);
     const paymentNote = document.querySelector('[name="huddle_balance_' + rowIdx + '"]');
-    if (paymentNote) paymentNote.value = state[paymentKey] || '';
+    if (paymentNote) {
+      paymentNote.value = state[paymentKey] || '';
+      autoGrow(paymentNote);
+    }
     renderRowRequirements(rowIdx, apptKey);
     updateHuddleNotDone();
   }
@@ -1338,6 +1422,7 @@
     scheduleSave();
     const btn = document.querySelector('.time-btn[data-row="' + rowIdx + '"]');
     if (btn) applyTimeToButton(btn, timeStr);
+    updateHuddleNotDone();
   }
 
   function setRowNextAppt(rowIdx, obj) {
@@ -1508,17 +1593,31 @@
       '<tr>' +
         '<td class="time-cell"><button class="time-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick time"></button></td>' +
         '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_patient_' + i + '" autocomplete="off" enterkeyhint="next" aria-label="Patient name row ' + (i + 1) + '"></textarea></td>' +
+        '<td class="input-cell"><input class="sop-text cell-input huddle-provider-input" name="huddle_provider_' + i + '" autocomplete="off" aria-label="Provider row ' + (i + 1) + '" placeholder="Dr"></td>' +
         '<td class="appt-cell"><button class="appt-type-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick appointment type"></button></td>' +
         '<td class="input-cell payment-cell"><div class="payment-cell-wrap">' +
           '<button class="pay-btn cell-btn" type="button" data-row="' + i + '" aria-label="Cycle payment status row ' + (i + 1) + '"></button>' +
           '<textarea class="sop-text cell-input autogrow" name="huddle_balance_' + i + '" autocomplete="off" aria-label="Balance or payment note row ' + (i + 1) + '"></textarea>' +
         '</div></td>' +
+        '<td class="huddle-status-cell"><div class="huddle-status-grid">' +
+          '<label><input class="sop-bool" name="huddle_ledger_' + i + '" type="checkbox"> Ledger</label>' +
+          '<label><input class="sop-bool" name="huddle_card_' + i + '" type="checkbox"> Card</label>' +
+          '<label><input class="sop-bool" name="huddle_pif_' + i + '" type="checkbox"> PIF</label>' +
+          '<label><input class="sop-bool" name="huddle_ppv_' + i + '" type="checkbox"> PPV</label>' +
+          '<label><input class="sop-bool" name="huddle_unable_confirm_' + i + '" type="checkbox"> Unable</label>' +
+        '</div></td>' +
         '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_notes_' + i + '" autocomplete="off" aria-label="Huddle note row ' + (i + 1) + '"></textarea></td>' +
         '<td class="nextappt-cell"><button class="nextappt-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick next appointment"></button></td>' +
         '<td class="input-cell post-update-cell"><textarea class="sop-text cell-input autogrow" name="huddle_post_' + i + '" autocomplete="off" aria-label="Post-shift update or question row ' + (i + 1) + '"></textarea></td>' +
+        '<td class="huddle-row-actions">' +
+          '<button class="huddle-send-note" type="button" data-row="' + i + '">Send to notes</button>' +
+          '<button class="huddle-row-up" type="button" data-row="' + i + '">Up</button>' +
+          '<button class="huddle-row-down" type="button" data-row="' + i + '">Down</button>' +
+          '<button class="huddle-row-delete" type="button" data-row="' + i + '">Delete</button>' +
+        '</td>' +
       '</tr>' +
       '<tr class="huddle-requirements-row" data-req-row="' + i + '" hidden>' +
-        '<td class="huddle-requirements-cell" colspan="7"></td>' +
+        '<td class="huddle-requirements-cell" colspan="10"></td>' +
       '</tr>'
     );
   }
@@ -1531,6 +1630,16 @@
 
   function rowRequirementKey(rowIdx, apptKey, itemId) {
     return 'huddle_req_' + rowIdx + '_' + apptKey + '_' + itemId;
+  }
+
+  function huddleProcessLinksHTML(apptKey) {
+    const links = HUDDLE_PROCESS_LINKS[apptKey] || [];
+    if (!links.length) return '';
+    return (
+      '<div class="huddle-req-links" aria-label="Related process links">' +
+      links.map(link => '<a class="huddle-req-link" href="' + link[1] + '">' + escapeHTML(link[0]) + '</a>').join('') +
+      '</div>'
+    );
   }
 
   function renderRowRequirements(rowIdx, apptKey) {
@@ -1563,6 +1672,7 @@
         '<div class="huddle-req-title">' +
           '<strong>' + escapeHTML(req.title) + '</strong>' +
           '<span>Patient-specific checklist</span>' +
+          huddleProcessLinksHTML(apptKey) +
         '</div>' +
         '<div class="huddle-req-items">' + groupHtml + '</div>' +
       '</div>';
@@ -1667,8 +1777,8 @@
     if (PAGE_FILE !== HUDDLE_PAGE) return;
     const tbody = document.querySelector('tbody[data-huddle-rows]');
     if (!tbody || tbody.children.length) return;
-    const baseCount = +tbody.dataset.huddleRows || 15;
-    const n = Math.max(baseCount, +state.huddle_row_count || 0);
+    const baseCount = huddleBaseRowCount();
+    const n = Math.max(baseCount, Math.max(0, +state.huddle_row_count || 0));
     let html = '';
     for (let i = 0; i < n; i++) html += huddleRowHTML(i);
     tbody.innerHTML = html;
@@ -1762,12 +1872,23 @@
   }
 
   function rowHasVisibleHuddleContent(rowIdx) {
-    return ['in_huddle_patient_', 'in_huddle_balance_', 'in_huddle_notes_', 'in_huddle_post_', 'huddle_appt_', 'huddle_time_', 'huddle_nextappt_', 'huddle_pay_'].some(prefix => {
-      const v = state[prefix + rowIdx];
+    return huddleRowKeys(rowIdx).some(key => {
+      const v = state[key];
       if (typeof v === 'string') return v.trim() !== '';
       if (v && typeof v === 'object') return Object.keys(v).some(key => v[key]);
       return !!v;
     });
+  }
+
+  function parseTimeToMinutes(time) {
+    const m = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec((time || '').trim());
+    if (!m) return 9999;
+    let hour = +m[1];
+    const minute = +m[2];
+    const meridiem = m[3].toUpperCase();
+    if (meridiem === 'PM' && hour !== 12) hour += 12;
+    if (meridiem === 'AM' && hour === 12) hour = 0;
+    return hour * 60 + minute;
   }
 
   function missingRequirementCount(rowIdx, apptKey) {
@@ -1782,6 +1903,7 @@
   function huddleRowSummary(rowIdx) {
     const name = (state['in_huddle_patient_' + rowIdx] || '').trim() || 'Row ' + (rowIdx + 1);
     const time = (state['huddle_time_' + rowIdx] || '').trim();
+    const provider = (state['in_huddle_provider_' + rowIdx] || '').trim();
     const apptKey = state['huddle_appt_' + rowIdx] || '';
     const appt = APPT_BY_KEY[apptKey]?.short || (apptKey ? apptKey : 'No appt type');
     const payState = PAY_STATES[+state['huddle_pay_' + rowIdx] || 0] || PAY_STATES[0];
@@ -1789,18 +1911,29 @@
     const huddleNote = (state['in_huddle_notes_' + rowIdx] || '').trim();
     const postNote = (state['in_huddle_post_' + rowIdx] || '').trim();
     const nextText = formatNextAppt(state['huddle_nextappt_' + rowIdx]);
+    const status = [
+      state['bool_huddle_ledger_' + rowIdx] ? 'ledger checked' : '',
+      state['bool_huddle_card_' + rowIdx] ? 'card on file' : '',
+      state['bool_huddle_pif_' + rowIdx] ? 'PIF' : '',
+      state['bool_huddle_ppv_' + rowIdx] ? 'PPV' : '',
+      state['bool_huddle_unable_confirm_' + rowIdx] ? 'unable to read/confirm' : ''
+    ].filter(Boolean).join(', ');
     const missing = [];
     if (!apptKey) missing.push('appt type');
     if (!(+state['huddle_pay_' + rowIdx] || 0)) missing.push('payment status');
+    if (!state['bool_huddle_ledger_' + rowIdx]) missing.push('ledger check');
     if (!nextText) missing.push('next appt');
     const missingChecks = missingRequirementCount(rowIdx, apptKey);
     if (missingChecks) missing.push(missingChecks + ' open check' + (missingChecks === 1 ? '' : 's'));
     return {
       order: APPT_TYPES.findIndex(t => t.key === apptKey),
+      timeSort: parseTimeToMinutes(time),
       label: (time ? time + ' · ' : '') + name + ' · ' + appt,
       details: [
+        provider ? 'Provider: ' + provider : '',
         paymentNote ? 'Pay: ' + paymentNote : '',
         payState.short ? 'Marked: ' + payState.short : '',
+        status ? 'Status: ' + status : '',
         huddleNote ? 'Huddle: ' + huddleNote : '',
         postNote ? 'Post: ' + postNote : '',
         nextText ? 'Next: ' + nextText : '',
@@ -1820,16 +1953,75 @@
     summaries.sort((a, b) => {
       const ao = a.order < 0 ? 999 : a.order;
       const bo = b.order < 0 ? 999 : b.order;
-      return ao - bo || a.label.localeCompare(b.label);
+      return a.timeSort - b.timeSort || ao - bo || a.label.localeCompare(b.label);
     });
     box.hidden = summaries.length === 0;
     box.innerHTML = summaries.length
-      ? '<strong>End-of-day summary by appointment type:</strong><ol>' + summaries.map(item => (
+      ? '<strong>End-of-day summary in appointment order:</strong><ol>' + summaries.map(item => (
           '<li><b>' + escapeHTML(item.label) + '</b>' +
           (item.details.length ? '<br><span>' + item.details.map(escapeHTML).join(' · ') + '</span>' : '') +
           '</li>'
         )).join('') + '</ol>'
       : '';
+  }
+
+  function huddleTimestamp() {
+    return new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  }
+
+  function appendToShiftNotebook(text, options = {}) {
+    const notebook = document.querySelector('[data-huddle-main-notes]');
+    const rawText = String(text || '');
+    const entryText = options.preserveText ? rawText : rawText.trim();
+    if (!notebook || (!entryText && !options.allowBlank)) return;
+    const current = notebook.value.trimEnd();
+    notebook.value = (current ? current + '\n' : '') + '[' + huddleTimestamp() + '] ' + entryText;
+    state['in_' + notebook.name] = notebook.value;
+    scheduleSave();
+    autoGrow(notebook);
+    notebook.scrollTop = notebook.scrollHeight;
+    notebook.focus({ preventScroll: true });
+  }
+
+  function sendHuddleRowToNotebook(rowIdx) {
+    const summary = huddleRowSummary(rowIdx);
+    const apptKey = state['huddle_appt_' + rowIdx] || '';
+    const appt = APPT_BY_KEY[apptKey]?.short || '';
+    const parts = [
+      summary.label,
+      (state['in_huddle_notes_' + rowIdx] || '').trim(),
+      (state['in_huddle_balance_' + rowIdx] || '').trim() ? 'Payment: ' + (state['in_huddle_balance_' + rowIdx] || '').trim() : '',
+      (state['in_huddle_post_' + rowIdx] || '').trim() ? 'End shift: ' + (state['in_huddle_post_' + rowIdx] || '').trim() : '',
+      state['bool_huddle_unable_confirm_' + rowIdx] ? 'Unable to read/confirm' : '',
+      appt ? 'Type: ' + appt : ''
+    ].filter(Boolean);
+    appendToShiftNotebook(parts.join(' | '));
+  }
+
+  function openEndOfDayReview() {
+    const endDay = document.getElementById('end-of-day');
+    if (!endDay) return;
+    endDay.open = true;
+    updateHuddleNotDone();
+    endDay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function initHuddleNotebookControls(root = document) {
+    root.querySelectorAll('[data-huddle-add-timestamp]').forEach(btn => {
+      if (btn.dataset.huddleNotebookBound) return;
+      btn.dataset.huddleNotebookBound = 'true';
+      btn.addEventListener('click', () => appendToShiftNotebook('', { allowBlank: true }));
+    });
+    root.querySelectorAll('[data-huddle-add-bullet]').forEach(btn => {
+      if (btn.dataset.huddleNotebookBound) return;
+      btn.dataset.huddleNotebookBound = 'true';
+      btn.addEventListener('click', () => appendToShiftNotebook('- ', { allowBlank: true, preserveText: true }));
+    });
+    root.querySelectorAll('[data-open-end-day]').forEach(btn => {
+      if (btn.dataset.huddleNotebookBound) return;
+      btn.dataset.huddleNotebookBound = 'true';
+      btn.addEventListener('click', openEndOfDayReview);
+    });
   }
 
   function initHuddle() {
@@ -1899,7 +2091,39 @@
         });
       });
 
-      root.querySelectorAll('[name^="huddle_patient_"], [name^="huddle_balance_"], [name^="huddle_notes_"], [name^="huddle_post_"]').forEach(el => {
+      root.querySelectorAll('.huddle-send-note').forEach(btn => {
+        if (btn.dataset.huddleBound) return;
+        btn.dataset.huddleBound = 'true';
+        btn.addEventListener('click', () => sendHuddleRowToNotebook(+btn.dataset.row));
+      });
+
+      root.querySelectorAll('.huddle-row-up').forEach(btn => {
+        if (btn.dataset.huddleBound) return;
+        btn.dataset.huddleBound = 'true';
+        btn.addEventListener('click', () => swapHuddleRows(+btn.dataset.row, +btn.dataset.row - 1));
+      });
+
+      root.querySelectorAll('.huddle-row-down').forEach(btn => {
+        if (btn.dataset.huddleBound) return;
+        btn.dataset.huddleBound = 'true';
+        btn.addEventListener('click', () => swapHuddleRows(+btn.dataset.row, +btn.dataset.row + 1));
+      });
+
+      root.querySelectorAll('.huddle-row-delete').forEach(btn => {
+        if (btn.dataset.huddleBound) return;
+        btn.dataset.huddleBound = 'true';
+        btn.addEventListener('click', () => deleteHuddleRow(+btn.dataset.row));
+      });
+
+      root.querySelectorAll('.huddle-status-grid input').forEach(input => {
+        if (input.dataset.huddleContentBound) return;
+        input.dataset.huddleContentBound = 'true';
+        input.addEventListener('change', () => {
+          setTimeout(updateHuddleNotDone, 0);
+        });
+      });
+
+      root.querySelectorAll('[name^="huddle_patient_"], [name^="huddle_provider_"], [name^="huddle_balance_"], [name^="huddle_notes_"], [name^="huddle_post_"]').forEach(el => {
         if (el.dataset.huddleContentBound) return;
         el.dataset.huddleContentBound = 'true';
         el.addEventListener('input', () => {
@@ -1910,6 +2134,7 @@
     }
 
     initHuddleControls(table);
+    initHuddleNotebookControls();
 
     const addRowBtn = document.querySelector('[data-huddle-add-row]');
     const tbody = table.querySelector('tbody[data-huddle-rows]');
