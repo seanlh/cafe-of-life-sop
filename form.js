@@ -839,9 +839,9 @@
     newpt: {
       title: 'New Patient / NP Day 1',
       groups: [
-        { title: 'Before Patient Arrives', items: ['Forms received / imported', 'Review Wave checked', 'CT patient created or updated', 'Insurance / ID ready if applicable', 'NP file/card ready'] },
-        { title: 'During Appointment', items: ['Meet and greet warmly', 'Collect Day 1 payment before services', 'Copy insurance card / photo ID if needed', 'Give Day 1 handout', 'Take patient photo', 'Office tour / video handled'] },
-        { title: 'Before Patient Leaves', items: ['ROF scheduled', 'ROF handout given', 'Receipt signed/scanned/shredded if applicable', 'CT notes updated', 'File placed in ROF holder', 'Next appointment confirmed out loud', 'Done'] }
+        { title: 'Before Patient Arrives', items: ['Review Wave Forms checked', 'NP intake imported/linked to CT', 'CT patient file created/updated', 'Insurance card + photo ID ready if applicable', 'NP intake card/file ready'] },
+        { title: 'During Appointment', items: ['Meet & Greet NP', 'Copy insurance card & photo ID', 'Take Day 1 payment before services', 'Give Day 1 handout: Finding the Cause of My Condition', 'Ask Day 1 handout Qs only if trained', 'Take photo of patient', 'Give patient gift bag', 'Office Tour Script used', 'Play Video 1: chiropractic approach video'] },
+        { title: 'Before Patient Leaves', items: ['Complete file in CT: referred from?', 'Confirm NP appointment in CT', 'Schedule ROF / Day 2', 'Give ROF handout: Your Next Visit - The Doctor’s Report', 'Receipt signed/scanned/shredded if applicable', 'Put file in ROF holder', 'Next appointment confirmed out loud', 'Done'] }
       ]
     },
     adj: {
@@ -863,9 +863,9 @@
     rof: {
       title: 'ROF / Day 2',
       groups: [
-        { title: 'Before Patient Arrives', items: ['ROF confirmed on schedule', 'Care plan prepared', 'Insurance / coverage reviewed if applicable', 'Room/video ready'] },
-        { title: 'During Appointment', items: ['Collect $55 ROF fee', 'Give Day 2 handout', 'Patient reads handout', 'Start video / prepare room', 'Notify doctor patient is ready'] },
-        { title: 'Before Patient Leaves', items: ['Care plan signed', 'Payment option selected', 'First payment collected', 'ROF note entered', 'Future adjustments scheduled', 'Re-exam scheduled', 'Exercise consult scheduled', 'Day 3 scheduled', 'Schedule copy given', 'Date/time confirmed out loud', 'Done'] }
+        { title: 'Before Patient Arrives', items: ['ROF confirmed on schedule', 'Care plan prepared', 'Insurance / coverage reviewed if applicable', 'Day 2 handout ready: Your Health & Life How to Make the Right Choice', 'Day 3 Literature & Questions ready', 'Day 1 & 3 Lit & Questions ready if spouse'] },
+        { title: 'During Appointment', items: ['Take ROF payment $55', 'Give Day 2 handout: Your Health & Life How to Make the Right Choice', 'Patient reads handout', 'Use Day 2 welcome/spouse script', 'Do not ask handout questions until properly trained', 'Take patient back and say normal vs abnormal X-ray video script', 'Play normal vs abnormal X-rays video', 'Notify doctor patient is ready'] },
+        { title: 'Before Patient Leaves', items: ['Care plan signed, even if undecided', 'Payment option selected: PPV / PIF / monthly / undecided', 'Take 1st Care Plan Pmt / give receipt', 'Schedule patient appt 1-4 weeks', 'Set up re-exam and exercise consult appt', 'Patient sign care plan', 'Make schedule copy for patient', 'Review missed appt / text policy', 'Give 2 health passes, 7 day expiration', 'ROF note entered: Offered + Commitment', 'Set up Alert Packages', 'Change payment type', 'Date/time confirmed out loud', 'Done'] }
       ]
     },
     maint: {
@@ -887,25 +887,25 @@
     day3: {
       title: 'Day 3',
       groups: [
-        { title: 'Before Patient Arrives', items: ['Care plan/payment terms reviewed', 'Auto-debit/EZ Pay ready', 'CT file reviewed', 'Schedule needs reviewed'] },
-        { title: 'During Appointment', items: ['Auto-debit setup', 'Authorization signed', 'PIN assigned', 'App shown/sent', 'Office flow reviewed', 'Cancellation policy reviewed'] },
-        { title: 'Before Patient Leaves', items: ['Schedule built 1-6 months', 'Schedule copy printed/given', 'CT payment type updated', 'Alerts/packages updated if needed', 'Next appointment confirmed out loud', 'Done'] }
+        { title: 'Before Patient Arrives', items: ['Care plan/payment terms reviewed', 'EZ-Pay Signature-On-File Authorization ready', 'Payment Type Checklist ready if needed', 'Insurance checklist ready if applicable', 'PIP checklist ready if applicable', 'Schedule needs reviewed'] },
+        { title: 'During Appointment', items: ['Schedule Auto-Debit', 'Assign PIN / show subjective', 'Show Patient Office Flow', 'Review 24 hr & 2 hr text / 2 hr appt policy $25', 'Text patient Scheduling App'] },
+        { title: 'Before Patient Leaves', items: ['Schedule Patient Appt 1-6 months', 'Make Schedule Copy for Patient', 'Complete Payment Type Checklist', 'Insurance checklist completed if needed', 'PIP checklist completed if needed', 'CT payment type updated', 'Next appointment confirmed out loud', 'Done'] }
       ]
     },
     swdisc: {
       title: 'SoftWave Discovery',
       groups: [
-        { title: 'Before Patient Arrives', items: ['Appointment confirmed by call, not text only', 'Deposit verified', 'Forms completed', 'Treatment area confirmed', 'Cancellation policy confirmed'] },
+        { title: 'Before Patient Arrives', items: ['Appointment confirmed by call, not text only', '$25 deposit verified', 'SoftWave intake/consent ready if needed', 'Treatment area confirmed', 'Cancellation policy confirmed', 'SoftWave aftercare handout ready'] },
         { title: 'During Appointment', items: ['Payment collected if needed', 'Discovery completed', 'Approx. 500 pulses if applicable', 'Recommendation discussed'] },
-        { title: 'Before Patient Leaves', items: ['Next SoftWave scheduled', 'Aftercare reviewed', 'No ice / Advil / ibuprofen reminder', 'Avoid intense exercise 2-3 days', 'Date/time confirmed out loud', 'Done'] }
+        { title: 'Before Patient Leaves', items: ['Give SoftWave aftercare: What Just Happened in Your Body', 'Review stem cell boost / healing response basics', 'No ice / Advil / ibuprofen reminder', 'Avoid intense exercise 2-3 days', 'Next SoftWave scheduled', 'Date/time confirmed out loud', 'Done'] }
       ]
     },
     softwave: {
       title: 'SoftWave Follow-Up',
       groups: [
-        { title: 'Before Patient Arrives', items: ['Session/package checked', 'Payment status checked', 'Treatment area confirmed', 'Cancellation policy checked'] },
+        { title: 'Before Patient Arrives', items: ['Session/package checked', 'Payment status checked', 'Treatment area confirmed', 'Cancellation policy checked', 'SoftWave aftercare handout ready if needed'] },
         { title: 'During Appointment', items: ['Payment collected if due', 'Treatment completed', '600-800 pulses if applicable'] },
-        { title: 'Before Patient Leaves', items: ['Next SoftWave scheduled', 'Aftercare reviewed', 'Date/time confirmed out loud', 'Done'] }
+        { title: 'Before Patient Leaves', items: ['Give/review SoftWave aftercare if needed', 'No ice / Advil / ibuprofen reminder', 'Avoid intense exercise 2-3 days', 'Next SoftWave scheduled', 'Date/time confirmed out loud', 'Done'] }
       ]
     }
   };
@@ -1049,6 +1049,7 @@
       'in_huddle_patient_' + rowIdx,
       'in_huddle_balance_' + rowIdx,
       'in_huddle_notes_' + rowIdx,
+      'huddle_nextappt_' + rowIdx,
       'bool_huddle_status_' + rowIdx,
       'huddle_appt_' + rowIdx,
       'huddle_time_' + rowIdx
@@ -1059,9 +1060,6 @@
           keys.push(rowRequirementKey(rowIdx, apptKey, groupIdx + '_' + itemIdx));
         });
       });
-    });
-    UNIVERSAL_PATIENT_CHECKS.forEach((_, itemIdx) => {
-      keys.push(rowRequirementKey(rowIdx, 'universal', itemIdx));
     });
     return keys;
   }
@@ -1114,6 +1112,8 @@
     if (apptBtn) applyApptToButton(apptBtn, apptKey);
     const timeBtn = document.querySelector('.time-btn[data-row="' + rowIdx + '"]');
     if (timeBtn) applyTimeToButton(timeBtn, state['huddle_time_' + rowIdx] || '');
+    const nextBtn = document.querySelector('.nextappt-btn[data-row="' + rowIdx + '"]');
+    if (nextBtn) applyNextApptToButton(nextBtn, state['huddle_nextappt_' + rowIdx] || null);
     const status = document.querySelector('[name="huddle_status_' + rowIdx + '"]');
     if (status) status.checked = !!state['bool_huddle_status_' + rowIdx];
     renderRowRequirements(rowIdx, apptKey);
@@ -1255,6 +1255,7 @@
     scheduleSave();
     const btn = document.querySelector('.nextappt-btn[data-row="' + rowIdx + '"]');
     if (btn) applyNextApptToButton(btn, obj);
+    updateHuddleNotDone();
   }
 
   // ---- Time picker modal ----
@@ -1419,13 +1420,14 @@
         '<td class="appt-cell"><button class="appt-type-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick appointment type"></button></td>' +
         '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_balance_' + i + '" autocomplete="off" aria-label="Balance or payment note row ' + (i + 1) + '"></textarea></td>' +
         '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_notes_' + i + '" autocomplete="off" aria-label="Huddle note row ' + (i + 1) + '"></textarea></td>' +
+        '<td class="nextappt-cell"><button class="nextappt-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick next appointment"></button></td>' +
         '<td class="huddle-status-cell"><label class="huddle-status-done"><input class="sop-bool huddle-done-check" name="huddle_status_' + i + '" type="checkbox" data-row="' + i + '"> Done</label></td>' +
         '<td class="huddle-row-actions">' +
           '<button type="button" data-huddle-row-delete data-row="' + i + '" aria-label="Remove row">Remove</button>' +
         '</td>' +
       '</tr>' +
       '<tr class="huddle-requirements-row" data-req-row="' + i + '" hidden>' +
-        '<td class="huddle-requirements-cell" colspan="7"></td>' +
+        '<td class="huddle-requirements-cell" colspan="8"></td>' +
       '</tr>'
     );
   }
@@ -1459,24 +1461,13 @@
       return '<div class="huddle-req-group"><h4>' + escapeHTML(group.title) + '</h4>' + items + '</div>';
     }).join('');
 
-    const universalHtml = UNIVERSAL_PATIENT_CHECKS.map((item, itemIdx) => {
-      const key = rowRequirementKey(rowIdx, 'universal', itemIdx);
-      const checked = state[key] ? ' checked' : '';
-      return (
-        '<label class="huddle-req-item huddle-req-universal">' +
-          '<input class="huddle-req-check" type="checkbox" data-key="' + key + '"' + checked + '>' +
-          '<span>' + escapeHTML(item) + '</span>' +
-        '</label>'
-      );
-    }).join('');
-
     cell.innerHTML =
       '<div class="huddle-req-panel">' +
         '<div class="huddle-req-title">' +
           '<strong>' + escapeHTML(req.title) + '</strong>' +
           '<span>Patient-specific checklist</span>' +
         '</div>' +
-        '<div class="huddle-req-items">' + groupHtml + '<div class="huddle-req-group universal"><h4>Universal Checks</h4>' + universalHtml + '</div></div>' +
+        '<div class="huddle-req-items">' + groupHtml + '</div>' +
       '</div>';
     row.hidden = false;
 
@@ -1670,9 +1661,11 @@
   }
 
   function rowHasVisibleHuddleContent(rowIdx) {
-    return ['in_huddle_patient_', 'in_huddle_balance_', 'in_huddle_notes_', 'huddle_appt_', 'huddle_time_'].some(prefix => {
+    return ['in_huddle_patient_', 'in_huddle_balance_', 'in_huddle_notes_', 'huddle_appt_', 'huddle_time_', 'huddle_nextappt_'].some(prefix => {
       const v = state[prefix + rowIdx];
-      return typeof v === 'string' ? v.trim() !== '' : !!v;
+      if (typeof v === 'string') return v.trim() !== '';
+      if (v && typeof v === 'object') return Object.keys(v).some(key => v[key]);
+      return !!v;
     });
   }
 
@@ -1703,6 +1696,7 @@
     initHuddleLeaveGuard();
     buildPicker();
     buildTimePicker();
+    buildNextApptPicker();
 
     function initHuddleControls(root) {
       root.querySelectorAll('.appt-type-btn').forEach(btn => {
@@ -1731,6 +1725,19 @@
         timePickerEls.open(row);
       });
     });
+
+      root.querySelectorAll('.nextappt-btn').forEach(btn => {
+        if (btn.dataset.huddleBound) return;
+        btn.dataset.huddleBound = 'true';
+        const row = +btn.dataset.row;
+        const saved = state['huddle_nextappt_' + row] || null;
+        applyNextApptToButton(btn, saved);
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          nextApptPickerEls.open(row);
+        });
+      });
 
       root.querySelectorAll('.huddle-done-check').forEach(btn => {
         if (btn.dataset.huddleBound) return;
