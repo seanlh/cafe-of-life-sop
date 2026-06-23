@@ -754,7 +754,7 @@ h3.sub-heading.with-bar::after {
 
 .huddle-table {
   width: 100%;
-  min-width: 1180px; /* let it scroll on iPhone portrait instead of squishing */
+  min-width: 1240px; /* let it scroll on iPhone portrait instead of squishing */
   border-collapse: collapse;
   font-size: 11px;
   margin-top: 0;
@@ -785,7 +785,7 @@ h3.sub-heading.with-bar::after {
 
 .huddle-header {
   display: grid;
-  grid-template-columns: minmax(120px, 0.8fr) minmax(110px, 0.7fr) minmax(150px, 0.8fr) minmax(240px, 1.7fr);
+  grid-template-columns: minmax(120px, 0.7fr) minmax(90px, 0.5fr) minmax(140px, 0.7fr) minmax(190px, 0.9fr) minmax(240px, 1.5fr);
   gap: 12px;
   margin: 12px 0;
   font-family: var(--sans);
@@ -863,6 +863,28 @@ h3.sub-heading.with-bar::after {
 .huddle-note-board label {
   display: grid;
   gap: 5px;
+}
+
+.huddle-loop-board {
+  display: grid;
+  gap: 12px;
+}
+
+.huddle-loop-group {
+  padding: 12px;
+  border: 1px solid rgba(102, 44, 57, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.huddle-loop-group h3 {
+  margin: 0 0 10px;
+  color: var(--burgundy);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .script-legend-grid {
@@ -2966,6 +2988,25 @@ body.sop-drawer-open {
 .pay-btn.state-3 { background: rgba(181, 181, 181, 0.22); }   /* PIF */
 .pay-btn.state-4 { background: rgba(217, 83, 79, 0.18); }     /* owes */
 
+.payment-cell-wrap {
+  display: grid;
+  grid-template-rows: 30px minmax(40px, 1fr);
+  min-height: 70px;
+}
+
+.payment-cell-wrap .pay-btn {
+  min-height: 30px;
+  height: 30px;
+  border: 0;
+  border-bottom: 1px solid rgba(102, 44, 57, 0.16);
+  border-radius: 0;
+}
+
+.payment-cell-wrap textarea.cell-input {
+  min-height: 40px;
+  height: auto;
+}
+
 .huddle-table input.charge-input {
   min-width: 82px;
   text-align: center;
@@ -3056,6 +3097,24 @@ body.sop-drawer-open {
   line-height: 1.45;
 }
 
+.huddle-not-done ol {
+  margin: 8px 0 0;
+  padding-left: 22px;
+}
+
+.huddle-not-done li + li {
+  margin-top: 8px;
+}
+
+.huddle-not-done span {
+  display: block;
+  margin-top: 3px;
+  color: rgba(61, 42, 46, 0.78);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
 .huddle-start-panel[hidden],
 .huddle-not-done[hidden] {
   display: none !important;
@@ -3126,6 +3185,7 @@ body.sop-drawer-open {
 
 .huddle-req-group.universal {
   background: rgba(255, 197, 211, 0.16);
+  border-left: 3px solid var(--burgundy);
 }
 
 .huddle-req-item {

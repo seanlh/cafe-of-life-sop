@@ -824,12 +824,14 @@
   // Appt types pulled from §12 Rules & Colors + §07 fee schedule.
   // `charge` is the default that auto-fills; null = no fixed default.
   const APPT_TYPES = [
-    { key: 'newpt',     name: 'New Patient / NP Day 1', short: 'NP D1', chip: 'chip-green',     charge: 'Deposit' },
+    { key: 'newpt',     name: 'New Patient / NP Day 1', short: 'NP D1', chip: 'chip-green',     charge: 115, deposit: 25 },
     { key: 'adj',       name: 'Adjustment',          short: 'Adj',     chip: 'chip-blue',      charge: 65   },
     { key: 'reexam',    name: 'Re-Exam',             short: 'Re-Exam', chip: 'chip-yellow',    charge: 45   },
     { key: 'rof',       name: 'ROF / Day 2',         short: 'ROF/D2',  chip: 'chip-red',       charge: 55   },
     { key: 'day3',      name: 'Day 3',               short: 'Day 3',   chip: 'chip-burgundy',  charge: null },
-    { key: 'swdisc',    name: 'SoftWave Discovery',  short: 'SW Disc', chip: 'chip-purple',    charge: 25   },
+    { key: 'swcrm',     name: 'SoftWave CRM/Ad Special', short: 'SW CRM', chip: 'chip-purple', charge: 49, deposit: 25 },
+    { key: 'swdisc',    name: 'SoftWave Discovery',  short: 'SW Disc', chip: 'chip-purple',    charge: null, deposit: 25 },
+    { key: 'swtx',      name: 'SoftWave Tx',         short: 'SW Tx',   chip: 'chip-purple',    charge: null, deposit: 25 },
     { key: 'softwave',  name: 'SoftWave Follow-Up',  short: 'SW F/U',  chip: 'chip-purple',    charge: null },
     { key: 'exercise',  name: 'Exercise Consult',    short: 'Exerc.',  chip: 'chip-grey',      charge: 95   },
     { key: 'maint',     name: 'Wellness / Maintenance', short: 'Well.', chip: 'chip-pink',     charge: null }
@@ -839,8 +841,8 @@
     newpt: {
       title: 'New Patient / NP Day 1',
       groups: [
-        { title: 'Day 1 - Front Office', items: ['Meet & Greet NP', 'Copy Insurance Card & Photo ID', 'Day 1 Handout & Q’s', 'Take Payment', 'Take Photo of Patient', 'Complete File in CT (referred from?)', 'Pt gift bag', 'Office Tour'] },
-        { title: 'Day 1 - Back Office', items: ['Pt Sign the 3 Sheets', 'Confirm NP Appointment', 'Verify Insurance', 'Dr. First Call Sheet', 'Schedule ROF & ROF Handout', 'Put File in ROF Holder'] },
+        { title: 'Day 1 - Front Office', items: ['Meet & Greet NP', 'Copy Insurance Card & Photo ID', 'NP intake linked/imported in CT', 'Day 1 Handout & Q’s', 'Collect remaining payment if deposit paid', 'Take Photo of Patient', 'Complete File in CT (referred from?)', 'Pt gift bag', 'Office Tour'] },
+        { title: 'Day 1 - Back Office', items: ['Pt Sign the 3 Sheets / consent', 'Confirm NP Appointment', 'Verify Insurance', 'Dr. First Call Sheet', 'Schedule ROF & ROF Handout', 'Put File in ROF Holder'] },
         { title: 'Before Patient Leaves', items: ['Next appointment confirmed out loud'] }
       ]
     },
@@ -895,9 +897,25 @@
     swdisc: {
       title: 'SoftWave Discovery',
       groups: [
-        { title: 'Before Patient Arrives', items: ['Appointment confirmed by call, not text only', '$25 deposit verified', 'SoftWave intake/consent ready if needed', 'Treatment area confirmed', 'Cancellation policy confirmed', 'SoftWave aftercare handout ready'] },
-        { title: 'During Appointment', items: ['Payment collected if needed', 'Discovery completed', 'Approx. 500 pulses if applicable', 'Recommendation discussed'] },
+        { title: 'Before Patient Arrives', items: ['Appointment confirmed by call, not text only', '$25 deposit verified if collected', 'SoftWave intake/consent ready if needed', 'Treatment area confirmed', 'Cancellation policy confirmed', 'SoftWave aftercare handout ready'] },
+        { title: 'During Appointment', items: ['Payment collected if due or marked no payment today', 'Discovery completed', 'Approx. 500 pulses if applicable', 'Recommendation discussed'] },
         { title: 'Before Patient Leaves', items: ['Give SoftWave aftercare: What Just Happened in Your Body', 'Review stem cell boost / healing response basics', 'No ice / Advil / ibuprofen reminder', 'Avoid intense exercise 2-3 days', 'Next SoftWave scheduled', 'Next appointment confirmed out loud'] }
+      ]
+    },
+    swcrm: {
+      title: 'SoftWave CRM/Ad Special',
+      groups: [
+        { title: 'Before Patient Arrives', items: ['Appointment confirmed by call, not text only', 'CRM/ad $49 special noted', '$25 deposit verified if collected', 'SoftWave intake/consent ready if needed', 'Treatment area confirmed', 'Cancellation policy confirmed', 'SoftWave aftercare handout ready'] },
+        { title: 'During Appointment', items: ['Collect $24 remainder if $25 deposit was paid', 'CRM/ad special completed', 'Approx. 500 pulses if applicable', 'Recommendation discussed'] },
+        { title: 'Before Patient Leaves', items: ['Give SoftWave aftercare: What Just Happened in Your Body', 'Review stem cell boost / healing response basics', 'No ice / Advil / ibuprofen reminder', 'Avoid intense exercise 2-3 days', 'Next SoftWave scheduled', 'Next appointment confirmed out loud'] }
+      ]
+    },
+    swtx: {
+      title: 'SoftWave Tx',
+      groups: [
+        { title: 'Before Patient Arrives', items: ['Session/package checked', 'Payment status checked', 'Treatment area confirmed', 'Cancellation policy checked', 'SoftWave aftercare handout ready if needed'] },
+        { title: 'During Appointment', items: ['Payment collected if due', 'SoftWave Tx completed', 'Pulses documented if needed'] },
+        { title: 'Before Patient Leaves', items: ['Give/review SoftWave aftercare if needed', 'No ice / Advil / ibuprofen reminder', 'Avoid intense exercise 2-3 days', 'Next SoftWave scheduled', 'Next appointment confirmed out loud'] }
       ]
     },
     softwave: {
@@ -909,7 +927,7 @@
       ]
     }
   };
-  const UNIVERSAL_PATIENT_CHECKS = ['Payment handled', 'Ledger / balance checked', 'Alerts checked', 'Next appointment scheduled', 'Next appointment confirmed out loud', 'Notes/action items completed'];
+  const UNIVERSAL_PATIENT_CHECKS = ['Ledger / balance checked', 'Payment collected or marked no payment today', 'Alerts / red letters checked', 'Next appointment scheduled', 'Next appointment confirmed out loud', 'Notes/action items completed'];
 
   // Pay cycle: blank -> card -> cash -> PIF -> owes -> blank
   const PAY_STATES = [
@@ -919,6 +937,42 @@
     { key: 3, icon: '0',  short: 'PIF',  full: 'Paid in full / no charge today' },
     { key: 4, icon: '!',  short: 'Owes', full: 'Owes balance' }
   ];
+
+  function normalizeRequirementLabel(label) {
+    return String(label || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+
+  function requirementGroupsForAppt(apptKey) {
+    const req = APPT_REQUIREMENTS[apptKey];
+    if (!req) return [];
+    const seen = new Set();
+    const universalItems = UNIVERSAL_PATIENT_CHECKS.map((label, idx) => {
+      seen.add(normalizeRequirementLabel(label));
+      return { id: 'u_' + idx, label };
+    });
+    const groups = [{
+      id: 'universal',
+      title: 'Every Patient',
+      universal: true,
+      items: universalItems
+    }];
+    req.groups.forEach((group, groupIdx) => {
+      const items = group.items
+        .filter(label => {
+          const norm = normalizeRequirementLabel(label);
+          if (!norm || seen.has(norm)) return false;
+          seen.add(norm);
+          return true;
+        })
+        .map((label, itemIdx) => ({ id: 'g_' + groupIdx + '_' + itemIdx, label }));
+      if (items.length) groups.push({
+        id: 'g_' + groupIdx,
+        title: group.title,
+        items
+      });
+    });
+    return groups;
+  }
 
   function buildTimeSlots() {
     const slots = [];
@@ -983,6 +1037,33 @@
     if (charge == null) return '';
     if (typeof charge === 'number') return '$' + charge;
     return String(charge);
+  }
+
+  function formatMoney(n) {
+    if (n == null || Number.isNaN(n)) return '';
+    return '$' + (Number.isInteger(n) ? n : n.toFixed(2));
+  }
+
+  function defaultPaymentNote(type) {
+    if (!type) return '';
+    if (type.key === 'newpt') {
+      const deposit = type.deposit || 25;
+      const total = type.charge || 75;
+      return 'NP: ' + formatMoney(total) + ' first visit - ' + formatMoney(deposit) + ' deposit = ' + formatMoney(total - deposit) + ' remainder due';
+    }
+    if (type.key === 'swcrm') {
+      const deposit = type.deposit || 25;
+      const special = type.charge || 49;
+      return 'SW CRM/ad special: ' + formatMoney(special) + ' - ' + formatMoney(deposit) + ' deposit = ' + formatMoney(special - deposit) + ' remainder due';
+    }
+    if (type.key === 'swdisc' || type.key === 'swtx' || type.key === 'softwave') {
+      const deposit = type.deposit || 25;
+      return type.short + ': price varies - subtract ' + formatMoney(deposit) + ' deposit if paid; type final amount here';
+    }
+    if (typeof type.charge === 'number') {
+      return 'Collect ' + formatMoney(type.charge);
+    }
+    return '';
   }
 
   function applyChargeDefault(rowIdx, apptKey) {
@@ -1052,12 +1133,13 @@
       'in_huddle_post_' + rowIdx,
       'huddle_nextappt_' + rowIdx,
       'huddle_appt_' + rowIdx,
-      'huddle_time_' + rowIdx
+      'huddle_time_' + rowIdx,
+      'huddle_pay_' + rowIdx
     ];
     Object.keys(APPT_REQUIREMENTS).forEach(apptKey => {
-      APPT_REQUIREMENTS[apptKey].groups.forEach((group, groupIdx) => {
-        group.items.forEach((_, itemIdx) => {
-          keys.push(rowRequirementKey(rowIdx, apptKey, groupIdx + '_' + itemIdx));
+      requirementGroupsForAppt(apptKey).forEach(group => {
+        group.items.forEach(item => {
+          keys.push(rowRequirementKey(rowIdx, apptKey, item.id));
         });
       });
     });
@@ -1112,6 +1194,8 @@
     if (apptBtn) applyApptToButton(apptBtn, apptKey);
     const timeBtn = document.querySelector('.time-btn[data-row="' + rowIdx + '"]');
     if (timeBtn) applyTimeToButton(timeBtn, state['huddle_time_' + rowIdx] || '');
+    const payBtn = document.querySelector('.pay-btn[data-row="' + rowIdx + '"]');
+    if (payBtn) applyPayState(payBtn, +state['huddle_pay_' + rowIdx] || 0);
     const nextBtn = document.querySelector('.nextappt-btn[data-row="' + rowIdx + '"]');
     if (nextBtn) applyNextApptToButton(nextBtn, state['huddle_nextappt_' + rowIdx] || null);
     renderRowRequirements(rowIdx, apptKey);
@@ -1227,9 +1311,16 @@
 
   function setRowAppt(rowIdx, apptKey) {
     state['huddle_appt_' + rowIdx] = apptKey || '';
+    const paymentKey = 'in_huddle_balance_' + rowIdx;
+    if (!state[paymentKey]) {
+      const note = defaultPaymentNote(APPT_BY_KEY[apptKey]);
+      if (note) state[paymentKey] = note;
+    }
     scheduleSave();
     const btn = document.querySelector('.appt-type-btn[data-row="' + rowIdx + '"]');
     if (btn) applyApptToButton(btn, apptKey);
+    const paymentNote = document.querySelector('[name="huddle_balance_' + rowIdx + '"]');
+    if (paymentNote) paymentNote.value = state[paymentKey] || '';
     renderRowRequirements(rowIdx, apptKey);
     updateHuddleNotDone();
   }
@@ -1239,6 +1330,7 @@
     scheduleSave();
     const btn = document.querySelector('.pay-btn[data-row="' + rowIdx + '"]');
     if (btn) applyPayState(btn, stateIdx);
+    updateHuddleNotDone();
   }
 
   function setRowTime(rowIdx, timeStr) {
@@ -1417,7 +1509,10 @@
         '<td class="time-cell"><button class="time-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick time"></button></td>' +
         '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_patient_' + i + '" autocomplete="off" enterkeyhint="next" aria-label="Patient name row ' + (i + 1) + '"></textarea></td>' +
         '<td class="appt-cell"><button class="appt-type-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick appointment type"></button></td>' +
-        '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_balance_' + i + '" autocomplete="off" aria-label="Balance or payment note row ' + (i + 1) + '"></textarea></td>' +
+        '<td class="input-cell payment-cell"><div class="payment-cell-wrap">' +
+          '<button class="pay-btn cell-btn" type="button" data-row="' + i + '" aria-label="Cycle payment status row ' + (i + 1) + '"></button>' +
+          '<textarea class="sop-text cell-input autogrow" name="huddle_balance_' + i + '" autocomplete="off" aria-label="Balance or payment note row ' + (i + 1) + '"></textarea>' +
+        '</div></td>' +
         '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_notes_' + i + '" autocomplete="off" aria-label="Huddle note row ' + (i + 1) + '"></textarea></td>' +
         '<td class="nextappt-cell"><button class="nextappt-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick next appointment"></button></td>' +
         '<td class="input-cell post-update-cell"><textarea class="sop-text cell-input autogrow" name="huddle_post_' + i + '" autocomplete="off" aria-label="Post-shift update or question row ' + (i + 1) + '"></textarea></td>' +
@@ -1449,18 +1544,18 @@
       return;
     }
 
-    const groupHtml = req.groups.map((group, groupIdx) => {
-      const items = group.items.map((item, itemIdx) => {
-        const key = rowRequirementKey(rowIdx, apptKey, groupIdx + '_' + itemIdx);
+    const groupHtml = requirementGroupsForAppt(apptKey).map(group => {
+      const items = group.items.map(item => {
+        const key = rowRequirementKey(rowIdx, apptKey, item.id);
         const checked = state[key] ? ' checked' : '';
         return (
           '<label class="huddle-req-item">' +
             '<input class="huddle-req-check" type="checkbox" data-key="' + key + '"' + checked + '>' +
-            '<span>' + escapeHTML(requirementItemLabel(rowIdx, item)) + '</span>' +
+            '<span>' + escapeHTML(requirementItemLabel(rowIdx, item.label)) + '</span>' +
           '</label>'
         );
       }).join('');
-      return '<div class="huddle-req-group"><h4>' + escapeHTML(group.title) + '</h4>' + items + '</div>';
+      return '<div class="huddle-req-group' + (group.universal ? ' universal' : '') + '"><h4>' + escapeHTML(group.title) + '</h4>' + items + '</div>';
     }).join('');
 
     cell.innerHTML =
@@ -1477,6 +1572,7 @@
       input.addEventListener('change', () => {
         state[input.dataset.key] = input.checked;
         scheduleSave();
+        updateHuddleNotDone();
       });
     });
   }
@@ -1487,7 +1583,9 @@
     { key: 'rof', name: 'ROF', chip: 'chip-red' },
     { key: 'day3', name: 'Day 3', chip: 'chip-burgundy' },
     { key: 'adjustment', name: 'Adjustment', chip: 'chip-blue' },
+    { key: 'swcrm', name: 'SoftWave CRM/Ad Special', chip: 'chip-purple' },
     { key: 'swdisc', name: 'SoftWave Discovery', chip: 'chip-purple' },
+    { key: 'swtx', name: 'SoftWave Tx', chip: 'chip-purple' },
     { key: 'swfollow', name: 'SoftWave Follow-Up', chip: 'chip-purple' },
     { key: 'reexam', name: 'Re-Exam', chip: 'chip-yellow' },
     { key: 'exercise', name: 'Exercise Consult', chip: 'chip-grey' },
@@ -1499,7 +1597,9 @@
     rof: ['$55 ROF payment handled', 'Spouse/significant other expectation checked', 'Care plan offered', 'Commitment noted: PPV/PIF/monthly/undecided', 'ROF note + Day 3/future visits set'],
     day3: ['EZ-Pay / signature-on-file handled', 'Auto debit/payment setup checked', 'PIN/app expectations handled', 'CT notes/alerts updated', 'Future schedule confirmed'],
     adjustment: ['Payment/ledger/balance checked', 'Alerts/red letters checked', 'Next adjustment scheduled', 'Doctor instruction completed'],
-    swdisc: ['Confirmed by call, not text', '$25 deposit/payment checked', 'Treatment area + cancellation policy confirmed', 'SoftWave handout/aftercare ready', 'Next SoftWave scheduled'],
+    swcrm: ['Confirmed by call, not text', '$49 CRM/ad special noted', '$25 deposit checked', '$24 remainder collected if deposit paid', 'Next SoftWave scheduled'],
+    swdisc: ['Confirmed by call, not text', '$25 deposit/payment checked if collected', 'Treatment area + cancellation policy confirmed', 'SoftWave handout/aftercare ready', 'Next SoftWave scheduled'],
+    swtx: ['Package/payment status checked', 'Treatment area/timer ready', 'SoftWave Tx completed', 'Aftercare covered', 'Next SoftWave scheduled'],
     swfollow: ['Package/payment status checked', 'Treatment area/timer ready', 'Aftercare covered', 'Next SoftWave scheduled'],
     reexam: ['Re-exam chart/paperwork ready', 'Payment/ledger checked', 'Doctor note/action captured', 'Next visit scheduled'],
     exercise: ['$95 exercise consult status checked', 'Forms/tools ready', 'Instructions documented', 'Next action scheduled'],
@@ -1662,7 +1762,7 @@
   }
 
   function rowHasVisibleHuddleContent(rowIdx) {
-    return ['in_huddle_patient_', 'in_huddle_balance_', 'in_huddle_notes_', 'in_huddle_post_', 'huddle_appt_', 'huddle_time_', 'huddle_nextappt_'].some(prefix => {
+    return ['in_huddle_patient_', 'in_huddle_balance_', 'in_huddle_notes_', 'in_huddle_post_', 'huddle_appt_', 'huddle_time_', 'huddle_nextappt_', 'huddle_pay_'].some(prefix => {
       const v = state[prefix + rowIdx];
       if (typeof v === 'string') return v.trim() !== '';
       if (v && typeof v === 'object') return Object.keys(v).some(key => v[key]);
@@ -1670,21 +1770,65 @@
     });
   }
 
+  function missingRequirementCount(rowIdx, apptKey) {
+    if (!apptKey || !APPT_REQUIREMENTS[apptKey]) return 0;
+    return requirementGroupsForAppt(apptKey).reduce((count, group) => {
+      return count + group.items.reduce((inner, item) => {
+        return inner + (state[rowRequirementKey(rowIdx, apptKey, item.id)] ? 0 : 1);
+      }, 0);
+    }, 0);
+  }
+
+  function huddleRowSummary(rowIdx) {
+    const name = (state['in_huddle_patient_' + rowIdx] || '').trim() || 'Row ' + (rowIdx + 1);
+    const time = (state['huddle_time_' + rowIdx] || '').trim();
+    const apptKey = state['huddle_appt_' + rowIdx] || '';
+    const appt = APPT_BY_KEY[apptKey]?.short || (apptKey ? apptKey : 'No appt type');
+    const payState = PAY_STATES[+state['huddle_pay_' + rowIdx] || 0] || PAY_STATES[0];
+    const paymentNote = (state['in_huddle_balance_' + rowIdx] || '').trim();
+    const huddleNote = (state['in_huddle_notes_' + rowIdx] || '').trim();
+    const postNote = (state['in_huddle_post_' + rowIdx] || '').trim();
+    const nextText = formatNextAppt(state['huddle_nextappt_' + rowIdx]);
+    const missing = [];
+    if (!apptKey) missing.push('appt type');
+    if (!(+state['huddle_pay_' + rowIdx] || 0)) missing.push('payment status');
+    if (!nextText) missing.push('next appt');
+    const missingChecks = missingRequirementCount(rowIdx, apptKey);
+    if (missingChecks) missing.push(missingChecks + ' open check' + (missingChecks === 1 ? '' : 's'));
+    return {
+      order: APPT_TYPES.findIndex(t => t.key === apptKey),
+      label: (time ? time + ' · ' : '') + name + ' · ' + appt,
+      details: [
+        paymentNote ? 'Pay: ' + paymentNote : '',
+        payState.short ? 'Marked: ' + payState.short : '',
+        huddleNote ? 'Huddle: ' + huddleNote : '',
+        postNote ? 'Post: ' + postNote : '',
+        nextText ? 'Next: ' + nextText : '',
+        missing.length ? 'Needs: ' + missing.join(', ') : ''
+      ].filter(Boolean)
+    };
+  }
+
   function updateHuddleNotDone() {
     const box = document.querySelector('[data-huddle-not-done]');
     if (!box) return;
-    const missing = [];
+    const summaries = [];
     for (let i = 0; i < huddleRowCount(); i++) {
       if (!rowHasVisibleHuddleContent(i)) continue;
-      const next = state['huddle_nextappt_' + i];
-      if (next && (next.date || next.time)) continue;
-      const name = (state['in_huddle_patient_' + i] || '').trim() || 'Row ' + (i + 1);
-      const time = (state['huddle_time_' + i] || '').trim();
-      missing.push((time ? time + ' · ' : '') + name);
+      summaries.push(huddleRowSummary(i));
     }
-    box.hidden = missing.length === 0;
-    box.innerHTML = missing.length
-      ? '<strong>Patients missing next appointment:</strong> ' + missing.map(escapeHTML).join(' · ')
+    summaries.sort((a, b) => {
+      const ao = a.order < 0 ? 999 : a.order;
+      const bo = b.order < 0 ? 999 : b.order;
+      return ao - bo || a.label.localeCompare(b.label);
+    });
+    box.hidden = summaries.length === 0;
+    box.innerHTML = summaries.length
+      ? '<strong>End-of-day summary by appointment type:</strong><ol>' + summaries.map(item => (
+          '<li><b>' + escapeHTML(item.label) + '</b>' +
+          (item.details.length ? '<br><span>' + item.details.map(escapeHTML).join(' · ') + '</span>' : '') +
+          '</li>'
+        )).join('') + '</ol>'
       : '';
   }
 
@@ -1738,6 +1882,20 @@
           e.preventDefault();
           e.stopPropagation();
           nextApptPickerEls.open(row);
+        });
+      });
+
+      root.querySelectorAll('.pay-btn').forEach(btn => {
+        if (btn.dataset.huddleBound) return;
+        btn.dataset.huddleBound = 'true';
+        const row = +btn.dataset.row;
+        const saved = +state['huddle_pay_' + row] || 0;
+        applyPayState(btn, saved);
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const current = +state['huddle_pay_' + row] || 0;
+          setRowPay(row, (current + 1) % PAY_STATES.length);
         });
       });
 
