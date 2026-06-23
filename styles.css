@@ -842,30 +842,110 @@ h3.sub-heading.with-bar::after {
   min-height: 150px;
 }
 
-.command-scroll {
-  margin-bottom: 16px;
+.command-huddle-grid,
+.command-handoff {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 8px 0 16px;
 }
 
-.command-table {
-  min-width: 980px;
+.command-handoff {
+  grid-template-columns: repeat(3, 1fr);
 }
 
-.command-table th {
-  text-align: center;
+.command-huddle-grid label,
+.command-handoff label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rose);
 }
 
-.command-table td {
-  height: 44px;
+.command-huddle-grid textarea,
+.command-handoff textarea {
+  min-height: 92px;
+  margin-top: 5px;
+  font-size: 19px;
+  resize: none;
+  overflow: hidden;
 }
 
-.command-table .cell-input {
-  font-size: 18px;
-  border-bottom: none;
-  padding: 3px 4px;
+.command-patient-stack {
+  display: grid;
+  gap: 12px;
+  margin: 8px 0 18px;
 }
 
-.command-table .check-cell {
-  text-align: center;
+.command-patient-card {
+  border: 1px solid rgba(102, 44, 57, 0.18);
+  border-left: 5px solid var(--pink);
+  border-radius: 6px;
+  background: var(--paper);
+  padding: 12px;
+  box-shadow: 0 8px 22px -18px rgba(51, 12, 21, 0.3);
+}
+
+.patient-card-head {
+  display: grid;
+  grid-template-columns: 78px minmax(140px, 1.2fr) minmax(130px, 0.9fr) minmax(140px, 0.9fr);
+  gap: 10px;
+  align-items: end;
+}
+
+.command-patient-card input.sop-text,
+.command-patient-card select.sop-select {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--plum);
+}
+
+select.sop-select {
+  width: 100%;
+  min-height: 38px;
+  padding: 7px 9px;
+  border: 1px solid rgba(102, 44, 57, 0.28);
+  border-radius: 6px;
+  background: var(--pink-paper);
+  color: var(--plum);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+}
+
+select.sop-select:focus {
+  border-color: var(--burgundy);
+  box-shadow: 0 0 0 2px rgba(255, 197, 211, 0.45);
+}
+
+.patient-flag-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(145px, 1fr));
+  gap: 8px 12px;
+  margin: 12px 0 10px;
+}
+
+.patient-flag-grid label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--burgundy);
+  line-height: 1.25;
+}
+
+.command-patient-notes {
+  min-height: 62px;
+  resize: none;
+  overflow: hidden;
+  font-size: 19px;
 }
 
 .loop-stack {
@@ -2422,6 +2502,9 @@ body.sop-drawer-open {
 
   .command-topbar,
   .command-grid,
+  .command-huddle-grid,
+  .command-handoff,
+  .patient-card-head,
   .quick-links {
     grid-template-columns: 1fr;
   }
@@ -2431,8 +2514,8 @@ body.sop-drawer-open {
     justify-self: stretch;
   }
 
-  .command-table {
-    min-width: 860px;
+  .patient-flag-grid {
+    grid-template-columns: 1fr;
   }
 
   .command-focus {

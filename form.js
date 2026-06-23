@@ -183,6 +183,18 @@
     });
   }
 
+  function initSelects() {
+    document.querySelectorAll('select.sop-select').forEach((el) => {
+      const key = 'sel_' + (el.name || el.id || 'select');
+      el.dataset.key = key;
+      if (state[key] != null) el.value = state[key];
+      el.addEventListener('change', () => {
+        state[key] = el.value;
+        scheduleSave();
+      });
+    });
+  }
+
   // ---------- TEXT INPUTS + TEXTAREAS ----------
   function initInputs() {
     document.querySelectorAll('input.sop-text, textarea.sop-text').forEach((el) => {
@@ -1372,6 +1384,7 @@
     initEditables();
     initCheckboxes();
     initStandaloneCheckboxes();
+    initSelects();
     initInputs();
     initPencil();
     initToolbar();
