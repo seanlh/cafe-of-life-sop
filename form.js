@@ -17,6 +17,8 @@
   // ---------- NOTES REGISTRY ----------
   const NOTES_PAGE = '14-notes.html';
   const NOTES_INDEX_KEY = 'cofl_sop_notes_index_v1';
+  const HUDDLE_PAGE = '13-huddle-sheet.html';
+  const HUDDLE_INDEX_KEY = 'cofl_sop_huddle_index_v1';
 
   function getNotesIndex() {
     try {
@@ -40,6 +42,39 @@
   function deleteNote(id) {
     saveNotesIndex(getNotesIndex().filter(n => n.id !== id));
     try { localStorage.removeItem('cofl_sop_' + NOTES_PAGE + '?id=' + id); } catch {}
+  }
+  function getHuddleIndex() {
+    try {
+      const v = JSON.parse(localStorage.getItem(HUDDLE_INDEX_KEY));
+      return Array.isArray(v) ? v : [];
+    } catch { return []; }
+  }
+  function saveHuddleIndex(idx) {
+    try { localStorage.setItem(HUDDLE_INDEX_KEY, JSON.stringify(idx)); } catch {}
+  }
+  function newHuddleId() {
+    return 'h' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  }
+  function addHuddle() {
+    const idx = getHuddleIndex();
+    const id = newHuddleId();
+    idx.unshift({ id: id, created: Date.now() });
+    saveHuddleIndex(idx);
+    return id;
+  }
+  function deleteHuddle(id) {
+    saveHuddleIndex(getHuddleIndex().filter(h => h.id !== id));
+    try { localStorage.removeItem('cofl_sop_' + HUDDLE_PAGE + '?id=' + id); } catch {}
+  }
+  function getHuddleTitle(id, fallback) {
+    try {
+      const data = JSON.parse(localStorage.getItem('cofl_sop_' + HUDDLE_PAGE + '?id=' + id));
+      const date = data && typeof data.in_huddle_date === 'string' ? data.in_huddle_date.trim() : '';
+      const day = data && typeof data.in_huddle_day === 'string' ? data.in_huddle_day.trim() : '';
+      const title = [date, day].filter(Boolean).join(' - ');
+      if (title) return title;
+    } catch {}
+    return fallback;
   }
   function getNoteTitle(id, fallback) {
     try {
@@ -139,8 +174,16 @@
       el.addEventListener('input', () => {
         state[key] = el.value;
         scheduleSave();
+        autoGrow(el);
       });
+      autoGrow(el);
     });
+  }
+
+  function autoGrow(el) {
+    if (!el.matches || !el.matches('textarea.autogrow')) return;
+    el.style.height = 'auto';
+    el.style.height = Math.max(el.scrollHeight, 40) + 'px';
   }
 
   // ---------- CONTENTEDITABLE ----------
@@ -460,6 +503,28 @@
         '</a>'
       );
     }).join('');
+    const huddleIdx = getHuddleIndex();
+    const huddleItems = huddleIdx.map((h, i) => {
+      const fallback = 'Huddle ' + (huddleIdx.length - i);
+      const title = getHuddleTitle(h.id, fallback);
+      const href = HUDDLE_PAGE + '?id=' + h.id;
+      const isCurrent = href === PAGE_ID;
+      return (
+        '<a href="' + href + '" class="sop-drawer-item huddle-item' + (isCurrent ? ' current' : '') + '">' +
+          '<span class="drawer-num">13</span>' +
+          '<span class="drawer-text">' +
+            '<span class="drawer-title">' + escapeHTML(title) + '</span>' +
+            '<span class="drawer-sub">Saved huddle</span>' +
+          '</span>' +
+        '</a>'
+      );
+    }).join('');
+    const huddleSection =
+      '<div class="sop-drawer-section-label">Huddle Journal</div>' +
+      huddleItems +
+      '<button class="sop-drawer-add sop-drawer-add-huddle" type="button" aria-label="Add a new huddle">' +
+        '<span class="add-plus">+</span><span>New huddle</span>' +
+      '</button>';
     const notesIdx = getNotesIndex();
     const notesItems = notesIdx.map((n, i) => {
       const fallback = 'Note ' + (i + 1);
@@ -479,7 +544,7 @@
     const notesSection =
       '<div class="sop-drawer-section-label">Notes</div>' +
       notesItems +
-      '<button class="sop-drawer-add" type="button" aria-label="Add a new note">' +
+      '<button class="sop-drawer-add sop-drawer-add-note" type="button" aria-label="Add a new note">' +
         '<span class="add-plus">+</span><span>Add a note</span>' +
       '</button>';
 
@@ -493,10 +558,16 @@
           '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>' +
         '</button>' +
       '</header>' +
-      '<nav class="sop-drawer-nav">' + items + notesSection + '</nav>';
+      '<nav class="sop-drawer-nav">' + items + huddleSection + notesSection + '</nav>';
     document.body.appendChild(drawer);
 
-    drawer.querySelector('.sop-drawer-add').addEventListener('click', (e) => {
+    drawer.querySelector('.sop-drawer-add-huddle').addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = addHuddle();
+      location.href = HUDDLE_PAGE + '?id=' + id;
+    });
+
+    drawer.querySelector('.sop-drawer-add-note').addEventListener('click', (e) => {
       e.preventDefault();
       const id = addNote();
       location.href = NOTES_PAGE + '?id=' + id;
@@ -570,8 +641,6 @@
   }
 
   // ---------- HUDDLE SHEET ----------
-  const HUDDLE_PAGE = '13-huddle-sheet.html';
-
   // Appt types pulled from §12 Rules & Colors + §07 fee schedule.
   // `charge` is the default that auto-fills; null = no fixed default.
   const APPT_TYPES = [
@@ -949,14 +1018,14 @@
   function huddleRowHTML(i) {
     return (
       '<tr>' +
-        '<td class="input-cell"><input class="sop-text cell-input" name="huddle_patient_' + i + '" type="text" autocomplete="off" enterkeyhint="next" aria-label="Patient name row ' + (i + 1) + '"></td>' +
+        '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_patient_' + i + '" autocomplete="off" enterkeyhint="next" aria-label="Patient name row ' + (i + 1) + '"></textarea></td>' +
         '<td class="time-cell"><button class="time-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick time"></button></td>' +
         '<td class="appt-cell"><button class="appt-type-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick appointment type"></button></td>' +
         '<td class="charge-cell" data-row="' + i + '"></td>' +
         '<td class="input-cell"><input class="sop-text cell-input cell-input-num" name="huddle_card_' + i + '" type="text" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="" aria-label="Card last 4 row ' + (i + 1) + '"></td>' +
         '<td class="pay-cell"><button class="pay-btn cell-btn" type="button" data-row="' + i + '" aria-label="Cycle payment state"></button></td>' +
         '<td class="nextappt-cell"><button class="nextappt-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick next appointment"></button></td>' +
-        '<td class="input-cell"><input class="sop-text cell-input" name="huddle_notes_' + i + '" type="text" autocomplete="off" aria-label="Notes row ' + (i + 1) + '"></td>' +
+        '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_notes_' + i + '" autocomplete="off" aria-label="Notes row ' + (i + 1) + '"></textarea></td>' +
       '</tr>'
     );
   }
@@ -975,6 +1044,8 @@
     if (PAGE_FILE !== HUDDLE_PAGE) return;
     const table = document.querySelector('table[data-huddle="true"]');
     if (!table) return;
+    initHuddleJournal();
+    initHuddleLeaveGuard();
     buildPicker();
     buildTimePicker();
     buildNextApptPicker();
@@ -1025,6 +1096,92 @@
         const next = (current + 1) % PAY_STATES.length;
         setRowPay(row, next);
       });
+    });
+  }
+
+  function hasHuddleContent() {
+    return Object.keys(state).some(k => {
+      if (k.indexOf('strokes_') === 0) return Array.isArray(state[k]) && state[k].length > 0;
+      const v = state[k];
+      if (typeof v === 'string') return v.trim() !== '';
+      if (typeof v === 'boolean') return v;
+      if (typeof v === 'number') return v !== 0;
+      if (v && typeof v === 'object') return Object.keys(v).some(key => v[key]);
+      return !!v;
+    });
+  }
+
+  function currentHuddleId() {
+    return new URLSearchParams(location.search).get('id');
+  }
+
+  let skipHuddleLeaveGuard = false;
+
+  function initHuddleJournal() {
+    const meta = document.querySelector('.huddle-meta');
+    const id = currentHuddleId();
+    if (meta) {
+      meta.textContent = id ? '13 · Saved Huddle' : '13 · Current Huddle';
+    }
+
+    const newBtn = document.querySelector('.huddle-new-btn');
+    if (newBtn) {
+      newBtn.addEventListener('click', () => {
+        if (!confirm('Start a fresh huddle? This one is auto-saved and will stay available unless you delete it.')) return;
+        if (!id && hasHuddleContent()) {
+          const savedId = addHuddle();
+          try {
+            localStorage.setItem('cofl_sop_' + HUDDLE_PAGE + '?id=' + savedId, JSON.stringify(state));
+          } catch {}
+        }
+        const nextId = addHuddle();
+        skipHuddleLeaveGuard = true;
+        location.href = HUDDLE_PAGE + '?id=' + nextId;
+      });
+    }
+
+    const deleteBtn = document.querySelector('.huddle-delete-btn');
+    if (deleteBtn) {
+      deleteBtn.addEventListener('click', () => {
+        if (!confirm('Delete this huddle sheet? This clears the saved checkboxes, text, and pencil notes for this huddle.')) return;
+        if (id) {
+          deleteHuddle(id);
+          const remaining = getHuddleIndex();
+          skipHuddleLeaveGuard = true;
+          if (remaining.length) {
+            location.href = HUDDLE_PAGE + '?id=' + remaining[0].id;
+          } else {
+            location.href = HUDDLE_PAGE;
+          }
+          return;
+        }
+        skipHuddleLeaveGuard = true;
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      });
+    }
+  }
+
+  function initHuddleLeaveGuard() {
+    const message = 'Leave this huddle? Your work is auto-saved, but this catches accidental taps.';
+    document.addEventListener('click', (e) => {
+      if (skipHuddleLeaveGuard) return;
+      const a = e.target.closest && e.target.closest('a[href]');
+      if (!a || !hasHuddleContent()) return;
+      const href = a.getAttribute('href') || '';
+      if (!href || href[0] === '#' || href.startsWith('javascript:')) return;
+      if (a.target && a.target !== '_self') return;
+      if (!confirm(message)) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, true);
+    window.addEventListener('beforeunload', (e) => {
+      if (skipHuddleLeaveGuard) return;
+      if (!hasHuddleContent()) return;
+      e.preventDefault();
+      e.returnValue = message;
+      return message;
     });
   }
 

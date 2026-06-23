@@ -21,6 +21,10 @@
   <header class="page-header">
     <span class="eyebrow">Section 13</span>
     <h1>Daily Huddle Sheet</h1>
+    <div class="huddle-actions">
+      <button class="notes-delete-btn huddle-new-btn" type="button">New huddle</button>
+      <button class="notes-delete-btn huddle-delete-btn" type="button">Delete this huddle</button>
+    </div>
     <span class="flourish"></span>
   </header>
 
@@ -35,7 +39,7 @@
     </div>
     <div>
       <label>Today's Focus</label>
-      <input class="sop-text" name="huddle_focus" type="text" placeholder="">
+      <textarea class="sop-text autogrow" name="huddle_focus" placeholder=""></textarea>
     </div>
   </div>
 
@@ -127,7 +131,7 @@
 
   <div class="page-footer">
     <a class="nav-link-back" href="12-rules-colors.html">&lsaquo; Rules &amp; Colors</a>
-    <span class="page-num">13 &middot; Daily Huddle</span>
+    <span class="page-num huddle-meta">13 &middot; Daily Huddle</span>
     <a href="index.html">Back to Contents</a>
   </div>
 </section>
