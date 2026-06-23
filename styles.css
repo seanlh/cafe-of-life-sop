@@ -853,6 +853,47 @@ input.command-date {
   min-height: 150px;
 }
 
+.shift-start-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.shift-start-block {
+  border: 1px solid rgba(102, 44, 57, 0.14);
+  border-left: 4px solid var(--rose);
+  border-radius: 6px;
+  padding: 10px 12px 4px;
+  background: var(--paper);
+}
+
+.shift-start-block.priority {
+  border-left-color: var(--burgundy);
+  background: var(--pink-paper);
+}
+
+.shift-start-block.soft {
+  border-left-color: var(--pink);
+}
+
+.shift-start-block h3 {
+  margin: 0 0 6px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+}
+
+.shift-start-block .checklist {
+  margin-bottom: 0;
+}
+
+.shift-start-block .checklist li {
+  font-size: 13px;
+  padding: 4px 0;
+}
+
 .command-huddle-grid,
 .command-handoff {
   display: grid;
