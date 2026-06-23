@@ -815,6 +815,17 @@ h3.sub-heading.with-bar::after {
   max-width: 280px;
 }
 
+input.command-date {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--plum);
+  border: 1px solid rgba(102, 44, 57, 0.28);
+  border-radius: 6px;
+  background: var(--pink-paper);
+  padding: 8px 10px;
+}
+
 .command-reset {
   justify-self: end;
   font-family: var(--sans);
@@ -925,7 +936,7 @@ select.sop-select:focus {
 
 .patient-flag-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(145px, 1fr));
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
   gap: 8px 12px;
   margin: 12px 0 10px;
 }
@@ -946,6 +957,22 @@ select.sop-select:focus {
   resize: none;
   overflow: hidden;
   font-size: 19px;
+}
+
+.patient-update-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(180px, 0.8fr);
+  gap: 10px;
+  margin: 8px 0 10px;
+  align-items: end;
+}
+
+.special-detail-input {
+  font-size: 13px !important;
+  border: 1px solid rgba(102, 44, 57, 0.22) !important;
+  border-radius: 6px;
+  background: var(--paper) !important;
+  padding: 7px 9px !important;
 }
 
 .loop-stack {
@@ -2505,6 +2532,7 @@ body.sop-drawer-open {
   .command-huddle-grid,
   .command-handoff,
   .patient-card-head,
+  .patient-update-row,
   .quick-links {
     grid-template-columns: 1fr;
   }

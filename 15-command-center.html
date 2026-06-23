@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>15 &middot; Command Center &middot; Caf&eacute; of Life SOP</title>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=20260623-command3">
 </head>
 <body>
 
@@ -27,7 +27,7 @@
   <div class="command-topbar">
     <div>
       <label>Date</label>
-      <input class="sop-text command-date" name="command_date" type="text" autocomplete="off">
+      <input class="sop-text command-date" name="command_date" type="date" autocomplete="off">
     </div>
     <button class="command-reset" type="button" data-reset-page data-reset-message="Clear today's Command Center checklist, tracker, and notes?">Clear for new day</button>
   </div>
@@ -49,10 +49,10 @@
     </div>
   </div>
 
-  <h2 class="section-heading"><span class="icon">&#127799;</span> Huddle Intake</h2>
+  <h2 class="section-heading"><span class="icon">&#127799;</span> Pre-Shift Huddle</h2>
   <div class="command-huddle-grid">
-    <label>Doctor / team notes from huddle<textarea class="sop-text autogrow" name="command_huddle_notes" placeholder="Things Dr. Jen said, special patient instructions, schedule warnings, anything said fast that you need to remember."></textarea></label>
-    <label>Today cannot forget<textarea class="sop-text autogrow" name="command_cannot_forget" placeholder="Red letters, money issues, callbacks, forms, tomorrow prep, anything you would be asked about later."></textarea></label>
+    <label>Before shift notes<textarea class="sop-text autogrow" name="command_huddle_notes" placeholder="Things Dr. Jen / team said before patients, special instructions, schedule warnings, anything said fast that you need to remember."></textarea></label>
+    <label>Watch / cannot forget<textarea class="sop-text autogrow" name="command_cannot_forget" placeholder="Red letters, money issues, callbacks, forms, tomorrow prep, special pricing, anything you would be asked about later."></textarea></label>
   </div>
 
   <h2 class="section-heading"><span class="icon">&#127799;</span> Patient Update Log</h2>
@@ -62,7 +62,7 @@
         <input class="sop-text command-time-input" name="command_time_1" type="text" placeholder="Time">
         <input class="sop-text command-name-input" name="command_patient_1" type="text" placeholder="Patient">
         <select class="sop-select" name="command_type_1">
-          <option value="">Appt type</option><option>NP Call</option><option>Day 1</option><option>ROF / Day 2</option><option>Day 3</option><option>Adjustment</option><option>SoftWave</option><option>Re-Exam</option><option>Exercise Consult</option><option>X-Ray</option><option>Other</option>
+          <option value="">Appt type</option><option>NP Call</option><option>Day 1</option><option>ROF / Day 2</option><option>Day 3</option><option>Adjustment</option><option>SoftWave</option><option>Re-Exam</option><option>Exercise Consult</option><option>X-Ray</option><option>Special / Other</option>
         </select>
         <select class="sop-select" name="command_status_1">
           <option value="">Status</option><option>Not started</option><option>In progress</option><option>Waiting on Dr.</option><option>Needs CT update</option><option>Ready for huddle</option><option>Done</option>
@@ -70,12 +70,20 @@
       </div>
       <div class="patient-flag-grid">
         <label><input class="sop-bool" name="command_charge_1" type="checkbox"> Charge / payment?</label>
+        <label><input class="sop-bool" name="command_special_price_1" type="checkbox"> Special pricing / other</label>
         <label><input class="sop-bool" name="command_ledger_1" type="checkbox"> Ledger / balance checked</label>
         <label><input class="sop-bool" name="command_red_1" type="checkbox"> Red letters / alerts</label>
+        <label><input class="sop-bool" name="command_note_added_1" type="checkbox"> CT note added</label>
         <label><input class="sop-bool" name="command_ct_1" type="checkbox"> CT note / update needed</label>
         <label><input class="sop-bool" name="command_next_1" type="checkbox"> Next appt handled</label>
         <label><input class="sop-bool" name="command_huddle_1" type="checkbox"> Mention in huddle</label>
         <label><input class="sop-bool" name="command_done_1" type="checkbox"> Done</label>
+      </div>
+      <div class="patient-update-row">
+        <select class="sop-select" name="command_color_1">
+          <option value="">CT color / font / letter update</option><option>Red letters - action needed</option><option>Green font - money/payment issue</option><option>Orange font - urgent communication</option><option>White block + red font - alert</option><option>Yellow block + red font - thermal scan review</option><option>Black block + red font - X-ray review</option><option>Grey block - WT X-ray</option><option>Grey block + red font - WT X-ray review</option><option>Other CT alert/update</option>
+        </select>
+        <input class="sop-text special-detail-input" name="command_special_detail_1" type="text" placeholder="Special price / other detail">
       </div>
       <textarea class="sop-text autogrow command-patient-notes" name="command_notes_1" placeholder="What happened / what changed / exact next action. Example: Green font balance, ask Dr. before checkout, update red letter, call back after lunch."></textarea>
     </article>
@@ -85,7 +93,7 @@
         <input class="sop-text command-time-input" name="command_time_2" type="text" placeholder="Time">
         <input class="sop-text command-name-input" name="command_patient_2" type="text" placeholder="Patient">
         <select class="sop-select" name="command_type_2">
-          <option value="">Appt type</option><option>NP Call</option><option>Day 1</option><option>ROF / Day 2</option><option>Day 3</option><option>Adjustment</option><option>SoftWave</option><option>Re-Exam</option><option>Exercise Consult</option><option>X-Ray</option><option>Other</option>
+          <option value="">Appt type</option><option>NP Call</option><option>Day 1</option><option>ROF / Day 2</option><option>Day 3</option><option>Adjustment</option><option>SoftWave</option><option>Re-Exam</option><option>Exercise Consult</option><option>X-Ray</option><option>Special / Other</option>
         </select>
         <select class="sop-select" name="command_status_2">
           <option value="">Status</option><option>Not started</option><option>In progress</option><option>Waiting on Dr.</option><option>Needs CT update</option><option>Ready for huddle</option><option>Done</option>
@@ -93,12 +101,20 @@
       </div>
       <div class="patient-flag-grid">
         <label><input class="sop-bool" name="command_charge_2" type="checkbox"> Charge / payment?</label>
+        <label><input class="sop-bool" name="command_special_price_2" type="checkbox"> Special pricing / other</label>
         <label><input class="sop-bool" name="command_ledger_2" type="checkbox"> Ledger / balance checked</label>
         <label><input class="sop-bool" name="command_red_2" type="checkbox"> Red letters / alerts</label>
+        <label><input class="sop-bool" name="command_note_added_2" type="checkbox"> CT note added</label>
         <label><input class="sop-bool" name="command_ct_2" type="checkbox"> CT note / update needed</label>
         <label><input class="sop-bool" name="command_next_2" type="checkbox"> Next appt handled</label>
         <label><input class="sop-bool" name="command_huddle_2" type="checkbox"> Mention in huddle</label>
         <label><input class="sop-bool" name="command_done_2" type="checkbox"> Done</label>
+      </div>
+      <div class="patient-update-row">
+        <select class="sop-select" name="command_color_2">
+          <option value="">CT color / font / letter update</option><option>Red letters - action needed</option><option>Green font - money/payment issue</option><option>Orange font - urgent communication</option><option>White block + red font - alert</option><option>Yellow block + red font - thermal scan review</option><option>Black block + red font - X-ray review</option><option>Grey block - WT X-ray</option><option>Grey block + red font - WT X-ray review</option><option>Other CT alert/update</option>
+        </select>
+        <input class="sop-text special-detail-input" name="command_special_detail_2" type="text" placeholder="Special price / other detail">
       </div>
       <textarea class="sop-text autogrow command-patient-notes" name="command_notes_2" placeholder="What happened / what changed / exact next action."></textarea>
     </article>
@@ -108,7 +124,7 @@
         <input class="sop-text command-time-input" name="command_time_3" type="text" placeholder="Time">
         <input class="sop-text command-name-input" name="command_patient_3" type="text" placeholder="Patient">
         <select class="sop-select" name="command_type_3">
-          <option value="">Appt type</option><option>NP Call</option><option>Day 1</option><option>ROF / Day 2</option><option>Day 3</option><option>Adjustment</option><option>SoftWave</option><option>Re-Exam</option><option>Exercise Consult</option><option>X-Ray</option><option>Other</option>
+          <option value="">Appt type</option><option>NP Call</option><option>Day 1</option><option>ROF / Day 2</option><option>Day 3</option><option>Adjustment</option><option>SoftWave</option><option>Re-Exam</option><option>Exercise Consult</option><option>X-Ray</option><option>Special / Other</option>
         </select>
         <select class="sop-select" name="command_status_3">
           <option value="">Status</option><option>Not started</option><option>In progress</option><option>Waiting on Dr.</option><option>Needs CT update</option><option>Ready for huddle</option><option>Done</option>
@@ -116,12 +132,20 @@
       </div>
       <div class="patient-flag-grid">
         <label><input class="sop-bool" name="command_charge_3" type="checkbox"> Charge / payment?</label>
+        <label><input class="sop-bool" name="command_special_price_3" type="checkbox"> Special pricing / other</label>
         <label><input class="sop-bool" name="command_ledger_3" type="checkbox"> Ledger / balance checked</label>
         <label><input class="sop-bool" name="command_red_3" type="checkbox"> Red letters / alerts</label>
+        <label><input class="sop-bool" name="command_note_added_3" type="checkbox"> CT note added</label>
         <label><input class="sop-bool" name="command_ct_3" type="checkbox"> CT note / update needed</label>
         <label><input class="sop-bool" name="command_next_3" type="checkbox"> Next appt handled</label>
         <label><input class="sop-bool" name="command_huddle_3" type="checkbox"> Mention in huddle</label>
         <label><input class="sop-bool" name="command_done_3" type="checkbox"> Done</label>
+      </div>
+      <div class="patient-update-row">
+        <select class="sop-select" name="command_color_3">
+          <option value="">CT color / font / letter update</option><option>Red letters - action needed</option><option>Green font - money/payment issue</option><option>Orange font - urgent communication</option><option>White block + red font - alert</option><option>Yellow block + red font - thermal scan review</option><option>Black block + red font - X-ray review</option><option>Grey block - WT X-ray</option><option>Grey block + red font - WT X-ray review</option><option>Other CT alert/update</option>
+        </select>
+        <input class="sop-text special-detail-input" name="command_special_detail_3" type="text" placeholder="Special price / other detail">
       </div>
       <textarea class="sop-text autogrow command-patient-notes" name="command_notes_3" placeholder="What happened / what changed / exact next action."></textarea>
     </article>
@@ -131,7 +155,7 @@
         <input class="sop-text command-time-input" name="command_time_4" type="text" placeholder="Time">
         <input class="sop-text command-name-input" name="command_patient_4" type="text" placeholder="Patient">
         <select class="sop-select" name="command_type_4">
-          <option value="">Appt type</option><option>NP Call</option><option>Day 1</option><option>ROF / Day 2</option><option>Day 3</option><option>Adjustment</option><option>SoftWave</option><option>Re-Exam</option><option>Exercise Consult</option><option>X-Ray</option><option>Other</option>
+          <option value="">Appt type</option><option>NP Call</option><option>Day 1</option><option>ROF / Day 2</option><option>Day 3</option><option>Adjustment</option><option>SoftWave</option><option>Re-Exam</option><option>Exercise Consult</option><option>X-Ray</option><option>Special / Other</option>
         </select>
         <select class="sop-select" name="command_status_4">
           <option value="">Status</option><option>Not started</option><option>In progress</option><option>Waiting on Dr.</option><option>Needs CT update</option><option>Ready for huddle</option><option>Done</option>
@@ -139,12 +163,20 @@
       </div>
       <div class="patient-flag-grid">
         <label><input class="sop-bool" name="command_charge_4" type="checkbox"> Charge / payment?</label>
+        <label><input class="sop-bool" name="command_special_price_4" type="checkbox"> Special pricing / other</label>
         <label><input class="sop-bool" name="command_ledger_4" type="checkbox"> Ledger / balance checked</label>
         <label><input class="sop-bool" name="command_red_4" type="checkbox"> Red letters / alerts</label>
+        <label><input class="sop-bool" name="command_note_added_4" type="checkbox"> CT note added</label>
         <label><input class="sop-bool" name="command_ct_4" type="checkbox"> CT note / update needed</label>
         <label><input class="sop-bool" name="command_next_4" type="checkbox"> Next appt handled</label>
         <label><input class="sop-bool" name="command_huddle_4" type="checkbox"> Mention in huddle</label>
         <label><input class="sop-bool" name="command_done_4" type="checkbox"> Done</label>
+      </div>
+      <div class="patient-update-row">
+        <select class="sop-select" name="command_color_4">
+          <option value="">CT color / font / letter update</option><option>Red letters - action needed</option><option>Green font - money/payment issue</option><option>Orange font - urgent communication</option><option>White block + red font - alert</option><option>Yellow block + red font - thermal scan review</option><option>Black block + red font - X-ray review</option><option>Grey block - WT X-ray</option><option>Grey block + red font - WT X-ray review</option><option>Other CT alert/update</option>
+        </select>
+        <input class="sop-text special-detail-input" name="command_special_detail_4" type="text" placeholder="Special price / other detail">
       </div>
       <textarea class="sop-text autogrow command-patient-notes" name="command_notes_4" placeholder="What happened / what changed / exact next action."></textarea>
     </article>
@@ -154,7 +186,7 @@
         <input class="sop-text command-time-input" name="command_time_5" type="text" placeholder="Time">
         <input class="sop-text command-name-input" name="command_patient_5" type="text" placeholder="Patient">
         <select class="sop-select" name="command_type_5">
-          <option value="">Appt type</option><option>NP Call</option><option>Day 1</option><option>ROF / Day 2</option><option>Day 3</option><option>Adjustment</option><option>SoftWave</option><option>Re-Exam</option><option>Exercise Consult</option><option>X-Ray</option><option>Other</option>
+          <option value="">Appt type</option><option>NP Call</option><option>Day 1</option><option>ROF / Day 2</option><option>Day 3</option><option>Adjustment</option><option>SoftWave</option><option>Re-Exam</option><option>Exercise Consult</option><option>X-Ray</option><option>Special / Other</option>
         </select>
         <select class="sop-select" name="command_status_5">
           <option value="">Status</option><option>Not started</option><option>In progress</option><option>Waiting on Dr.</option><option>Needs CT update</option><option>Ready for huddle</option><option>Done</option>
@@ -162,12 +194,20 @@
       </div>
       <div class="patient-flag-grid">
         <label><input class="sop-bool" name="command_charge_5" type="checkbox"> Charge / payment?</label>
+        <label><input class="sop-bool" name="command_special_price_5" type="checkbox"> Special pricing / other</label>
         <label><input class="sop-bool" name="command_ledger_5" type="checkbox"> Ledger / balance checked</label>
         <label><input class="sop-bool" name="command_red_5" type="checkbox"> Red letters / alerts</label>
+        <label><input class="sop-bool" name="command_note_added_5" type="checkbox"> CT note added</label>
         <label><input class="sop-bool" name="command_ct_5" type="checkbox"> CT note / update needed</label>
         <label><input class="sop-bool" name="command_next_5" type="checkbox"> Next appt handled</label>
         <label><input class="sop-bool" name="command_huddle_5" type="checkbox"> Mention in huddle</label>
         <label><input class="sop-bool" name="command_done_5" type="checkbox"> Done</label>
+      </div>
+      <div class="patient-update-row">
+        <select class="sop-select" name="command_color_5">
+          <option value="">CT color / font / letter update</option><option>Red letters - action needed</option><option>Green font - money/payment issue</option><option>Orange font - urgent communication</option><option>White block + red font - alert</option><option>Yellow block + red font - thermal scan review</option><option>Black block + red font - X-ray review</option><option>Grey block - WT X-ray</option><option>Grey block + red font - WT X-ray review</option><option>Other CT alert/update</option>
+        </select>
+        <input class="sop-text special-detail-input" name="command_special_detail_5" type="text" placeholder="Special price / other detail">
       </div>
       <textarea class="sop-text autogrow command-patient-notes" name="command_notes_5" placeholder="What happened / what changed / exact next action."></textarea>
     </article>
@@ -199,11 +239,11 @@
     </div>
   </div>
 
-  <h2 class="section-heading"><span class="icon">&#127799;</span> Huddle Handoff</h2>
+  <h2 class="section-heading"><span class="icon">&#127799;</span> Post-Shift Huddle</h2>
   <div class="command-handoff">
-    <label>Say this in huddle<textarea class="sop-text autogrow" name="command_say_huddle" placeholder="Short version of anything you need to tell Dr. Jen / team before they ask."></textarea></label>
-    <label>CT updates still needed<textarea class="sop-text autogrow" name="command_ct_updates" placeholder="Alerts, red letters, notes, ledger corrections, care plan updates, forms, scan/file tasks."></textarea></label>
-    <label>Money / Cash Practice issues<textarea class="sop-text autogrow" name="command_money_summary" placeholder="Declines, green font, balance conversations, deposits, receipts, cash log."></textarea></label>
+    <label>What went down today<textarea class="sop-text autogrow" name="command_say_huddle" placeholder="Short version of what happened today, what got handled, what changed, and anything the team should know."></textarea></label>
+    <label>CT notes / colors to add<textarea class="sop-text autogrow" name="command_ct_updates" placeholder="Notes added or still needed, red letters, green font money signs, orange urgent comms, alert blocks, scan/file tasks."></textarea></label>
+    <label>Money / Cash Practice recap<textarea class="sop-text autogrow" name="command_money_summary" placeholder="Declines, green font, balance conversations, special pricing, deposits, receipts, cash log."></textarea></label>
   </div>
 
   <div class="cols-2 command-grid">
@@ -244,6 +284,6 @@
   </div>
 </section>
 
-<script src="form.js?v=20260623-command2" defer></script>
+<script src="form.js?v=20260623-command3" defer></script>
 </body>
 </html>
