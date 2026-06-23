@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>All-Day Daily Tracker &middot; Café of Life SOP</title>
-<link rel="stylesheet" href="styles.css?v=20260623-daily-tracker-v4">
+<link rel="stylesheet" href="styles.css?v=20260623-process-links-v1">
 </head>
 <body>
 
@@ -95,6 +95,18 @@
 
   <details class="huddle-day-section" open>
     <summary>1. Start Shift / First Hour Prep</summary>
+    <div class="process-shortcuts" aria-label="Daily tracker process shortcuts">
+      <a class="process-link" href="02-opening.html">Opening steps</a>
+      <a class="process-link" href="03-new-patient-call.html">NP call / intake</a>
+      <a class="process-link" href="04-day-1.html">Day 1</a>
+      <a class="process-link" href="05-day-2-rof.html">ROF</a>
+      <a class="process-link" href="06-day-3.html">Day 3</a>
+      <a class="process-link" href="08-softwave.html">SoftWave</a>
+      <a class="process-link" href="09-checkout.html">Checkout</a>
+      <a class="process-link" href="10-closing.html">Closing</a>
+      <a class="process-link" href="11-systems-forms.html">Systems / forms</a>
+    </div>
+    <p class="process-hint">Highlighted process names open the exact steps when you need them.</p>
     <div class="huddle-day-grid huddle-start-panel huddle-start-two-col" data-shift-panel="morning">
       <div>
         <h3>Office / Supplies</h3>
@@ -113,18 +125,18 @@
         <div class="compact-check-grid">
           <label><input class="sop-bool" name="huddle_open_computer_systems" type="checkbox"> Turn on computers and log in check-in station</label>
           <label><input class="sop-bool" name="huddle_open_xray" type="checkbox"> Turn on X-ray computer if needed</label>
-          <label><input class="sop-bool" name="huddle_open_cash_log" type="checkbox"> Fill out Google Sheet Cash Log / enter N/A</label>
+          <label><input class="sop-bool" name="huddle_open_cash_log" type="checkbox"> Fill out Google Sheet <a class="process-link" href="10-closing.html">Cash Log</a> / enter N/A</label>
           <label><input class="sop-bool" name="huddle_open_voicemail" type="checkbox"> Check voicemail / write down messages</label>
-          <label><input class="sop-bool" name="huddle_open_daily_messages" type="checkbox"> Check office email, Google Calendar, and Review Wave Text Service</label>
-          <label><input class="sop-bool" name="huddle_open_cp_import" type="checkbox"> Upload Cash Practice payments</label>
-          <label><input class="sop-bool" name="huddle_open_declines" type="checkbox"> Check Cash Practice declines / red items</label>
+          <label><input class="sop-bool" name="huddle_open_daily_messages" type="checkbox"> Check office email, Google Calendar, and <a class="process-link" href="03-new-patient-call.html">Review Wave Text Service</a></label>
+          <label><input class="sop-bool" name="huddle_open_cp_import" type="checkbox"> <a class="process-link" href="11-systems-forms.html">Upload Cash Practice payments</a></label>
+          <label><input class="sop-bool" name="huddle_open_declines" type="checkbox"> Check <a class="process-link" href="11-systems-forms.html">Cash Practice declines / red items</a></label>
           <label><input class="sop-bool" name="huddle_open_return_calls" type="checkbox"> Return patient voicemail calls / Text</label>
           <label><input class="sop-bool" name="huddle_sched_entered_rows" type="checkbox"> Entered today's ChiroTouch appointments into tracker</label>
           <label><input class="sop-bool" name="huddle_sched_times_names" type="checkbox"> Added time and patient name for each appointment</label>
           <label><input class="sop-bool" name="huddle_sched_appt_types" type="checkbox"> Selected appointment type for each patient</label>
           <label><input class="sop-bool" name="huddle_sched_notes_ready" type="checkbox"> Left huddle note space ready for doctor updates</label>
-          <label><input class="sop-bool" name="huddle_sched_special_types" type="checkbox"> Identified NP, ROF, Day 3, SoftWave, re-exams, and special appointments</label>
-          <label><input class="sop-bool" name="huddle_open_charts" type="checkbox"> Prepare charts: NP, re-exams, ROF, special appointments</label>
+          <label><input class="sop-bool" name="huddle_sched_special_types" type="checkbox"> Identified <a class="process-link" href="04-day-1.html">NP</a>, <a class="process-link" href="05-day-2-rof.html">ROF</a>, <a class="process-link" href="06-day-3.html">Day 3</a>, <a class="process-link" href="08-softwave.html">SoftWave</a>, re-exams, and special appointments</label>
+          <label><input class="sop-bool" name="huddle_open_charts" type="checkbox"> Prepare charts: <a class="process-link" href="04-day-1.html">NP</a>, re-exams, <a class="process-link" href="05-day-2-rof.html">ROF</a>, special appointments</label>
         </div>
       </div>
     </div>
@@ -143,16 +155,16 @@
       <div>
         <h3>Systems / Schedule</h3>
         <div class="compact-check-grid">
-          <label><input class="sop-bool" name="huddle_pm_open_systems" type="checkbox"> Open CT, Review Wave, Cash Practice, email, and voicemail</label>
+          <label><input class="sop-bool" name="huddle_pm_open_systems" type="checkbox"> Open CT, <a class="process-link" href="03-new-patient-call.html">Review Wave</a>, <a class="process-link" href="11-systems-forms.html">Cash Practice</a>, email, and voicemail</label>
           <label><input class="sop-bool" name="huddle_pm_voicemail" type="checkbox"> Check voicemail / write down messages</label>
-          <label><input class="sop-bool" name="huddle_pm_daily_messages" type="checkbox"> Check office email, Google Calendar, and Review Wave Text Service</label>
-          <label><input class="sop-bool" name="huddle_pm_declines" type="checkbox"> Check Cash Practice declines / red items</label>
+          <label><input class="sop-bool" name="huddle_pm_daily_messages" type="checkbox"> Check office email, Google Calendar, and <a class="process-link" href="03-new-patient-call.html">Review Wave Text Service</a></label>
+          <label><input class="sop-bool" name="huddle_pm_declines" type="checkbox"> Check <a class="process-link" href="11-systems-forms.html">Cash Practice declines / red items</a></label>
           <label><input class="sop-bool" name="huddle_pm_calls" type="checkbox"> Return patient voicemail calls / Text</label>
           <label><input class="sop-bool" name="huddle_pm_entered_rows" type="checkbox"> Entered afternoon ChiroTouch appointments into tracker</label>
           <label><input class="sop-bool" name="huddle_pm_times_names" type="checkbox"> Added time and patient name for each appointment</label>
           <label><input class="sop-bool" name="huddle_pm_appt_types" type="checkbox"> Selected appointment type for each patient</label>
           <label><input class="sop-bool" name="huddle_pm_notes_ready" type="checkbox"> Left huddle note space ready for doctor updates</label>
-          <label><input class="sop-bool" name="huddle_pm_special_types" type="checkbox"> Identified NP, ROF, Day 3, SoftWave, re-exams, and special appointments</label>
+          <label><input class="sop-bool" name="huddle_pm_special_types" type="checkbox"> Identified <a class="process-link" href="04-day-1.html">NP</a>, <a class="process-link" href="05-day-2-rof.html">ROF</a>, <a class="process-link" href="06-day-3.html">Day 3</a>, <a class="process-link" href="08-softwave.html">SoftWave</a>, re-exams, and special appointments</label>
         </div>
       </div>
     </div>
@@ -233,12 +245,12 @@
       <div>
         <h3>Closing the day</h3>
         <div class="compact-check-grid">
-          <label><input class="sop-bool" name="huddle_end_messages" type="checkbox"> Check voicemail, office email, Google Calendar, Review Wave, RW messages, and missed calls</label>
-          <label><input class="sop-bool" name="huddle_end_cash_log_na" type="checkbox"> Fill out google sheet "Cash Log". Enter NA under total payments received.</label>
+          <label><input class="sop-bool" name="huddle_end_messages" type="checkbox"> Check voicemail, office email, Google Calendar, <a class="process-link" href="03-new-patient-call.html">Review Wave</a>, RW messages, and missed calls</label>
+          <label><input class="sop-bool" name="huddle_end_cash_log_na" type="checkbox"> Fill out google sheet <a class="process-link" href="10-closing.html">Cash Log</a>. Enter NA under total payments received.</label>
           <label><input class="sop-bool" name="huddle_end_missed_appts" type="checkbox"> Call missed appointments (done within 15 minutes of their scheduled time)</label>
-          <label><input class="sop-bool" name="huddle_end_confirm_specials" type="checkbox"> Confirm: NP, ROF, SW, Day 3 &amp; RE-Acts</label>
+          <label><input class="sop-bool" name="huddle_end_confirm_specials" type="checkbox"> Confirm: <a class="process-link" href="04-day-1.html">NP</a>, <a class="process-link" href="05-day-2-rof.html">ROF</a>, <a class="process-link" href="08-softwave.html">SW</a>, <a class="process-link" href="06-day-3.html">Day 3</a> &amp; RE-Acts</label>
           <label><input class="sop-bool" name="huddle_end_dr_questions" type="checkbox"> Review with Dr. Jen any problems or questions during huddles.</label>
-          <label><input class="sop-bool" name="huddle_end_superbills" type="checkbox"> Make sure all super-bills have been finished and filed away, write down dates of missing SOAPs</label>
+          <label><input class="sop-bool" name="huddle_end_superbills" type="checkbox"> Make sure all <a class="process-link" href="11-systems-forms.html">super-bills</a> have been finished and filed away, write down dates of missing SOAPs</label>
         </div>
       </div>
       <div>
@@ -246,11 +258,11 @@
         <div class="compact-check-grid">
           <label><input class="sop-bool" name="huddle_end_room_reset" type="checkbox"> Garbage, clean adjustment tables / conditioner, rooms, and monitors</label>
           <label><input class="sop-bool" name="huddle_end_turn_off_lights_alexa_tvs" type="checkbox"> Turn off lights, Alexa, TVs</label>
-          <label><input class="sop-bool" name="huddle_end_scan_sign_in" type="checkbox"> Scan sign-in sheet to folder</label>
-          <label><input class="sop-bool" name="huddle_end_next_charts" type="checkbox"> Prepare patient charts for next day (NP, re-exams, ROF, SW SOAPS)</label>
-          <label><input class="sop-bool" name="huddle_end_email_reports" type="checkbox"> Email Dr. Jen call list / daily report / weekly report if due, with next 3 business days attached</label>
-          <label><input class="sop-bool" name="huddle_end_money_report" type="checkbox"> Print Money Report-Give $ to Dr. Jen</label>
-          <label><input class="sop-bool" name="huddle_end_count_cash" type="checkbox"> Count Cash in the cash box and give it to Dr. Jen (have Dr Jen sign that she received cash) AND fill out google sheet "cash log"</label>
+          <label><input class="sop-bool" name="huddle_end_scan_sign_in" type="checkbox"> <a class="process-link" href="11-systems-forms.html">Scan sign-in sheet</a> to folder</label>
+          <label><input class="sop-bool" name="huddle_end_next_charts" type="checkbox"> Prepare patient charts for next day (<a class="process-link" href="04-day-1.html">NP</a>, re-exams, <a class="process-link" href="05-day-2-rof.html">ROF</a>, <a class="process-link" href="08-softwave.html">SW</a> SOAPS)</label>
+          <label><input class="sop-bool" name="huddle_end_email_reports" type="checkbox"> Email Dr. Jen call list / <a class="process-link" href="10-closing.html">daily report</a> / weekly report if due, with next 3 business days attached</label>
+          <label><input class="sop-bool" name="huddle_end_money_report" type="checkbox"> <a class="process-link" href="10-closing.html">Print Money Report</a>-Give $ to Dr. Jen</label>
+          <label><input class="sop-bool" name="huddle_end_count_cash" type="checkbox"> Count Cash in the cash box and give it to Dr. Jen (have Dr Jen sign that she received cash) AND fill out google sheet <a class="process-link" href="10-closing.html">cash log</a></label>
           <label><input class="sop-bool" name="huddle_end_alarm" type="checkbox"> Set Alarm AWAY</label>
         </div>
       </div>
@@ -264,6 +276,6 @@
   </div>
 </section>
 
-<script src="form.js?v=20260623-daily-tracker-v4" defer></script>
+<script src="form.js?v=20260623-process-links-v1" defer></script>
 </body>
 </html>
