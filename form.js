@@ -118,6 +118,18 @@
     });
   }
 
+  function initStandaloneCheckboxes() {
+    document.querySelectorAll('input.sop-bool[type="checkbox"]').forEach((el, idx) => {
+      const key = 'bool_' + (el.name || el.id || idx);
+      el.dataset.key = key;
+      el.checked = !!state[key];
+      el.addEventListener('change', () => {
+        state[key] = el.checked;
+        scheduleSave();
+      });
+    });
+  }
+
   // ---------- TEXT INPUTS + TEXTAREAS ----------
   function initInputs() {
     document.querySelectorAll('input.sop-text, textarea.sop-text').forEach((el) => {
@@ -377,6 +389,17 @@
     });
   }
 
+  function initPageResetButtons() {
+    document.querySelectorAll('[data-reset-page]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const message = btn.getAttribute('data-reset-message') || 'Clear all saved fields on this page?';
+        if (!confirm(message)) return;
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      });
+    });
+  }
+
   // ---------- HAMBURGER DRAWER ----------
   const SECTIONS = [
     { num: '',   title: 'Cover',                  sub: 'Contents · welcome',          href: 'index.html' },
@@ -392,7 +415,8 @@
     { num: '10', title: 'Closing Procedures',     sub: 'After the last patient',      href: '10-closing.html' },
     { num: '11', title: 'Systems & Forms',        sub: 'Quick lookup',                href: '11-systems-forms.html' },
     { num: '12', title: 'Rules & Color Guide',    sub: 'Appt colors · alerts',        href: '12-rules-colors.html' },
-    { num: '13', title: 'Daily Huddle Sheet',     sub: 'The day at a glance',         href: '13-huddle-sheet.html' }
+    { num: '13', title: 'Daily Huddle Sheet',     sub: 'The day at a glance',         href: '13-huddle-sheet.html' },
+    { num: '15', title: 'Command Center',         sub: 'Live shift tracker',          href: '15-command-center.html' }
   ];
 
   function initDrawer() {
@@ -1054,10 +1078,12 @@
     // Order matters: restore contenteditable text first, THEN inject checkboxes
     initEditables();
     initCheckboxes();
+    initStandaloneCheckboxes();
     initInputs();
     initPencil();
     initToolbar();
     initSaveBar();
+    initPageResetButtons();
     initDrawer();
     initHuddle();
     initNotesPage();

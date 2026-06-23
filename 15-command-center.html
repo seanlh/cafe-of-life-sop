@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>15 &middot; Command Center &middot; Caf&eacute; of Life SOP</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">&#127800; Caf&eacute; of Life &middot; SOP</span>
+  <span class="nav-links">
+    <a href="14-notes.html">&lsaquo; Prev</a>
+    <a href="index.html">Contents</a>
+  </span>
+</nav>
+
+<section class="page command-page">
+  <header class="page-header">
+    <span class="eyebrow">Section 15</span>
+    <h1>Command Center</h1>
+    <p class="subtitle">Live shift tracker for a CA working solo</p>
+    <span class="flourish"></span>
+  </header>
+
+  <div class="command-topbar">
+    <div>
+      <label>Date</label>
+      <input class="sop-text command-date" name="command_date" type="text" autocomplete="off">
+    </div>
+    <button class="command-reset" type="button" data-reset-page data-reset-message="Clear today's Command Center checklist, tracker, and notes?">Clear for new day</button>
+  </div>
+
+  <div class="cols-2 command-grid">
+    <div class="col">
+      <h2 class="section-heading"><span class="icon">&#127799;</span> Start of Shift</h2>
+      <ul class="checklist">
+        <li>Open CT, Review Wave, Cash Practice, email, and voicemail</li>
+        <li>Review today's schedule for NP, ROF, Day 3, SoftWave, and re-exams</li>
+        <li>Check red letters, alerts, balances, and open payment issues before patients arrive</li>
+        <li>Confirm rooms, forms, receipts, scanner, phone, and front desk supplies are ready</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h2 class="section-heading"><span class="icon">&#127799;</span> Today's Focus</h2>
+      <textarea class="sop-text command-focus" name="command_focus" placeholder="Top priorities, reminders, doctor notes, or anything that cannot slip today."></textarea>
+    </div>
+  </div>
+
+  <h2 class="section-heading"><span class="icon">&#127799;</span> Patient-by-Patient Tracker</h2>
+  <div class="huddle-scroll command-scroll">
+    <table class="huddle-table command-table">
+      <thead>
+        <tr>
+          <th style="width:8%;">Time</th>
+          <th style="width:16%;">Patient</th>
+          <th style="width:14%;">Appt Type</th>
+          <th style="width:8%;">Payment</th>
+          <th style="width:8%;">Next Appt</th>
+          <th style="width:7%;">Done</th>
+          <th>Notes / Next Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><input class="sop-text cell-input" name="command_time_1" type="text"></td><td><input class="sop-text cell-input" name="command_patient_1" type="text"></td><td><input class="sop-text cell-input" name="command_type_1" type="text"></td><td class="check-cell"><input class="sop-bool" name="command_paid_1" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_next_1" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_done_1" type="checkbox"></td><td><input class="sop-text cell-input" name="command_notes_1" type="text"></td></tr>
+        <tr><td><input class="sop-text cell-input" name="command_time_2" type="text"></td><td><input class="sop-text cell-input" name="command_patient_2" type="text"></td><td><input class="sop-text cell-input" name="command_type_2" type="text"></td><td class="check-cell"><input class="sop-bool" name="command_paid_2" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_next_2" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_done_2" type="checkbox"></td><td><input class="sop-text cell-input" name="command_notes_2" type="text"></td></tr>
+        <tr><td><input class="sop-text cell-input" name="command_time_3" type="text"></td><td><input class="sop-text cell-input" name="command_patient_3" type="text"></td><td><input class="sop-text cell-input" name="command_type_3" type="text"></td><td class="check-cell"><input class="sop-bool" name="command_paid_3" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_next_3" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_done_3" type="checkbox"></td><td><input class="sop-text cell-input" name="command_notes_3" type="text"></td></tr>
+        <tr><td><input class="sop-text cell-input" name="command_time_4" type="text"></td><td><input class="sop-text cell-input" name="command_patient_4" type="text"></td><td><input class="sop-text cell-input" name="command_type_4" type="text"></td><td class="check-cell"><input class="sop-bool" name="command_paid_4" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_next_4" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_done_4" type="checkbox"></td><td><input class="sop-text cell-input" name="command_notes_4" type="text"></td></tr>
+        <tr><td><input class="sop-text cell-input" name="command_time_5" type="text"></td><td><input class="sop-text cell-input" name="command_patient_5" type="text"></td><td><input class="sop-text cell-input" name="command_type_5" type="text"></td><td class="check-cell"><input class="sop-bool" name="command_paid_5" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_next_5" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_done_5" type="checkbox"></td><td><input class="sop-text cell-input" name="command_notes_5" type="text"></td></tr>
+        <tr><td><input class="sop-text cell-input" name="command_time_6" type="text"></td><td><input class="sop-text cell-input" name="command_patient_6" type="text"></td><td><input class="sop-text cell-input" name="command_type_6" type="text"></td><td class="check-cell"><input class="sop-bool" name="command_paid_6" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_next_6" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_done_6" type="checkbox"></td><td><input class="sop-text cell-input" name="command_notes_6" type="text"></td></tr>
+        <tr><td><input class="sop-text cell-input" name="command_time_7" type="text"></td><td><input class="sop-text cell-input" name="command_patient_7" type="text"></td><td><input class="sop-text cell-input" name="command_type_7" type="text"></td><td class="check-cell"><input class="sop-bool" name="command_paid_7" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_next_7" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_done_7" type="checkbox"></td><td><input class="sop-text cell-input" name="command_notes_7" type="text"></td></tr>
+        <tr><td><input class="sop-text cell-input" name="command_time_8" type="text"></td><td><input class="sop-text cell-input" name="command_patient_8" type="text"></td><td><input class="sop-text cell-input" name="command_type_8" type="text"></td><td class="check-cell"><input class="sop-bool" name="command_paid_8" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_next_8" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_done_8" type="checkbox"></td><td><input class="sop-text cell-input" name="command_notes_8" type="text"></td></tr>
+        <tr><td><input class="sop-text cell-input" name="command_time_9" type="text"></td><td><input class="sop-text cell-input" name="command_patient_9" type="text"></td><td><input class="sop-text cell-input" name="command_type_9" type="text"></td><td class="check-cell"><input class="sop-bool" name="command_paid_9" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_next_9" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_done_9" type="checkbox"></td><td><input class="sop-text cell-input" name="command_notes_9" type="text"></td></tr>
+        <tr><td><input class="sop-text cell-input" name="command_time_10" type="text"></td><td><input class="sop-text cell-input" name="command_patient_10" type="text"></td><td><input class="sop-text cell-input" name="command_type_10" type="text"></td><td class="check-cell"><input class="sop-bool" name="command_paid_10" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_next_10" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_done_10" type="checkbox"></td><td><input class="sop-text cell-input" name="command_notes_10" type="text"></td></tr>
+        <tr><td><input class="sop-text cell-input" name="command_time_11" type="text"></td><td><input class="sop-text cell-input" name="command_patient_11" type="text"></td><td><input class="sop-text cell-input" name="command_type_11" type="text"></td><td class="check-cell"><input class="sop-bool" name="command_paid_11" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_next_11" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_done_11" type="checkbox"></td><td><input class="sop-text cell-input" name="command_notes_11" type="text"></td></tr>
+        <tr><td><input class="sop-text cell-input" name="command_time_12" type="text"></td><td><input class="sop-text cell-input" name="command_patient_12" type="text"></td><td><input class="sop-text cell-input" name="command_type_12" type="text"></td><td class="check-cell"><input class="sop-bool" name="command_paid_12" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_next_12" type="checkbox"></td><td class="check-cell"><input class="sop-bool" name="command_done_12" type="checkbox"></td><td><input class="sop-text cell-input" name="command_notes_12" type="text"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cols-2 command-grid">
+    <div class="col">
+      <h2 class="section-heading"><span class="icon">&#127799;</span> Open Loops</h2>
+      <div class="loop-stack">
+        <label>Callbacks<textarea class="sop-text" name="command_callbacks"></textarea></label>
+        <label>Waiting on Doctor<textarea class="sop-text" name="command_doctor"></textarea></label>
+        <label>Review Wave / Forms<textarea class="sop-text" name="command_review_wave"></textarea></label>
+        <label>Cash Practice / Money Issues<textarea class="sop-text" name="command_money"></textarea></label>
+      </div>
+    </div>
+
+    <div class="col">
+      <h2 class="section-heading"><span class="icon">&#127799;</span> Before Any Patient Leaves</h2>
+      <ul class="checklist">
+        <li>Payment handled</li>
+        <li>Ledger checked</li>
+        <li>Balance checked</li>
+        <li>Alerts checked</li>
+        <li>Next appointment scheduled</li>
+        <li>Date and time said out loud</li>
+        <li>Receipt signed, scanned, and shredded if applicable</li>
+        <li>Red-letter action items completed</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cols-2 command-grid">
+    <div class="col">
+      <h2 class="section-heading"><span class="icon">&#127799;</span> End-of-Day Sweep</h2>
+      <ul class="checklist">
+        <li>Every patient reviewed</li>
+        <li>Payments handled</li>
+        <li>Next appointments scheduled</li>
+        <li>Receipts scanned and shredded</li>
+        <li>Review Wave checked</li>
+        <li>Voicemail checked</li>
+        <li>Email checked</li>
+        <li>Money report / cash log handled</li>
+        <li>Tomorrow's NP / ROF / SW checked</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h2 class="section-heading"><span class="icon">&#127799;</span> Quick SOP Links</h2>
+      <nav class="quick-links">
+        <a href="03-new-patient-call.html">NP Phone Call</a>
+        <a href="04-day-1.html">Day 1</a>
+        <a href="05-day-2-rof.html">ROF</a>
+        <a href="06-day-3.html">Day 3</a>
+        <a href="08-softwave.html">SoftWave</a>
+        <a href="09-checkout.html">Checkout</a>
+        <a href="10-closing.html">Closing</a>
+        <a href="12-rules-colors.html">Rules / Colors</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <a class="nav-link-back" href="14-notes.html">&lsaquo; Notes</a>
+    <span class="page-num">15 &middot; Command Center</span>
+    <a href="index.html">Back to Contents</a>
+  </div>
+</section>
+
+<script src="form.js" defer></script>
+</body>
+</html>

@@ -771,6 +771,124 @@ h3.sub-heading.with-bar::after {
   padding-bottom: 4px;
 }
 
+/* ---------- COMMAND CENTER ---------- */
+.command-page {
+  max-width: 10.5in;
+}
+
+.command-topbar {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto;
+  align-items: end;
+  gap: 14px;
+  margin: 4px 0 18px;
+}
+
+.command-topbar label,
+.loop-stack label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rose);
+}
+
+.command-date {
+  max-width: 280px;
+}
+
+.command-reset {
+  justify-self: end;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--pink-soft);
+  background: var(--burgundy);
+  border: 1px solid var(--burgundy);
+  border-radius: 6px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.command-reset:hover {
+  background: var(--plum);
+}
+
+.command-grid {
+  gap: 22px;
+  margin-top: 10px;
+}
+
+.command-focus {
+  min-height: 150px;
+}
+
+.command-scroll {
+  margin-bottom: 16px;
+}
+
+.command-table {
+  min-width: 980px;
+}
+
+.command-table th {
+  text-align: center;
+}
+
+.command-table td {
+  height: 44px;
+}
+
+.command-table .cell-input {
+  font-size: 18px;
+  border-bottom: none;
+  padding: 3px 4px;
+}
+
+.command-table .check-cell {
+  text-align: center;
+}
+
+.loop-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.loop-stack textarea.sop-text {
+  min-height: 76px;
+  margin-top: 5px;
+  font-size: 20px;
+}
+
+.quick-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.quick-links a {
+  display: block;
+  padding: 12px 14px;
+  text-decoration: none;
+  color: var(--plum);
+  background: var(--paper);
+  border: 1px solid rgba(102, 44, 57, 0.16);
+  border-left: 4px solid var(--pink);
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.quick-links a:hover {
+  border-color: var(--burgundy);
+  border-left-color: var(--burgundy);
+  box-shadow: 0 4px 12px -6px rgba(102, 44, 57, 0.3);
+}
+
 /* ---------- DEPOSIT TABLE ---------- */
 .deposit-yes {
   color: #2E8B3F;
@@ -807,6 +925,53 @@ input.sop-check {
   justify-content: center;
   transition: background 0.12s ease, transform 0.08s ease;
   position: relative;
+}
+
+input.sop-bool {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 1.8px solid var(--burgundy);
+  border-radius: 4px;
+  background: var(--paper);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s ease, transform 0.08s ease;
+  position: relative;
+}
+
+input.sop-bool:hover {
+  background: var(--pink-soft);
+}
+
+input.sop-bool:active {
+  transform: scale(0.92);
+}
+
+input.sop-bool:checked {
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+}
+
+input.sop-bool:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 6px;
+  height: 12px;
+  border: solid var(--pink);
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+input.sop-bool:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
 }
 
 input.sop-check:hover {
@@ -2116,4 +2281,30 @@ body.sop-drawer-open {
   font-size: 18px;
   line-height: 1;
   font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .command-page {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .command-topbar,
+  .command-grid,
+  .quick-links {
+    grid-template-columns: 1fr;
+  }
+
+  .command-reset {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .command-table {
+    min-width: 860px;
+  }
+
+  .command-focus {
+    min-height: 120px;
+  }
 }
