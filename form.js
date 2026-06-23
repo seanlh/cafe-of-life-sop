@@ -1,4 +1,4 @@
-/* =====================================================================
+﻿/* =====================================================================
    Café of Life SOP — Form + Pencil Layer
    - Real checkbox inputs (auto-injected into .checklist li)
    - Text + textarea + contenteditable persistence
@@ -792,7 +792,7 @@
   // Appt types pulled from §12 Rules & Colors + §07 fee schedule.
   // `charge` is the default that auto-fills; null = no fixed default.
   const APPT_TYPES = [
-    { key: 'newpt',     name: 'New Patient',         short: 'New Pt',  chip: 'chip-green',     charge: null },
+    { key: 'newpt',     name: 'New Patient',         short: 'New Pt',  chip: 'chip-green',     charge: 'Deposit' },
     { key: 'adj',       name: 'Adjustment',          short: 'Adj',     chip: 'chip-blue',      charge: 65   },
     { key: 'adjwell',   name: 'Adj / Wellness',      short: 'Adj/Wel', chip: 'chip-lightblue', charge: null },
     { key: 'reexam',    name: 'Re-Exam',             short: 'Re-Exam', chip: 'chip-yellow',    charge: 45   },
@@ -800,19 +800,20 @@
     { key: 'rof',       name: 'ROF',                 short: 'ROF',     chip: 'chip-red',       charge: 55   },
     { key: 'maint',     name: 'Maintenance',         short: 'Maint',   chip: 'chip-pink',      charge: null },
     { key: 'exercise',  name: 'Exercise Consult',    short: 'Exerc.',  chip: 'chip-grey',      charge: 95   },
-    { key: 'softwave',  name: 'SoftWave',            short: 'SW',      chip: 'chip-purple',    charge: null },
+    { key: 'swdisc',    name: 'SoftWave Discovery',  short: 'SW Disc', chip: 'chip-purple',    charge: 25   },
+    { key: 'softwave',  name: 'SoftWave Treatment',  short: 'SW Tx',   chip: 'chip-purple',    charge: null },
     { key: 'xray',      name: 'X-Ray',               short: 'X-Ray',   chip: 'chip-black',     charge: 25   },
     { key: 'day3',      name: 'Day 3',               short: 'Day 3',   chip: 'chip-burgundy',  charge: null }
   ];
   const APPT_BY_KEY = Object.fromEntries(APPT_TYPES.map(t => [t.key, t]));
 
-  // Pay cycle: blank → card → cash → PIF → owes → blank
+  // Pay cycle: blank -> card -> cash -> PIF -> owes -> blank
   const PAY_STATES = [
     { key: 0, icon: '',   short: '',     full: 'Not set' },
-    { key: 1, icon: '💳', short: 'Card', full: 'Card auto-debited' },
-    { key: 2, icon: '💵', short: 'Cash', full: 'Cash / check' },
-    { key: 3, icon: '⊘',  short: 'PIF',  full: 'PIF — paid in full today' },
-    { key: 4, icon: '⚠',  short: 'Owes', full: 'Owes balance' }
+    { key: 1, icon: 'CC', short: 'Card', full: 'Card on file / charge card' },
+    { key: 2, icon: '$',  short: 'Cash', full: 'Cash / check' },
+    { key: 3, icon: '0',  short: 'PIF',  full: 'Paid in full / no charge today' },
+    { key: 4, icon: '!',  short: 'Owes', full: 'Owes balance' }
   ];
 
   function buildTimeSlots() {
@@ -874,15 +875,36 @@
     btn.appendChild(label);
   }
 
-  function applyChargeGhost(cell, apptKey) {
-    cell.innerHTML = '';
-    if (!apptKey) return;
+  function formatChargeValue(charge) {
+    if (charge == null) return '';
+    if (typeof charge === 'number') return '$' + charge;
+    return String(charge);
+  }
+
+  function applyChargeDefault(rowIdx, apptKey) {
+    const input = document.querySelector('.charge-input[data-row="' + rowIdx + '"]');
+    if (!input) return;
     const type = APPT_BY_KEY[apptKey];
-    if (!type || type.charge == null) return;
-    const ghost = document.createElement('span');
-    ghost.className = 'charge-ghost';
-    ghost.textContent = '$' + type.charge;
-    cell.appendChild(ghost);
+    const value = type ? formatChargeValue(type.charge) : '';
+    input.value = value;
+    state['in_huddle_charge_' + rowIdx] = value;
+    input.classList.toggle('has-default-charge', !!value);
+    scheduleSave();
+  }
+
+  function refreshChargeDefault(rowIdx, apptKey) {
+    const input = document.querySelector('.charge-input[data-row="' + rowIdx + '"]');
+    if (!input) return;
+    const type = APPT_BY_KEY[apptKey];
+    const value = type ? formatChargeValue(type.charge) : '';
+    const key = 'in_huddle_charge_' + rowIdx;
+    if (state[key] == null || state[key] === '') {
+      input.value = value;
+      state[key] = value;
+    } else {
+      input.value = state[key];
+    }
+    input.classList.toggle('has-default-charge', !!input.value);
   }
 
   function applyPayState(btn, stateIdx) {
@@ -923,7 +945,7 @@
     APPT_TYPES.forEach(t => {
       const chipStyle = t.chip === 'chip-black' ? ' style="background:#1d1d1d;"' : '';
       const chipClass = t.chip === 'chip-black' ? 'appt-chip' : 'appt-chip ' + t.chip;
-      const price = t.charge != null ? '$' + t.charge : '—';
+      const price = formatChargeValue(t.charge) || '-';
       gridHtml +=
         '<button type="button" class="appt-pick" data-key="' + t.key + '">' +
           '<span class="' + chipClass + '"' + chipStyle + '></span>' +
@@ -985,9 +1007,8 @@
     state['huddle_appt_' + rowIdx] = apptKey || '';
     scheduleSave();
     const btn = document.querySelector('.appt-type-btn[data-row="' + rowIdx + '"]');
-    const charge = document.querySelector('.charge-cell[data-row="' + rowIdx + '"]');
     if (btn) applyApptToButton(btn, apptKey);
-    if (charge) applyChargeGhost(charge, apptKey);
+    applyChargeDefault(rowIdx, apptKey);
   }
 
   function setRowPay(rowIdx, stateIdx) {
@@ -1171,7 +1192,7 @@
         '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_patient_' + i + '" autocomplete="off" enterkeyhint="next" aria-label="Patient name row ' + (i + 1) + '"></textarea></td>' +
         '<td class="time-cell"><button class="time-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick time"></button></td>' +
         '<td class="appt-cell"><button class="appt-type-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick appointment type"></button></td>' +
-        '<td class="charge-cell" data-row="' + i + '"></td>' +
+        '<td class="charge-cell" data-row="' + i + '"><input class="sop-text cell-input charge-input" name="huddle_charge_' + i + '" data-row="' + i + '" type="text" inputmode="decimal" autocomplete="off" placeholder="--" aria-label="Charge amount row ' + (i + 1) + '"></td>' +
         '<td class="input-cell"><input class="sop-text cell-input cell-input-num" name="huddle_card_' + i + '" type="text" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="" aria-label="Card last 4 row ' + (i + 1) + '"></td>' +
         '<td class="pay-cell"><button class="pay-btn cell-btn" type="button" data-row="' + i + '" aria-label="Cycle payment state"></button></td>' +
         '<td class="nextappt-cell"><button class="nextappt-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick next appointment"></button></td>' +
@@ -1204,8 +1225,7 @@
       const row = +btn.dataset.row;
       const saved = state['huddle_appt_' + row] || null;
       applyApptToButton(btn, saved);
-      const chargeCell = table.querySelector('.charge-cell[data-row="' + row + '"]');
-      if (chargeCell) applyChargeGhost(chargeCell, saved);
+      refreshChargeDefault(row, saved);
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
