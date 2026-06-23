@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>All-Day Daily Tracker &middot; Café of Life SOP</title>
-<link rel="stylesheet" href="styles.css?v=20260623-daily-tracker-v2">
+<link rel="stylesheet" href="styles.css?v=20260623-daily-tracker-v3">
 </head>
 <body>
 
@@ -103,12 +103,8 @@
           <label><input class="sop-bool" name="huddle_open_alarm_off" type="checkbox"> Alarm OFF</label>
           <label><input class="sop-bool" name="huddle_open_tidy" type="checkbox"> Tidy up office</label>
           <label><input class="sop-bool" name="huddle_open_floor_carpet" type="checkbox"> Clean floor &amp; carpet Tue, Thu, Fri</label>
-          <label><input class="sop-bool" name="huddle_open_alexa" type="checkbox"> Turn on Alexa</label>
-          <label><input class="sop-bool" name="huddle_open_tvs" type="checkbox"> Turn on all TVs</label>
-          <label><input class="sop-bool" name="huddle_open_tv_videos" type="checkbox"> Play chiro info videos</label>
-          <label><input class="sop-bool" name="huddle_open_diffuser" type="checkbox"> Diffuser</label>
-          <label><input class="sop-bool" name="huddle_open_computers" type="checkbox"> Turn on computers</label>
-          <label><input class="sop-bool" name="huddle_open_checkin_station" type="checkbox"> Log in check-in station</label>
+          <label><input class="sop-bool" name="huddle_open_media_systems" type="checkbox"> Turn on Alexa, TVs, chiro info videos, and diffuser</label>
+          <label><input class="sop-bool" name="huddle_open_computer_systems" type="checkbox"> Turn on computers and log in check-in station</label>
           <label><input class="sop-bool" name="huddle_open_xray" type="checkbox"> Turn on X-ray computer if needed</label>
           <label><input class="sop-bool" name="huddle_open_ac" type="checkbox"> Turn AC to 72 before patients come in</label>
         </div>
@@ -118,9 +114,7 @@
         <div class="compact-check-grid">
           <label><input class="sop-bool" name="huddle_open_cash_log" type="checkbox"> Fill out Google Sheet Cash Log / enter N/A</label>
           <label><input class="sop-bool" name="huddle_open_voicemail" type="checkbox"> Check voicemail / write down messages</label>
-          <label><input class="sop-bool" name="huddle_open_email" type="checkbox"> Office email</label>
-          <label><input class="sop-bool" name="huddle_open_google_calendar" type="checkbox"> Check Google Calendar</label>
-          <label><input class="sop-bool" name="huddle_open_review_wave" type="checkbox"> Review Wave Text Service</label>
+          <label><input class="sop-bool" name="huddle_open_daily_messages" type="checkbox"> Check office email, Google Calendar, and Review Wave Text Service</label>
           <label><input class="sop-bool" name="huddle_open_cp_import" type="checkbox"> Upload Cash Practice payments</label>
           <label><input class="sop-bool" name="huddle_open_declines" type="checkbox"> Check Cash Practice declines / red items</label>
           <label><input class="sop-bool" name="huddle_open_return_calls" type="checkbox"> Return patient voicemail calls / Text</label>
@@ -133,11 +127,7 @@
           <label><input class="sop-bool" name="huddle_sched_times_names" type="checkbox"> Added time and patient name for each appointment</label>
           <label><input class="sop-bool" name="huddle_sched_appt_types" type="checkbox"> Selected appointment type for each patient</label>
           <label><input class="sop-bool" name="huddle_sched_notes_ready" type="checkbox"> Left huddle note space ready for doctor updates</label>
-          <label><input class="sop-bool" name="huddle_sched_np" type="checkbox"> Identified NP</label>
-          <label><input class="sop-bool" name="huddle_sched_rof" type="checkbox"> Identified ROF</label>
-          <label><input class="sop-bool" name="huddle_sched_day3" type="checkbox"> Identified Day 3</label>
-          <label><input class="sop-bool" name="huddle_sched_softwave" type="checkbox"> Identified SoftWave</label>
-          <label><input class="sop-bool" name="huddle_sched_reexams" type="checkbox"> Identified re-exams</label>
+          <label><input class="sop-bool" name="huddle_sched_special_types" type="checkbox"> Identified NP, ROF, Day 3, SoftWave, re-exams, and special appointments</label>
           <label><input class="sop-bool" name="huddle_open_charts" type="checkbox"> Prepare charts: NP, re-exams, ROF, special appointments</label>
         </div>
       </div>
@@ -147,26 +137,19 @@
         <h3>Start Afternoon Shift</h3>
         <div class="compact-check-grid">
           <label><input class="sop-bool" name="huddle_pm_clock_in" type="checkbox"> Clock in</label>
-          <label><input class="sop-bool" name="huddle_pm_open_ct" type="checkbox"> Open CT</label>
-          <label><input class="sop-bool" name="huddle_pm_open_review_wave" type="checkbox"> Open Review Wave</label>
-          <label><input class="sop-bool" name="huddle_pm_open_cash_practice" type="checkbox"> Open Cash Practice</label>
-          <label><input class="sop-bool" name="huddle_pm_open_email" type="checkbox"> Open email</label>
-          <label><input class="sop-bool" name="huddle_pm_open_voicemail" type="checkbox"> Open voicemail</label>
+          <label><input class="sop-bool" name="huddle_pm_open_systems" type="checkbox"> Open CT, Review Wave, Cash Practice, email, and voicemail</label>
           <label><input class="sop-bool" name="huddle_pm_room_reset" type="checkbox"> Reset rooms</label>
           <label><input class="sop-bool" name="huddle_pm_face_paper" type="checkbox"> Face paper checked</label>
           <label><input class="sop-bool" name="huddle_pm_front_supplies" type="checkbox"> Front desk supplies checked</label>
           <label><input class="sop-bool" name="huddle_pm_ac" type="checkbox"> AC checked if needed</label>
-          <label><input class="sop-bool" name="huddle_pm_diffuser" type="checkbox"> Diffuser checked if needed</label>
-          <label><input class="sop-bool" name="huddle_pm_tvs" type="checkbox"> TVs checked if needed</label>
+          <label><input class="sop-bool" name="huddle_pm_media" type="checkbox"> Diffuser / TVs checked if needed</label>
         </div>
       </div>
       <div>
         <h3>Midday Systems</h3>
         <div class="compact-check-grid">
           <label><input class="sop-bool" name="huddle_pm_voicemail" type="checkbox"> Check voicemail / write down messages</label>
-          <label><input class="sop-bool" name="huddle_pm_email" type="checkbox"> Office email</label>
-          <label><input class="sop-bool" name="huddle_pm_google_calendar" type="checkbox"> Check Google Calendar</label>
-          <label><input class="sop-bool" name="huddle_pm_review_wave" type="checkbox"> Review Wave Text Service</label>
+          <label><input class="sop-bool" name="huddle_pm_daily_messages" type="checkbox"> Check office email, Google Calendar, and Review Wave Text Service</label>
           <label><input class="sop-bool" name="huddle_pm_declines" type="checkbox"> Check Cash Practice declines / red items</label>
           <label><input class="sop-bool" name="huddle_pm_calls" type="checkbox"> Return patient voicemail calls / Text</label>
         </div>
@@ -178,11 +161,7 @@
           <label><input class="sop-bool" name="huddle_pm_times_names" type="checkbox"> Added time and patient name for each appointment</label>
           <label><input class="sop-bool" name="huddle_pm_appt_types" type="checkbox"> Selected appointment type for each patient</label>
           <label><input class="sop-bool" name="huddle_pm_notes_ready" type="checkbox"> Left huddle note space ready for doctor updates</label>
-          <label><input class="sop-bool" name="huddle_pm_np" type="checkbox"> Identified NP</label>
-          <label><input class="sop-bool" name="huddle_pm_rof" type="checkbox"> Identified ROF</label>
-          <label><input class="sop-bool" name="huddle_pm_day3" type="checkbox"> Identified Day 3</label>
-          <label><input class="sop-bool" name="huddle_pm_softwave" type="checkbox"> Identified SoftWave</label>
-          <label><input class="sop-bool" name="huddle_pm_reexams" type="checkbox"> Identified re-exams</label>
+          <label><input class="sop-bool" name="huddle_pm_special_types" type="checkbox"> Identified NP, ROF, Day 3, SoftWave, re-exams, and special appointments</label>
         </div>
       </div>
     </div>
@@ -263,10 +242,7 @@
       <div>
         <h3>Closing the day</h3>
         <div class="compact-check-grid">
-          <label><input class="sop-bool" name="huddle_end_voicemail_messages" type="checkbox"> Check voicemail (write down messages)</label>
-          <label><input class="sop-bool" name="huddle_end_office_email" type="checkbox"> Office email</label>
-          <label><input class="sop-bool" name="huddle_end_review_wave_text" type="checkbox"> Review Wave Text Service</label>
-          <label><input class="sop-bool" name="huddle_end_google_calendar" type="checkbox"> Check Google Calendar</label>
+          <label><input class="sop-bool" name="huddle_end_messages" type="checkbox"> Check voicemail, office email, Google Calendar, Review Wave, RW messages, and missed calls</label>
           <label><input class="sop-bool" name="huddle_end_cash_log_na" type="checkbox"> Fill out google sheet "Cash Log". Enter NA under total payments received.</label>
           <label><input class="sop-bool" name="huddle_end_missed_appts" type="checkbox"> Call missed appointments (done within 15 minutes of their scheduled time)</label>
           <label><input class="sop-bool" name="huddle_end_confirm_specials" type="checkbox"> Confirm: NP, ROF, SW, Day 3 &amp; RE-Acts</label>
@@ -277,17 +253,11 @@
       <div>
         <h3>Closing Duties</h3>
         <div class="compact-check-grid">
-          <label><input class="sop-bool" name="huddle_end_garbage" type="checkbox"> Garbage (Daily)</label>
-          <label><input class="sop-bool" name="huddle_end_tables_conditioner" type="checkbox"> Clean Adjustment Tables / Conditioner</label>
-          <label><input class="sop-bool" name="huddle_end_rooms_monitors" type="checkbox"> Clean rooms / and monitors</label>
+          <label><input class="sop-bool" name="huddle_end_room_reset" type="checkbox"> Garbage, clean adjustment tables / conditioner, rooms, and monitors</label>
           <label><input class="sop-bool" name="huddle_end_turn_off_lights_alexa_tvs" type="checkbox"> Turn off lights, Alexa, TVs</label>
-          <label><input class="sop-bool" name="huddle_end_rw_missed" type="checkbox"> Check RW Messages / Missed Calls</label>
           <label><input class="sop-bool" name="huddle_end_scan_sign_in" type="checkbox"> Scan sign-in sheet to folder</label>
           <label><input class="sop-bool" name="huddle_end_next_charts" type="checkbox"> Prepare patient charts for next day (NP, re-exams, ROF, SW SOAPS)</label>
-          <label><input class="sop-bool" name="huddle_end_email_dr_call_list" type="checkbox"> Email Dr. Jen call list with date of service, include NP, ROF and schedule info</label>
-          <label><input class="sop-bool" name="huddle_end_email_daily_report" type="checkbox"> Email Dr. Jen daily end-of-day report</label>
-          <label><input class="sop-bool" name="huddle_end_email_weekly_report" type="checkbox"> Email Dr. Jen weekly end-of-day report when due</label>
-          <label><input class="sop-bool" name="huddle_end_email_next_3_days" type="checkbox"> Attach appointments / schedule for next 3 business days</label>
+          <label><input class="sop-bool" name="huddle_end_email_reports" type="checkbox"> Email Dr. Jen call list / daily report / weekly report if due, with next 3 business days attached</label>
           <label><input class="sop-bool" name="huddle_end_money_report" type="checkbox"> Print Money Report-Give $ to Dr. Jen</label>
           <label><input class="sop-bool" name="huddle_end_count_cash" type="checkbox"> Count Cash in the cash box and give it to Dr. Jen (have Dr Jen sign that she received cash) AND fill out google sheet "cash log"</label>
           <label><input class="sop-bool" name="huddle_end_alarm" type="checkbox"> Set Alarm AWAY</label>
@@ -303,6 +273,6 @@
   </div>
 </section>
 
-<script src="form.js?v=20260623-daily-tracker-v2" defer></script>
+<script src="form.js?v=20260623-daily-tracker-v3" defer></script>
 </body>
 </html>
