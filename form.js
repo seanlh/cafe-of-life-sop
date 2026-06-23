@@ -1376,6 +1376,24 @@
     }
   }
 
+  // ---------- COMMAND CENTER ----------
+  function initCommandCenter() {
+    if (PAGE_FILE !== '15-command-center.html') return;
+    const select = document.querySelector('[data-shift-mode-select]');
+    const panels = Array.from(document.querySelectorAll('[data-shift-panel]'));
+    if (!select || !panels.length) return;
+
+    function applyShiftMode() {
+      const mode = select.value || 'morning';
+      panels.forEach(panel => {
+        panel.classList.toggle('is-active', panel.dataset.shiftPanel === mode);
+      });
+    }
+
+    applyShiftMode();
+    select.addEventListener('change', applyShiftMode);
+  }
+
   // ---------- INIT ----------
   function init() {
     if (ensureNoteRouted()) return;
@@ -1396,6 +1414,7 @@
     initQuickSearch();
     initHuddle();
     initNotesPage();
+    initCommandCenter();
     initHint();
   }
 

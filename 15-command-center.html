@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>15 &middot; Command Center &middot; Caf&eacute; of Life SOP</title>
-<link rel="stylesheet" href="styles.css?v=20260623-live-log">
+<link rel="stylesheet" href="styles.css?v=20260623-shift-mode">
 </head>
 <body>
 
@@ -34,56 +34,118 @@
 
   <div class="cols-2 command-grid">
     <div class="col">
-      <h2 class="section-heading"><span class="icon">&#127799;</span> Start of Shift</h2>
-      <div class="shift-start-stack">
-        <div class="shift-start-block priority">
-          <h3>1. Walk In / Clock In</h3>
-          <ul class="checklist">
-            <li>Walk in and clock in</li>
-            <li>Put belongings away and get settled at the front desk</li>
-            <li>Open the Command Center for today</li>
-          </ul>
-        </div>
+      <div class="shift-mode-head">
+        <h2 class="section-heading"><span class="icon">&#127799;</span> Shift Command</h2>
+        <label>Shift
+          <select class="sop-select shift-mode-select" name="command_shift_mode" data-shift-mode-select>
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+          </select>
+        </label>
+      </div>
 
-        <div class="shift-start-block">
-          <h3>2. Systems First</h3>
-          <ul class="checklist">
-            <li>Open CT</li>
-            <li>Open Review Wave</li>
-            <li>Open Cash Practice</li>
-            <li>Open email</li>
-            <li>Check voicemail</li>
-          </ul>
-        </div>
+      <div class="shift-panel is-active" data-shift-panel="morning">
+        <div class="shift-start-stack">
+          <div class="shift-start-block priority">
+            <h3>1. Walk In / Clock In</h3>
+            <ul class="checklist">
+              <li>Walk in and clock in</li>
+              <li>Put belongings away and get settled at the front desk</li>
+            </ul>
+          </div>
 
-        <div class="shift-start-block">
-          <h3>3. Patient Safety / Schedule Review</h3>
-          <ul class="checklist">
-            <li>Review today's schedule for NP, ROF, Day 3, SoftWave, re-exams, and special cases</li>
-            <li>Check red letters and alerts before patients arrive</li>
-            <li>Check balances, ledgers, and open payment issues</li>
-            <li>Write any must-handle items in Pre-Shift Huddle / cannot forget</li>
-          </ul>
-        </div>
+          <div class="shift-start-block">
+            <h3>2. Systems First</h3>
+            <ul class="checklist">
+              <li>Open CT</li>
+              <li>Open Review Wave</li>
+              <li>Open Cash Practice</li>
+              <li>Open email</li>
+              <li>Check voicemail</li>
+            </ul>
+          </div>
 
-        <div class="shift-start-block">
-          <h3>4. Money / Admin Processes</h3>
-          <ul class="checklist">
-            <li>Check Cash Practice for red / declined items</li>
-            <li>Check money report or cash log needs</li>
-            <li>Check deposits needed for NP or SoftWave</li>
-            <li>Note any special pricing or balance conversations in patient card</li>
-          </ul>
-        </div>
+          <div class="shift-start-block">
+            <h3>3. Patient Safety / Schedule Review</h3>
+            <ul class="checklist">
+              <li>Review today's schedule for NP, ROF, Day 3, SoftWave, re-exams, and special cases</li>
+              <li>Check red letters and alerts before patients arrive</li>
+              <li>Check balances, ledgers, and open payment issues</li>
+              <li>Write any must-handle items in Pre-Shift Huddle / cannot forget</li>
+            </ul>
+          </div>
 
-        <div class="shift-start-block soft">
-          <h3>5. Organizing / Cleaning Duties</h3>
-          <ul class="checklist">
-            <li>Confirm rooms are ready for the first patients</li>
-            <li>Confirm forms, receipts, scanner, and phone are ready</li>
-            <li>Restock front desk / patient supplies if needed</li>
-            <li>Tidy front desk and patient-facing areas</li>
-          </ul>
+          <div class="shift-start-block">
+            <h3>4. Money / Admin Processes</h3>
+            <ul class="checklist">
+              <li>Check Cash Practice for red / declined items</li>
+              <li>Check money report or cash log needs</li>
+              <li>Check deposits needed for NP or SoftWave</li>
+              <li>Note any special pricing or balance conversations in patient card</li>
+            </ul>
+          </div>
+
+          <div class="shift-start-block soft">
+            <h3>5. Organizing / Cleaning Duties</h3>
+            <ul class="checklist">
+              <li>Confirm rooms are ready for the first patients</li>
+              <li>Confirm forms, receipts, scanner, and phone are ready</li>
+              <li>Restock front desk / patient supplies if needed</li>
+              <li>Tidy front desk and patient-facing areas</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="shift-panel" data-shift-panel="afternoon">
+        <div class="shift-start-stack">
+          <div class="shift-start-block priority">
+            <h3>1. Clock In / Get Handoff</h3>
+            <ul class="checklist">
+              <li>Clock in</li>
+              <li>Read morning huddle / Command Center notes</li>
+              <li>Ask what is urgent before the next patient arrives</li>
+            </ul>
+          </div>
+
+          <div class="shift-start-block">
+            <h3>2. Open Loops First</h3>
+            <ul class="checklist">
+              <li>Review callbacks and CT chat messages</li>
+              <li>Check waiting-on-doctor items</li>
+              <li>Check Review Wave / forms still pending</li>
+              <li>Move any unresolved item into Live Shift Log</li>
+            </ul>
+          </div>
+
+          <div class="shift-start-block">
+            <h3>3. Money / Patient Safety</h3>
+            <ul class="checklist">
+              <li>Check Cash Practice for red / declined items</li>
+              <li>Review balances, ledgers, and special pricing notes</li>
+              <li>Check afternoon patients for red letters and alerts</li>
+              <li>Write payment questions before checkout happens</li>
+            </ul>
+          </div>
+
+          <div class="shift-start-block">
+            <h3>4. Afternoon Schedule Scan</h3>
+            <ul class="checklist">
+              <li>Review remaining NP, ROF, Day 3, SoftWave, re-exams, and special cases</li>
+              <li>Confirm next appointment needs for patients still coming in</li>
+              <li>Check forms, receipts, scanner, and phone before the rush</li>
+            </ul>
+          </div>
+
+          <div class="shift-start-block soft">
+            <h3>5. Closing Prep / Reset</h3>
+            <ul class="checklist">
+              <li>Scan or shred receipts that are already complete</li>
+              <li>Restock and tidy patient-facing areas when there is a gap</li>
+              <li>Start tomorrow NP / ROF / SoftWave check if caught up</li>
+              <li>Keep Post-Shift Huddle updated as the day changes</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -100,35 +162,27 @@
     <label>Watch / cannot forget<textarea class="sop-text autogrow" name="command_cannot_forget" placeholder="Red letters, money issues, callbacks, forms, tomorrow prep, special pricing, anything you would be asked about later."></textarea></label>
   </div>
 
-  <h2 class="section-heading"><span class="icon">&#127799;</span> Appointment Requirements</h2>
+  <h2 class="section-heading"><span class="icon">&#127799;</span> Pre-Huddle Appointment Review</h2>
   <div class="appt-requirements-grid">
-    <article class="appt-require-card np">
-      <h3>New Patient</h3>
-      <p>Needs before visit:</p>
-      <label><input class="sop-bool" name="command_req_np_confirmed" type="checkbox"> Appointment confirmed</label>
-      <label><input class="sop-bool" name="command_req_np_deposit" type="checkbox"> Deposit / payment requirement checked</label>
-      <label><input class="sop-bool" name="command_req_np_intake" type="checkbox"> New intake form received or sent</label>
-      <label><input class="sop-bool" name="command_req_np_alerts" type="checkbox"> Alerts, balance, and red letters checked</label>
-      <div class="if-missing">If missing: call patient, note attempt in CT, add to Open Loops, and tell Dr. Jen / manager if it affects the visit.</div>
-    </article>
-
     <article class="appt-require-card day1">
       <h3>Day 1 / First Visit</h3>
-      <p>Before patient leaves:</p>
-      <label><input class="sop-bool" name="command_req_day1_forms" type="checkbox"> Intake, forms, ID / insurance handled</label>
+      <p>Needs before visit:</p>
+      <label><input class="sop-bool" name="command_req_day1_confirmed" type="checkbox"> Appointment confirmed / arrived</label>
+      <label><input class="sop-bool" name="command_req_day1_forms" type="checkbox"> Intake, ID / insurance, and forms handled</label>
       <label><input class="sop-bool" name="command_req_day1_payment" type="checkbox"> Payment, ledger, and balance checked</label>
-      <label><input class="sop-bool" name="command_req_day1_scan" type="checkbox"> Needed scans / documents filed</label>
-      <label><input class="sop-bool" name="command_req_day1_next" type="checkbox"> Next appointment scheduled and said out loud</label>
-      <div class="if-missing">If missing: stop before checkout is final, finish the missing item, then mark Done.</div>
+      <label><input class="sop-bool" name="command_req_day1_next" type="checkbox"> ROF / next appointment ready to schedule</label>
+      <div class="appt-card-notes"><label>Huddle notes / pricing<textarea class="sop-text autogrow" name="command_review_day1_notes" placeholder="Patient names, card on file, balance, missing forms, special pricing, ROF timing."></textarea></label></div>
+      <div class="if-missing">If missing: write the exact missing item before the patient goes back or before checkout.</div>
     </article>
 
     <article class="appt-require-card rof">
       <h3>ROF / Day 2</h3>
-      <p>Needs during ROF:</p>
+      <p>Care plan decision visit:</p>
       <label><input class="sop-bool" name="command_req_rof_payment" type="checkbox"> ROF fee / payment handled</label>
       <label><input class="sop-bool" name="command_req_rof_plan" type="checkbox"> Care plan offered and commitment noted</label>
       <label><input class="sop-bool" name="command_req_rof_note" type="checkbox"> ROF note added in CT</label>
-      <label><input class="sop-bool" name="command_req_rof_next" type="checkbox"> Next appointment scheduled</label>
+      <label><input class="sop-bool" name="command_req_rof_next" type="checkbox"> Future visits / Day 3 ready</label>
+      <div class="appt-card-notes"><label>Huddle notes / pricing<textarea class="sop-text autogrow" name="command_review_rof_notes" placeholder="PIF/monthly/PPV/undecided, care plan offered, balance, family/spouse questions."></textarea></label></div>
       <div class="if-missing">If undecided: write undecided, add follow-up, and update later when they choose.</div>
     </article>
 
@@ -139,26 +193,40 @@
       <label><input class="sop-bool" name="command_req_day3_app" type="checkbox"> App / schedule expectations handled</label>
       <label><input class="sop-bool" name="command_req_day3_notes" type="checkbox"> CT notes, red letters, and alerts updated</label>
       <label><input class="sop-bool" name="command_req_day3_next" type="checkbox"> Future appointments scheduled</label>
+      <div class="appt-card-notes"><label>Huddle notes / pricing<textarea class="sop-text autogrow" name="command_review_day3_notes" placeholder="EZ-Pay, card/ACH, app, PIN, schedule copy, policy reminders."></textarea></label></div>
       <div class="if-missing">If not finished: put the exact missing item in Post-Shift Huddle so it cannot disappear.</div>
     </article>
 
     <article class="appt-require-card softwave">
-      <h3>SoftWave</h3>
-      <p>Must be confirmed by call:</p>
-      <label><input class="sop-bool" name="command_req_sw_call" type="checkbox"> Call completed, not just text</label>
-      <label><input class="sop-bool" name="command_req_sw_area" type="checkbox"> Appointment, area, deposit / payment, cancellation policy confirmed</label>
-      <label><input class="sop-bool" name="command_req_sw_doc" type="checkbox"> Call documented</label>
-      <label><input class="sop-bool" name="command_req_sw_next" type="checkbox"> Aftercare given and next SoftWave scheduled</label>
+      <h3>SoftWave Discovery</h3>
+      <p>First SoftWave visit:</p>
+      <label><input class="sop-bool" name="command_req_sw_disc_call" type="checkbox"> Confirmed by call, not text</label>
+      <label><input class="sop-bool" name="command_req_sw_disc_deposit" type="checkbox"> $25 deposit / payment checked</label>
+      <label><input class="sop-bool" name="command_req_sw_disc_area" type="checkbox"> Treatment area and cancellation policy confirmed</label>
+      <label><input class="sop-bool" name="command_req_sw_disc_next" type="checkbox"> Next SoftWave ready to schedule before patient leaves</label>
+      <div class="appt-card-notes"><label>Huddle notes / pricing<textarea class="sop-text autogrow" name="command_review_sw_discovery_notes" placeholder="Area, deposit, package recommendation, pain severity, call/documentation status."></textarea></label></div>
       <div class="if-missing">If missing: call before visit, document attempt, and flag in Open Loops.</div>
     </article>
 
+    <article class="appt-require-card softwave">
+      <h3>SoftWave Day 2 / Treatment</h3>
+      <p>Follow-up treatment:</p>
+      <label><input class="sop-bool" name="command_req_sw_day2_call" type="checkbox"> Confirmed by call, not text</label>
+      <label><input class="sop-bool" name="command_req_sw_day2_payment" type="checkbox"> Payment / package status checked</label>
+      <label><input class="sop-bool" name="command_req_sw_day2_area" type="checkbox"> Treatment area / pulses plan checked</label>
+      <label><input class="sop-bool" name="command_req_sw_day2_next" type="checkbox"> Aftercare and next SoftWave handled</label>
+      <div class="appt-card-notes"><label>Huddle notes / pricing<textarea class="sop-text autogrow" name="command_review_sw_day2_notes" placeholder="Remaining visits, payment status, area changes, aftercare, next SoftWave date/time."></textarea></label></div>
+      <div class="if-missing">If anything changes: update notes, payment, and schedule before Done.</div>
+    </article>
+
     <article class="appt-require-card special">
-      <h3>Adjustment / Special Case</h3>
+      <h3>Other / Special Case</h3>
       <p>Quick safety sweep:</p>
       <label><input class="sop-bool" name="command_req_special_ledger" type="checkbox"> Ledger, balance, and payment checked</label>
       <label><input class="sop-bool" name="command_req_special_alerts" type="checkbox"> Red letters / CT color updates reviewed</label>
       <label><input class="sop-bool" name="command_req_special_price" type="checkbox"> Special pricing documented if applicable</label>
       <label><input class="sop-bool" name="command_req_special_next" type="checkbox"> Next appointment handled</label>
+      <div class="appt-card-notes"><label>Huddle notes / pricing<textarea class="sop-text autogrow" name="command_review_special_notes" placeholder="Adjustment, re-exam, X-ray, exercise consult, money issue, red letter, special instruction."></textarea></label></div>
       <div class="if-missing">If something feels off: mark Waiting on Dr., write the exact question, and do not mark Done yet.</div>
     </article>
   </div>
@@ -503,6 +571,6 @@
   </div>
 </section>
 
-<script src="form.js?v=20260623-live-log" defer></script>
+<script src="form.js?v=20260623-shift-mode" defer></script>
 </body>
 </html>

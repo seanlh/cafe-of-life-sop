@@ -858,6 +858,39 @@ input.command-date {
   gap: 10px;
 }
 
+.shift-mode-head {
+  display: grid;
+  grid-template-columns: 1fr minmax(150px, 190px);
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 10px;
+}
+
+.shift-mode-head .section-heading {
+  margin-bottom: 0;
+}
+
+.shift-mode-head label {
+  color: var(--rose);
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.shift-mode-select {
+  margin-top: 5px;
+}
+
+.shift-panel {
+  display: none;
+}
+
+.shift-panel.is-active {
+  display: block;
+}
+
 .shift-start-block {
   border: 1px solid rgba(102, 44, 57, 0.14);
   border-left: 4px solid var(--rose);
@@ -1068,6 +1101,26 @@ select.sop-select:focus {
 
 .appt-require-card input.sop-bool {
   margin-top: 0;
+}
+
+.appt-card-notes {
+  margin-top: 4px;
+}
+
+.appt-card-notes label {
+  display: block;
+  color: var(--rose);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.appt-card-notes textarea.sop-text {
+  min-height: 58px;
+  margin-top: 5px;
+  resize: none;
+  overflow: hidden;
 }
 
 .if-missing {
@@ -2743,6 +2796,7 @@ body.sop-drawer-open {
   .command-grid,
   .command-huddle-grid,
   .command-handoff,
+  .shift-mode-head,
   .appt-requirements-grid,
   .patient-card-head,
   .patient-update-row,
