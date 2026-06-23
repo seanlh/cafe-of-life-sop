@@ -2070,6 +2070,7 @@ body.sop-drawer-open {
   .page-footer .nav-link-back,
   .sop-toolbar,
   .sop-savebar,
+  .sop-search,
   .sop-hint,
   .sop-hamburger,
   .sop-backdrop,
@@ -2308,6 +2309,109 @@ body.sop-drawer-open {
   font-size: 18px;
   line-height: 1;
   font-weight: 700;
+}
+
+/* ===========================================================
+   QUICK SEARCH
+   =========================================================== */
+.sop-search {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 18px);
+  right: 18px;
+  z-index: 260;
+  font-family: var(--sans);
+}
+
+.sop-search-toggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 197, 211, 0.3);
+  background: var(--plum);
+  color: var(--pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 10px 26px -14px rgba(51, 12, 21, 0.65);
+}
+
+.sop-search-toggle:hover {
+  background: var(--burgundy);
+}
+
+.sop-search-panel {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: min(430px, calc(100vw - 28px));
+  background: var(--paper);
+  border: 1px solid rgba(102, 44, 57, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 24px 70px -32px rgba(51, 12, 21, 0.58),
+              0 8px 22px -14px rgba(51, 12, 21, 0.35);
+  overflow: hidden;
+}
+
+.sop-search.open .sop-search-panel {
+  display: block;
+}
+
+.sop-search-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid rgba(102, 44, 57, 0.15);
+  background: var(--pink-paper);
+  color: var(--plum);
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 13px 15px;
+  outline: none;
+}
+
+.sop-search-results {
+  max-height: min(440px, 70vh);
+  overflow-y: auto;
+  padding: 7px;
+}
+
+.sop-search-result {
+  display: block;
+  text-decoration: none;
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 10px 11px;
+  border-left: 4px solid transparent;
+}
+
+.sop-search-result:hover {
+  background: var(--pink-paper);
+  border-left-color: var(--burgundy);
+}
+
+.search-result-title {
+  display: block;
+  color: var(--burgundy);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.search-result-excerpt {
+  display: block;
+  color: var(--rose);
+  font-size: 12px;
+  line-height: 1.35;
+  margin-top: 3px;
+}
+
+.sop-search-empty {
+  padding: 16px 14px;
+  color: var(--rose);
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 @media (max-width: 720px) {

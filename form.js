@@ -19,6 +19,24 @@
   const NOTES_INDEX_KEY = 'cofl_sop_notes_index_v1';
   const HUDDLE_PAGE = '13-huddle-sheet.html';
   const HUDDLE_INDEX_KEY = 'cofl_sop_huddle_index_v1';
+  const SEARCH_PAGES = [
+    { title: 'Contents', href: 'index.html' },
+    { title: 'Office Information', href: '01-office-info.html' },
+    { title: 'Opening Procedures', href: '02-opening.html' },
+    { title: 'New Patient Phone Call', href: '03-new-patient-call.html' },
+    { title: 'Day 1 - First Visit', href: '04-day-1.html' },
+    { title: 'Day 2 - ROF', href: '05-day-2-rof.html' },
+    { title: 'Day 3 - Onboarding', href: '06-day-3.html' },
+    { title: 'Adjustment Visit', href: '07-adjustment.html' },
+    { title: 'SoftWave', href: '08-softwave.html' },
+    { title: 'Checkout', href: '09-checkout.html' },
+    { title: 'Closing Procedures', href: '10-closing.html' },
+    { title: 'Systems & Forms', href: '11-systems-forms.html' },
+    { title: 'Rules & Color Guide', href: '12-rules-colors.html' },
+    { title: 'Daily Huddle Sheet', href: '13-huddle-sheet.html' },
+    { title: 'Notes', href: '14-notes.html' },
+    { title: 'Command Center', href: '15-command-center.html' }
+  ];
 
   function getNotesIndex() {
     try {
@@ -441,6 +459,124 @@
         location.reload();
       });
     });
+  }
+
+  // ---------- QUICK SEARCH ----------
+  function stripHTML(html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    doc.querySelectorAll('script, style, nav, .sop-toolbar, .sop-savebar').forEach(el => el.remove());
+    return (doc.body ? doc.body.textContent : '').replace(/\s+/g, ' ').trim();
+  }
+
+  let searchCache = null;
+  function loadSearchIndex() {
+    if (searchCache) return searchCache;
+    searchCache = Promise.all(SEARCH_PAGES.map(page => {
+      return fetch(page.href)
+        .then(r => r.ok ? r.text() : '')
+        .then(html => ({
+          title: page.title,
+          href: page.href,
+          text: stripHTML(html || '')
+        }))
+        .catch(() => ({ title: page.title, href: page.href, text: page.title }));
+    }));
+    return searchCache;
+  }
+
+  function excerpt(text, needle) {
+    const lower = text.toLowerCase();
+    const idx = lower.indexOf(needle.toLowerCase());
+    if (idx < 0) return text.slice(0, 130);
+    const start = Math.max(0, idx - 55);
+    const end = Math.min(text.length, idx + needle.length + 90);
+    return (start ? '...' : '') + text.slice(start, end) + (end < text.length ? '...' : '');
+  }
+
+  function initQuickSearch() {
+    if (document.querySelector('.sop-search')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'sop-search';
+    wrap.innerHTML =
+      '<button class="sop-search-toggle" type="button" aria-label="Search SOP" title="Search SOP">' +
+        '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>' +
+      '</button>' +
+      '<div class="sop-search-panel" role="search">' +
+        '<input class="sop-search-input" type="search" placeholder="Search SOP..." autocomplete="off" aria-label="Search SOP">' +
+        '<div class="sop-search-results" aria-live="polite"></div>' +
+      '</div>';
+    document.body.appendChild(wrap);
+
+    const toggle = wrap.querySelector('.sop-search-toggle');
+    const panel = wrap.querySelector('.sop-search-panel');
+    const input = wrap.querySelector('.sop-search-input');
+    const results = wrap.querySelector('.sop-search-results');
+
+    function openSearch() {
+      wrap.classList.add('open');
+      loadSearchIndex();
+      setTimeout(() => input.focus(), 0);
+    }
+    function closeSearch() {
+      wrap.classList.remove('open');
+      input.blur();
+    }
+    function render(items, q) {
+      if (!q) {
+        results.innerHTML = '<div class="sop-search-empty">Type a keyword, page name, fee, color, or task.</div>';
+        return;
+      }
+      if (!items.length) {
+        results.innerHTML = '<div class="sop-search-empty">No matches yet.</div>';
+        return;
+      }
+      results.innerHTML = items.slice(0, 8).map(item =>
+        '<a class="sop-search-result" href="' + item.href + '">' +
+          '<span class="search-result-title">' + escapeHTML(item.title) + '</span>' +
+          '<span class="search-result-excerpt">' + escapeHTML(excerpt(item.text, q)) + '</span>' +
+        '</a>'
+      ).join('');
+    }
+    function runSearch() {
+      const q = input.value.trim();
+      loadSearchIndex().then(index => {
+        const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+        const matches = index
+          .map(item => {
+            const titleHay = item.title.toLowerCase();
+            const textHay = item.text.toLowerCase();
+            const score = terms.reduce((sum, term) => {
+              let s = 0;
+              if (titleHay.includes(term)) s += 5;
+              if (textHay.includes(term)) s += 1;
+              return sum + s;
+            }, 0);
+            return { ...item, score };
+          })
+          .filter(item => item.score > 0)
+          .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
+        render(matches, q);
+      });
+    }
+
+    toggle.addEventListener('click', () => {
+      if (wrap.classList.contains('open')) closeSearch();
+      else openSearch();
+    });
+    input.addEventListener('input', runSearch);
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        openSearch();
+      }
+      if (e.key === 'Escape' && wrap.classList.contains('open')) closeSearch();
+    });
+    document.addEventListener('pointerdown', (e) => {
+      if (!wrap.classList.contains('open')) return;
+      if (wrap.contains(e.target)) return;
+      closeSearch();
+    });
+    render([], '');
   }
 
   // ---------- HAMBURGER DRAWER ----------
@@ -1242,6 +1378,7 @@
     initSaveBar();
     initPageResetButtons();
     initDrawer();
+    initQuickSearch();
     initHuddle();
     initNotesPage();
     initHint();
