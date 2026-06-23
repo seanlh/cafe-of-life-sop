@@ -129,15 +129,15 @@
       <div>
         <h3>Appointment Planner Prep</h3>
         <div class="compact-check-grid">
-          <label><input class="sop-bool" name="huddle_sched_ledger" type="checkbox"> Checked each patient's ledger</label>
-          <label><input class="sop-bool" name="huddle_sched_alerts" type="checkbox"> Checked alerts / red letters</label>
-          <label><input class="sop-bool" name="huddle_sched_future" type="checkbox"> Checked future appointments</label>
+          <label><input class="sop-bool" name="huddle_sched_entered_rows" type="checkbox"> Entered today’s ChiroTouch appointments into tracker</label>
+          <label><input class="sop-bool" name="huddle_sched_times_names" type="checkbox"> Added time and patient name for each appointment</label>
+          <label><input class="sop-bool" name="huddle_sched_appt_types" type="checkbox"> Selected appointment type for each patient</label>
+          <label><input class="sop-bool" name="huddle_sched_notes_ready" type="checkbox"> Left huddle note space ready for doctor updates</label>
           <label><input class="sop-bool" name="huddle_sched_np" type="checkbox"> Identified NP</label>
           <label><input class="sop-bool" name="huddle_sched_rof" type="checkbox"> Identified ROF</label>
           <label><input class="sop-bool" name="huddle_sched_day3" type="checkbox"> Identified Day 3</label>
           <label><input class="sop-bool" name="huddle_sched_softwave" type="checkbox"> Identified SoftWave</label>
           <label><input class="sop-bool" name="huddle_sched_reexams" type="checkbox"> Identified re-exams</label>
-          <label><input class="sop-bool" name="huddle_sched_balances" type="checkbox"> Identified balances / open items</label>
           <label><input class="sop-bool" name="huddle_open_charts" type="checkbox"> Prepare charts: NP, re-exams, ROF, special appointments</label>
         </div>
       </div>
@@ -174,15 +174,15 @@
       <div>
         <h3>Afternoon Schedule Review</h3>
         <div class="compact-check-grid">
-          <label><input class="sop-bool" name="huddle_pm_ledgers" type="checkbox"> Checked each patient's ledger</label>
-          <label><input class="sop-bool" name="huddle_pm_alerts" type="checkbox"> Checked alerts / red letters</label>
-          <label><input class="sop-bool" name="huddle_pm_future" type="checkbox"> Checked future appointments</label>
+          <label><input class="sop-bool" name="huddle_pm_entered_rows" type="checkbox"> Entered afternoon ChiroTouch appointments into tracker</label>
+          <label><input class="sop-bool" name="huddle_pm_times_names" type="checkbox"> Added time and patient name for each appointment</label>
+          <label><input class="sop-bool" name="huddle_pm_appt_types" type="checkbox"> Selected appointment type for each patient</label>
+          <label><input class="sop-bool" name="huddle_pm_notes_ready" type="checkbox"> Left huddle note space ready for doctor updates</label>
           <label><input class="sop-bool" name="huddle_pm_np" type="checkbox"> Identified NP</label>
           <label><input class="sop-bool" name="huddle_pm_rof" type="checkbox"> Identified ROF</label>
           <label><input class="sop-bool" name="huddle_pm_day3" type="checkbox"> Identified Day 3</label>
           <label><input class="sop-bool" name="huddle_pm_softwave" type="checkbox"> Identified SoftWave</label>
           <label><input class="sop-bool" name="huddle_pm_reexams" type="checkbox"> Identified re-exams</label>
-          <label><input class="sop-bool" name="huddle_pm_open_items" type="checkbox"> Identified balances / open items</label>
         </div>
       </div>
     </div>
@@ -205,6 +205,7 @@
         <th style="width:14%;">Appt Type</th>
         <th style="width:16%;">Balance / Payment Note</th>
         <th>Huddle Note</th>
+        <th>Post-Shift Update / Question</th>
         <th style="width:14%;">Next Appointment</th>
         <th style="width:9%;">Status</th>
         <th style="width:7%;">Remove</th>
@@ -228,30 +229,43 @@
   </details>
 
   <details class="huddle-day-section">
-    <summary>3. Post-Huddle / End Shift Review</summary>
+    <summary>3. Post-Shift Huddle / End Shift Review</summary>
     <div class="huddle-not-done" data-huddle-not-done hidden></div>
+    <div class="huddle-note-board post-shift-board">
+      <label>Patient updates from today<textarea class="sop-text autogrow" name="huddle_post_patient_updates"></textarea></label>
+      <label>Questions for Dr. Jen<textarea class="sop-text autogrow" name="huddle_post_doctor_questions"></textarea></label>
+      <label>Payment / decline updates<textarea class="sop-text autogrow" name="huddle_post_payment_updates"></textarea></label>
+      <label>Scheduling updates<textarea class="sop-text autogrow" name="huddle_post_scheduling_updates"></textarea></label>
+      <label>Callbacks / Review Wave / forms<textarea class="sop-text autogrow" name="huddle_post_callbacks_forms"></textarea></label>
+      <label>Carry over to tomorrow<textarea class="sop-text autogrow" name="huddle_post_carry_over"></textarea></label>
+    </div>
     <div class="huddle-day-grid huddle-closing-grid">
       <div>
-        <h3>Review Before Leaving</h3>
+        <h3>Closing the day</h3>
         <div class="compact-check-grid">
-          <label><input class="sop-bool" name="huddle_end_all_patients" type="checkbox"> All patients reviewed</label>
-          <label><input class="sop-bool" name="huddle_end_payments" type="checkbox"> All payments reviewed</label>
-          <label><input class="sop-bool" name="huddle_end_next_appts" type="checkbox"> All next appointments reviewed</label>
-          <label><input class="sop-bool" name="huddle_end_google_calendar" type="checkbox"> Google Calendar checked</label>
-          <label><input class="sop-bool" name="huddle_end_receipts" type="checkbox"> Receipts scanned/shredded</label>
-          <label><input class="sop-bool" name="huddle_end_open_loops" type="checkbox"> Open loops handled or carried to next day</label>
-          <label><input class="sop-bool" name="huddle_end_tomorrow" type="checkbox"> Tomorrow NP / ROF / SW / re-exams reviewed</label>
+          <label><input class="sop-bool" name="huddle_end_voicemail_messages" type="checkbox"> Check voicemail (write down messages)</label>
+          <label><input class="sop-bool" name="huddle_end_office_email" type="checkbox"> Office email</label>
+          <label><input class="sop-bool" name="huddle_end_review_wave_text" type="checkbox"> Review Wave Text Service</label>
+          <label><input class="sop-bool" name="huddle_end_google_calendar" type="checkbox"> Check Google Calendar</label>
+          <label><input class="sop-bool" name="huddle_end_cash_log_na" type="checkbox"> Fill out google sheet "Cash Log". Enter NA under total payments received.</label>
+          <label><input class="sop-bool" name="huddle_end_missed_appts" type="checkbox"> Call missed appointments (done within 15 minutes of their scheduled time)</label>
+          <label><input class="sop-bool" name="huddle_end_confirm_specials" type="checkbox"> Confirm: NP, ROF, SW, Day 3 &amp; RE-Acts</label>
+          <label><input class="sop-bool" name="huddle_end_dr_questions" type="checkbox"> Review with Dr. Jen any problems or questions during huddles.</label>
+          <label><input class="sop-bool" name="huddle_end_superbills" type="checkbox"> Make sure all super-bills have been finished and filed away, write down dates of missing SOAPs</label>
         </div>
       </div>
       <div>
         <h3>Closing Duties</h3>
         <div class="compact-check-grid">
-          <label><input class="sop-bool" name="huddle_end_review_wave" type="checkbox"> Review Wave checked</label>
-          <label><input class="sop-bool" name="huddle_end_voicemail" type="checkbox"> Voicemail checked</label>
-          <label><input class="sop-bool" name="huddle_end_email" type="checkbox"> Email checked</label>
-          <label><input class="sop-bool" name="huddle_end_money_report" type="checkbox"> Money report handled</label>
-          <label><input class="sop-bool" name="huddle_end_cash_log" type="checkbox"> Cash log handled</label>
-          <label><input class="sop-bool" name="huddle_end_closing_duties" type="checkbox"> Closing duties completed</label>
+          <label><input class="sop-bool" name="huddle_end_garbage" type="checkbox"> Garbage (Daily)</label>
+          <label><input class="sop-bool" name="huddle_end_tables_conditioner" type="checkbox"> Clean Adjustment Tables / Conditioner</label>
+          <label><input class="sop-bool" name="huddle_end_rooms_monitors" type="checkbox"> Clean rooms / and monitors</label>
+          <label><input class="sop-bool" name="huddle_end_turn_off_lights_alexa_tvs" type="checkbox"> Turn off lights, Alexa, TVs</label>
+          <label><input class="sop-bool" name="huddle_end_rw_missed" type="checkbox"> Check RW Messages / Missed Calls</label>
+          <label><input class="sop-bool" name="huddle_end_next_charts" type="checkbox"> Prepare patient charts for next day (NP, re-exams, ROF, SW SOAPS)</label>
+          <label><input class="sop-bool" name="huddle_end_email_dr_call_list" type="checkbox"> Email Dr. Jen call list with date of service, include NP, ROF and schedule info, attach schedule of next 3 business days</label>
+          <label><input class="sop-bool" name="huddle_end_money_report" type="checkbox"> Print Money Report-Give $ to Dr. Jen</label>
+          <label><input class="sop-bool" name="huddle_end_count_cash" type="checkbox"> Count Cash in the cash box and give it to Dr. Jen (have Dr Jen sign that she received cash) AND fill out google sheet "cash log"</label>
           <label><input class="sop-bool" name="huddle_end_alarm" type="checkbox"> Set Alarm AWAY</label>
         </div>
       </div>

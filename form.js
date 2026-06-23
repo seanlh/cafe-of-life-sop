@@ -839,15 +839,15 @@
     newpt: {
       title: 'New Patient / NP Day 1',
       groups: [
-        { title: 'Before Patient Arrives', items: ['Review Wave Forms checked', 'NP intake imported/linked to CT', 'CT patient file created/updated', 'Insurance card + photo ID ready if applicable', 'NP intake card/file ready'] },
-        { title: 'During Appointment', items: ['Meet & Greet NP', 'Copy insurance card & photo ID', 'Take Day 1 payment before services', 'Give Day 1 handout: Finding the Cause of My Condition', 'Ask Day 1 handout Qs only if trained', 'Take photo of patient', 'Give patient gift bag', 'Office Tour Script used', 'Play Video 1: chiropractic approach video'] },
-        { title: 'Before Patient Leaves', items: ['Complete file in CT: referred from?', 'Confirm NP appointment in CT', 'Schedule ROF / Day 2', 'Give ROF handout: Your Next Visit - The Doctor’s Report', 'Receipt signed/scanned/shredded if applicable', 'Put file in ROF holder', 'Next appointment confirmed out loud', 'Done'] }
+        { title: 'Day 1 - Front Office', items: ['Meet & Greet NP', 'Copy Insurance Card & Photo ID', 'Day 1 Handout & Q’s', 'Take Payment', 'Take Photo of Patient', 'Complete File in CT (referred from?)', 'Pt gift bag', 'Office Tour'] },
+        { title: 'Day 1 - Back Office', items: ['Pt Sign the 3 Sheets', 'Confirm NP Appointment', 'Verify Insurance', 'Dr. First Call Sheet', 'Schedule ROF & ROF Handout', 'Put File in ROF Holder'] },
+        { title: 'Before Patient Leaves', items: ['Next appointment confirmed out loud', 'Done'] }
       ]
     },
     adj: {
       title: 'Adjustment',
       groups: [
-        { title: 'Before Patient Arrives', items: ['Ledger checked', 'Balance checked', 'Alerts/red letters checked', 'Future appointments checked'] },
+        { title: 'Before Patient Arrives', items: ['Ledger / balance checked', 'Alerts/red letters checked', 'Future appointments checked'] },
         { title: 'During Appointment', items: ['Collect payment if due before service', 'Ask permission to use card on file if applicable', 'Doctor performs adjustment'] },
         { title: 'Before Patient Leaves', items: ['Receipt signed/scanned/shredded if applicable', 'Next appointment scheduled', 'Date/time confirmed out loud', 'Notes/action items completed', 'Done'] }
       ]
@@ -863,15 +863,16 @@
     rof: {
       title: 'ROF / Day 2',
       groups: [
-        { title: 'Before Patient Arrives', items: ['ROF confirmed on schedule', 'Care plan prepared', 'Insurance / coverage reviewed if applicable', 'Day 2 handout ready: Your Health & Life How to Make the Right Choice', 'Day 3 Literature & Questions ready', 'Day 1 & 3 Lit & Questions ready if spouse'] },
-        { title: 'During Appointment', items: ['Take ROF payment $55', 'Give Day 2 handout: Your Health & Life How to Make the Right Choice', 'Patient reads handout', 'Use Day 2 welcome/spouse script', 'Do not ask handout questions until properly trained', 'Take patient back and say normal vs abnormal X-ray video script', 'Play normal vs abnormal X-rays video', 'Notify doctor patient is ready'] },
-        { title: 'Before Patient Leaves', items: ['Care plan signed, even if undecided', 'Payment option selected: PPV / PIF / monthly / undecided', 'Take 1st Care Plan Pmt / give receipt', 'Schedule patient appt 1-4 weeks', 'Set up re-exam and exercise consult appt', 'Patient sign care plan', 'Make schedule copy for patient', 'Review missed appt / text policy', 'Give 2 health passes, 7 day expiration', 'ROF note entered: Offered + Commitment', 'Set up Alert Packages', 'Change payment type', 'Date/time confirmed out loud', 'Done'] }
+        { title: 'Before ROF Begins - Back Office', items: ['Take ROF payment $55', 'Day 3 Literature & Questions', 'Day 1 & 3 Lit & Questions (Spouse)'] },
+        { title: 'Doctor', items: ['X-Ray Analysis', 'Care Plan'] },
+        { title: 'After ROF Ends - Front Office', items: ['Take 1st Care Plan Pmt / Give Receipt', 'Schedule Patient Appt (1-4 wks.)', 'Set up Re-Ex and Ex Consult appt', 'Patient Sign Care Plan', 'Make Schedule Copy for Patient', 'Review missed appt / text policy', 'Schedule Spouse NP Appointment', 'Schedule Kids NP Appointment', 'Give 2 health passes (7 day expiration)', '***Offer Spouse Exam / Xrays today!', 'Date/time confirmed out loud', 'Done'] },
+        { title: 'After ROF Ends - Back Office', items: ['Review Care Plan/ Financials', 'ROF NOTE', 'Set up Alert Packages', 'Change payment type', 'Send NP History Email for Family', 'Send APP Link (Rev Wave)'] }
       ]
     },
     maint: {
       title: 'Wellness / Maintenance',
       groups: [
-        { title: 'Before Patient Arrives', items: ['Ledger checked', 'Balance checked', 'Wellness plan/status checked', 'Future appointments checked'] },
+        { title: 'Before Patient Arrives', items: ['Ledger / balance checked', 'Wellness plan/status checked', 'Future appointments checked'] },
         { title: 'During Appointment', items: ['Payment handled if due', 'Adjustment/wellness visit completed'] },
         { title: 'Before Patient Leaves', items: ['Next appointment scheduled', 'Date/time confirmed out loud', 'Notes/action items completed', 'Done'] }
       ]
@@ -887,9 +888,8 @@
     day3: {
       title: 'Day 3',
       groups: [
-        { title: 'Before Patient Arrives', items: ['Care plan/payment terms reviewed', 'EZ-Pay Signature-On-File Authorization ready', 'Payment Type Checklist ready if needed', 'Insurance checklist ready if applicable', 'PIP checklist ready if applicable', 'Schedule needs reviewed'] },
-        { title: 'During Appointment', items: ['Schedule Auto-Debit', 'Assign PIN / show subjective', 'Show Patient Office Flow', 'Review 24 hr & 2 hr text / 2 hr appt policy $25', 'Text patient Scheduling App'] },
-        { title: 'Before Patient Leaves', items: ['Schedule Patient Appt 1-6 months', 'Make Schedule Copy for Patient', 'Complete Payment Type Checklist', 'Insurance checklist completed if needed', 'PIP checklist completed if needed', 'CT payment type updated', 'Next appointment confirmed out loud', 'Done'] }
+        { title: 'Front Office', items: ['Schedule Auto-Debit', 'Assign Pin / show subjective', 'Show Patient Office Flow', 'Map out patient schedule 1-6 months per notes', 'Schedule Patient Appt (1-6 mos.)', 'Make Schedule Copy for Patient', 'Review 24 hr & 2 hr text & 2 hr appt policy $25', 'Txt patient Scheduling App', 'Next appointment confirmed out loud', 'Done'] },
+        { title: 'Back Office', items: ['Complete Payment Type Checklist', 'Insurance (separate checklist)', 'PIP (separate checklist)'] }
       ]
     },
     swdisc: {
@@ -909,7 +909,7 @@
       ]
     }
   };
-  const UNIVERSAL_PATIENT_CHECKS = ['Payment handled', 'Ledger checked', 'Balance checked', 'Alerts checked', 'Next appointment scheduled', 'Date/time confirmed out loud', 'Notes/action items completed'];
+  const UNIVERSAL_PATIENT_CHECKS = ['Payment handled', 'Ledger / balance checked', 'Alerts checked', 'Next appointment scheduled', 'Date/time confirmed out loud', 'Notes/action items completed'];
 
   // Pay cycle: blank -> card -> cash -> PIF -> owes -> blank
   const PAY_STATES = [
@@ -1049,6 +1049,7 @@
       'in_huddle_patient_' + rowIdx,
       'in_huddle_balance_' + rowIdx,
       'in_huddle_notes_' + rowIdx,
+      'in_huddle_post_' + rowIdx,
       'huddle_nextappt_' + rowIdx,
       'bool_huddle_status_' + rowIdx,
       'huddle_appt_' + rowIdx,
@@ -1102,7 +1103,7 @@
   }
 
   function refreshHuddleRow(rowIdx) {
-    ['patient', 'balance', 'notes'].forEach(field => {
+    ['patient', 'balance', 'notes', 'post'].forEach(field => {
       const el = document.querySelector('[name="huddle_' + field + '_' + rowIdx + '"]');
       const key = 'in_huddle_' + field + '_' + rowIdx;
       if (el) el.value = state[key] || '';
@@ -1420,6 +1421,7 @@
         '<td class="appt-cell"><button class="appt-type-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick appointment type"></button></td>' +
         '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_balance_' + i + '" autocomplete="off" aria-label="Balance or payment note row ' + (i + 1) + '"></textarea></td>' +
         '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_notes_' + i + '" autocomplete="off" aria-label="Huddle note row ' + (i + 1) + '"></textarea></td>' +
+        '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_post_' + i + '" autocomplete="off" aria-label="Post-shift update or question row ' + (i + 1) + '"></textarea></td>' +
         '<td class="nextappt-cell"><button class="nextappt-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick next appointment"></button></td>' +
         '<td class="huddle-status-cell"><label class="huddle-status-done"><input class="sop-bool huddle-done-check" name="huddle_status_' + i + '" type="checkbox" data-row="' + i + '"> Done</label></td>' +
         '<td class="huddle-row-actions">' +
@@ -1427,7 +1429,7 @@
         '</td>' +
       '</tr>' +
       '<tr class="huddle-requirements-row" data-req-row="' + i + '" hidden>' +
-        '<td class="huddle-requirements-cell" colspan="8"></td>' +
+        '<td class="huddle-requirements-cell" colspan="9"></td>' +
       '</tr>'
     );
   }
@@ -1505,8 +1507,7 @@
   };
   const COMMAND_UNIVERSAL_CHECKS = [
     ['payment', 'Payment handled'],
-    ['ledger', 'Ledger checked'],
-    ['balance', 'Balance checked'],
+    ['ledger_balance', 'Ledger / balance checked'],
     ['alerts', 'Alerts checked'],
     ['nextappt', 'Next appointment scheduled'],
     ['confirmed', 'Date/time confirmed out loud'],
@@ -1661,7 +1662,7 @@
   }
 
   function rowHasVisibleHuddleContent(rowIdx) {
-    return ['in_huddle_patient_', 'in_huddle_balance_', 'in_huddle_notes_', 'huddle_appt_', 'huddle_time_', 'huddle_nextappt_'].some(prefix => {
+    return ['in_huddle_patient_', 'in_huddle_balance_', 'in_huddle_notes_', 'in_huddle_post_', 'huddle_appt_', 'huddle_time_', 'huddle_nextappt_'].some(prefix => {
       const v = state[prefix + rowIdx];
       if (typeof v === 'string') return v.trim() !== '';
       if (v && typeof v === 'object') return Object.keys(v).some(key => v[key]);
@@ -1747,7 +1748,7 @@
         });
       });
 
-      root.querySelectorAll('[name^="huddle_patient_"], [name^="huddle_balance_"], [name^="huddle_notes_"]').forEach(el => {
+      root.querySelectorAll('[name^="huddle_patient_"], [name^="huddle_balance_"], [name^="huddle_notes_"], [name^="huddle_post_"]').forEach(el => {
         if (el.dataset.huddleContentBound) return;
         el.dataset.huddleContentBound = 'true';
         el.addEventListener('input', () => {
