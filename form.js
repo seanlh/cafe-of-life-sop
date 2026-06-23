@@ -12,7 +12,21 @@
 
   const PAGE_FILE = location.pathname.split('/').pop() || 'index.html';
   const PAGE_ID = PAGE_FILE + (location.search || '');
-  const STORAGE_KEY = 'cofl_sop_' + PAGE_ID;
+  function todayISO() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  function currentTrackerDate() {
+    if (PAGE_FILE !== '13-huddle-sheet.html') return '';
+    const p = new URLSearchParams(location.search);
+    const qDate = p.get('date');
+    return /^\d{4}-\d{2}-\d{2}$/.test(qDate || '') ? qDate : todayISO();
+  }
+
+  let STORAGE_KEY = PAGE_FILE === '13-huddle-sheet.html'
+    ? 'command-center-' + currentTrackerDate()
+    : 'cofl_sop_' + PAGE_ID;
 
   // ---------- NOTES REGISTRY ----------
   const NOTES_PAGE = '14-notes.html';
@@ -33,9 +47,8 @@
     { title: 'Closing Procedures', href: '10-closing.html' },
     { title: 'Systems & Forms', href: '11-systems-forms.html' },
     { title: 'Rules & Color Guide', href: '12-rules-colors.html' },
-    { title: 'Daily Huddle Sheet', href: '13-huddle-sheet.html' },
+    { title: 'Daily Shift Tracker', href: '13-huddle-sheet.html' },
     { title: 'Notes', href: '14-notes.html' },
-    { title: 'Command Center', href: '15-command-center.html' }
   ];
 
   function getNotesIndex() {
@@ -89,7 +102,8 @@
       const data = JSON.parse(localStorage.getItem('cofl_sop_' + HUDDLE_PAGE + '?id=' + id));
       const date = data && typeof data.in_huddle_date === 'string' ? data.in_huddle_date.trim() : '';
       const day = data && typeof data.in_huddle_day === 'string' ? data.in_huddle_day.trim() : '';
-      const title = [date, day].filter(Boolean).join(' - ');
+      const shift = data && typeof data.sel_huddle_shift_type === 'string' ? data.sel_huddle_shift_type.trim() : '';
+      const title = [date, day, shift].filter(Boolean).join(' - ');
       if (title) return title;
     } catch {}
     return fallback;
@@ -113,9 +127,9 @@
   let saveTimeout = null;
   let lastSaveTooBigWarned = false;
 
-  function loadState() {
+  function loadState(key = STORAGE_KEY) {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      return JSON.parse(localStorage.getItem(key)) || {};
     } catch { return {}; }
   }
 
@@ -171,8 +185,9 @@
     });
   }
 
-  function initStandaloneCheckboxes() {
-    document.querySelectorAll('input.sop-bool[type="checkbox"]').forEach((el, idx) => {
+  function initStandaloneCheckboxes(root = document) {
+    root.querySelectorAll('input.sop-bool[type="checkbox"]').forEach((el, idx) => {
+      if (el.dataset.key) return;
       const key = 'bool_' + (el.name || el.id || idx);
       el.dataset.key = key;
       el.checked = !!state[key];
@@ -183,8 +198,10 @@
     });
   }
 
-  function initSelects() {
-    document.querySelectorAll('select.sop-select').forEach((el) => {
+  function initSelects(root = document) {
+    root.querySelectorAll('select.sop-select').forEach((el) => {
+      if (el.dataset.key) return;
+      if (el.dataset.huddleSavedDays != null) return;
       const key = 'sel_' + (el.name || el.id || 'select');
       el.dataset.key = key;
       if (state[key] != null) el.value = state[key];
@@ -196,8 +213,10 @@
   }
 
   // ---------- TEXT INPUTS + TEXTAREAS ----------
-  function initInputs() {
-    document.querySelectorAll('input.sop-text, textarea.sop-text').forEach((el) => {
+  function initInputs(root = document) {
+    root.querySelectorAll('input.sop-text, textarea.sop-text').forEach((el) => {
+      if (el.dataset.key) return;
+      if (el.dataset.huddleDate != null || el.dataset.huddleDay != null) return;
       const key = 'in_' + (el.name || slugify(el.placeholder || el.id || 'field'));
       el.dataset.key = key;
       if (state[key] != null) el.value = state[key];
@@ -594,7 +613,7 @@
   // ---------- HAMBURGER DRAWER ----------
   const SECTIONS = [
     { num: '',   title: 'Cover',                  sub: 'Contents · welcome',          href: 'index.html' },
-    { num: '01', title: 'Office Information',     sub: 'Contact · schedule · systems',href: '01-office-info.html' },
+    { num: '01', title: 'Daily Shift Tracker',    sub: 'One live daily workspace',    href: '13-huddle-sheet.html' },
     { num: '02', title: 'Opening Procedures',     sub: 'Before the first patient',    href: '02-opening.html' },
     { num: '03', title: 'New Patient Phone Call', sub: 'Smile before you answer',     href: '03-new-patient-call.html' },
     { num: '04', title: 'Day 1 — First Visit',    sub: 'New patient · green block',   href: '04-day-1.html' },
@@ -606,11 +625,24 @@
     { num: '10', title: 'Closing Procedures',     sub: 'After the last patient',      href: '10-closing.html' },
     { num: '11', title: 'Systems & Forms',        sub: 'Quick lookup',                href: '11-systems-forms.html' },
     { num: '12', title: 'Rules & Color Guide',    sub: 'Appt colors · alerts',        href: '12-rules-colors.html' },
-    { num: '13', title: 'Daily Huddle Sheet',     sub: 'The day at a glance',         href: '13-huddle-sheet.html' },
-    { num: '15', title: 'Command Center',         sub: 'Live shift tracker',          href: '15-command-center.html' }
+    { num: 'Info', title: 'Office Information',   sub: 'Contact · schedule · systems',href: '01-office-info.html' }
   ];
 
   function initDrawer() {
+    const existingBtn = document.querySelector('.sop-hamburger');
+    const existingDrawer = document.querySelector('.sop-drawer');
+
+    if (existingBtn && existingDrawer) {
+      const existingBackdrop = document.querySelector('.sop-backdrop');
+      existingBtn.classList.remove('hidden');
+      existingDrawer.classList.remove('open');
+      if (existingBackdrop) existingBackdrop.classList.remove('open');
+      document.body.classList.remove('sop-drawer-open');
+      return;
+    }
+
+    document.querySelectorAll('.sop-hamburger, .sop-backdrop, .sop-drawer').forEach(el => el.remove());
+
     // Remove old "Contents" link in topnav since the hamburger replaces it
     document.querySelectorAll('.topnav .nav-links a').forEach(a => {
       if (a.getAttribute('href') === 'index.html' && a.textContent.trim() === 'Contents') {
@@ -653,25 +685,25 @@
     }).join('');
     const huddleIdx = getHuddleIndex();
     const huddleItems = huddleIdx.map((h, i) => {
-      const fallback = 'Huddle ' + (huddleIdx.length - i);
+      const fallback = 'Shift ' + (huddleIdx.length - i);
       const title = getHuddleTitle(h.id, fallback);
       const href = HUDDLE_PAGE + '?id=' + h.id;
       const isCurrent = href === PAGE_ID;
       return (
         '<a href="' + href + '" class="sop-drawer-item huddle-item' + (isCurrent ? ' current' : '') + '">' +
-          '<span class="drawer-num">13</span>' +
+          '<span class="drawer-num">01</span>' +
           '<span class="drawer-text">' +
             '<span class="drawer-title">' + escapeHTML(title) + '</span>' +
-            '<span class="drawer-sub">Saved huddle</span>' +
+            '<span class="drawer-sub">Saved shift</span>' +
           '</span>' +
         '</a>'
       );
     }).join('');
     const huddleSection =
-      '<div class="sop-drawer-section-label">Huddle Journal</div>' +
+      '<div class="sop-drawer-section-label">Shift Journal</div>' +
       huddleItems +
-      '<button class="sop-drawer-add sop-drawer-add-huddle" type="button" aria-label="Add a new huddle">' +
-        '<span class="add-plus">+</span><span>New huddle</span>' +
+      '<button class="sop-drawer-add sop-drawer-add-huddle" type="button" aria-label="Add a new shift">' +
+        '<span class="add-plus">+</span><span>New shift</span>' +
       '</button>';
     const notesIdx = getNotesIndex();
     const notesItems = notesIdx.map((n, i) => {
@@ -792,20 +824,92 @@
   // Appt types pulled from §12 Rules & Colors + §07 fee schedule.
   // `charge` is the default that auto-fills; null = no fixed default.
   const APPT_TYPES = [
-    { key: 'newpt',     name: 'New Patient',         short: 'New Pt',  chip: 'chip-green',     charge: 'Deposit' },
+    { key: 'newpt',     name: 'New Patient / NP Day 1', short: 'NP D1', chip: 'chip-green',     charge: 'Deposit' },
     { key: 'adj',       name: 'Adjustment',          short: 'Adj',     chip: 'chip-blue',      charge: 65   },
-    { key: 'adjwell',   name: 'Adj / Wellness',      short: 'Adj/Wel', chip: 'chip-lightblue', charge: null },
     { key: 'reexam',    name: 'Re-Exam',             short: 'Re-Exam', chip: 'chip-yellow',    charge: 45   },
-    { key: 'react',     name: 'New Injury / React.', short: 'React.',  chip: 'chip-brown',     charge: null },
-    { key: 'rof',       name: 'ROF',                 short: 'ROF',     chip: 'chip-red',       charge: 55   },
-    { key: 'maint',     name: 'Maintenance',         short: 'Maint',   chip: 'chip-pink',      charge: null },
-    { key: 'exercise',  name: 'Exercise Consult',    short: 'Exerc.',  chip: 'chip-grey',      charge: 95   },
+    { key: 'rof',       name: 'ROF / Day 2',         short: 'ROF/D2',  chip: 'chip-red',       charge: 55   },
+    { key: 'day3',      name: 'Day 3',               short: 'Day 3',   chip: 'chip-burgundy',  charge: null },
     { key: 'swdisc',    name: 'SoftWave Discovery',  short: 'SW Disc', chip: 'chip-purple',    charge: 25   },
-    { key: 'softwave',  name: 'SoftWave Treatment',  short: 'SW Tx',   chip: 'chip-purple',    charge: null },
-    { key: 'xray',      name: 'X-Ray',               short: 'X-Ray',   chip: 'chip-black',     charge: 25   },
-    { key: 'day3',      name: 'Day 3',               short: 'Day 3',   chip: 'chip-burgundy',  charge: null }
+    { key: 'softwave',  name: 'SoftWave Follow-Up',  short: 'SW F/U',  chip: 'chip-purple',    charge: null },
+    { key: 'exercise',  name: 'Exercise Consult',    short: 'Exerc.',  chip: 'chip-grey',      charge: 95   },
+    { key: 'maint',     name: 'Wellness / Maintenance', short: 'Well.', chip: 'chip-pink',     charge: null }
   ];
   const APPT_BY_KEY = Object.fromEntries(APPT_TYPES.map(t => [t.key, t]));
+  const APPT_REQUIREMENTS = {
+    newpt: {
+      title: 'New Patient / NP Day 1',
+      groups: [
+        { title: 'Before Patient Arrives', items: ['Forms received / imported', 'Review Wave checked', 'CT patient created or updated', 'Insurance / ID ready if applicable', 'NP file/card ready'] },
+        { title: 'During Appointment', items: ['Meet and greet warmly', 'Collect Day 1 payment before services', 'Copy insurance card / photo ID if needed', 'Give Day 1 handout', 'Take patient photo', 'Office tour / video handled'] },
+        { title: 'Before Patient Leaves', items: ['ROF scheduled', 'ROF handout given', 'Receipt signed/scanned/shredded if applicable', 'CT notes updated', 'File placed in ROF holder', 'Next appointment confirmed out loud', 'Done'] }
+      ]
+    },
+    adj: {
+      title: 'Adjustment',
+      groups: [
+        { title: 'Before Patient Arrives', items: ['Ledger checked', 'Balance checked', 'Alerts/red letters checked', 'Future appointments checked'] },
+        { title: 'During Appointment', items: ['Collect payment if due before service', 'Ask permission to use card on file if applicable', 'Doctor performs adjustment'] },
+        { title: 'Before Patient Leaves', items: ['Receipt signed/scanned/shredded if applicable', 'Next appointment scheduled', 'Date/time confirmed out loud', 'Notes/action items completed', 'Done'] }
+      ]
+    },
+    reexam: {
+      title: 'Re-Exam',
+      groups: [
+        { title: 'Before Patient Arrives', items: ['Re-exam confirmed', 'Fee/payment status checked', 'Notes/progress reviewed'] },
+        { title: 'During Appointment', items: ['Fee collected if due', 'Doctor completes re-exam', 'Progress/next phase discussed'] },
+        { title: 'Before Patient Leaves', items: ['Next appointments scheduled', 'Notes completed', 'Date/time confirmed out loud', 'Done'] }
+      ]
+    },
+    rof: {
+      title: 'ROF / Day 2',
+      groups: [
+        { title: 'Before Patient Arrives', items: ['ROF confirmed on schedule', 'Care plan prepared', 'Insurance / coverage reviewed if applicable', 'Room/video ready'] },
+        { title: 'During Appointment', items: ['Collect $55 ROF fee', 'Give Day 2 handout', 'Patient reads handout', 'Start video / prepare room', 'Notify doctor patient is ready'] },
+        { title: 'Before Patient Leaves', items: ['Care plan signed', 'Payment option selected', 'First payment collected', 'ROF note entered', 'Future adjustments scheduled', 'Re-exam scheduled', 'Exercise consult scheduled', 'Day 3 scheduled', 'Schedule copy given', 'Date/time confirmed out loud', 'Done'] }
+      ]
+    },
+    maint: {
+      title: 'Wellness / Maintenance',
+      groups: [
+        { title: 'Before Patient Arrives', items: ['Ledger checked', 'Balance checked', 'Wellness plan/status checked', 'Future appointments checked'] },
+        { title: 'During Appointment', items: ['Payment handled if due', 'Adjustment/wellness visit completed'] },
+        { title: 'Before Patient Leaves', items: ['Next appointment scheduled', 'Date/time confirmed out loud', 'Notes/action items completed', 'Done'] }
+      ]
+    },
+    exercise: {
+      title: 'Exercise Consult',
+      groups: [
+        { title: 'Before Patient Arrives', items: ['Consult confirmed', 'Fee/payment status checked', 'Patient file reviewed'] },
+        { title: 'During Appointment', items: ['Fee collected if due', 'Exercise consult completed', 'Home exercises reviewed'] },
+        { title: 'Before Patient Leaves', items: ['Next appointment scheduled', 'Notes completed', 'Date/time confirmed out loud', 'Done'] }
+      ]
+    },
+    day3: {
+      title: 'Day 3',
+      groups: [
+        { title: 'Before Patient Arrives', items: ['Care plan/payment terms reviewed', 'Auto-debit/EZ Pay ready', 'CT file reviewed', 'Schedule needs reviewed'] },
+        { title: 'During Appointment', items: ['Auto-debit setup', 'Authorization signed', 'PIN assigned', 'App shown/sent', 'Office flow reviewed', 'Cancellation policy reviewed'] },
+        { title: 'Before Patient Leaves', items: ['Schedule built 1-6 months', 'Schedule copy printed/given', 'CT payment type updated', 'Alerts/packages updated if needed', 'Next appointment confirmed out loud', 'Done'] }
+      ]
+    },
+    swdisc: {
+      title: 'SoftWave Discovery',
+      groups: [
+        { title: 'Before Patient Arrives', items: ['Appointment confirmed by call, not text only', 'Deposit verified', 'Forms completed', 'Treatment area confirmed', 'Cancellation policy confirmed'] },
+        { title: 'During Appointment', items: ['Payment collected if needed', 'Discovery completed', 'Approx. 500 pulses if applicable', 'Recommendation discussed'] },
+        { title: 'Before Patient Leaves', items: ['Next SoftWave scheduled', 'Aftercare reviewed', 'No ice / Advil / ibuprofen reminder', 'Avoid intense exercise 2-3 days', 'Date/time confirmed out loud', 'Done'] }
+      ]
+    },
+    softwave: {
+      title: 'SoftWave Follow-Up',
+      groups: [
+        { title: 'Before Patient Arrives', items: ['Session/package checked', 'Payment status checked', 'Treatment area confirmed', 'Cancellation policy checked'] },
+        { title: 'During Appointment', items: ['Payment collected if due', 'Treatment completed', '600-800 pulses if applicable'] },
+        { title: 'Before Patient Leaves', items: ['Next SoftWave scheduled', 'Aftercare reviewed', 'Date/time confirmed out loud', 'Done'] }
+      ]
+    }
+  };
+  const UNIVERSAL_PATIENT_CHECKS = ['Payment handled', 'Ledger checked', 'Balance checked', 'Alerts checked', 'Next appointment scheduled', 'Date/time confirmed out loud', 'Notes/action items completed'];
 
   // Pay cycle: blank -> card -> cash -> PIF -> owes -> blank
   const PAY_STATES = [
@@ -931,6 +1035,126 @@
     btn.classList.toggle('is-empty', !text);
   }
 
+  function huddleRowCount() {
+    return document.querySelectorAll('.huddle-table .appt-type-btn[data-row]').length;
+  }
+
+  function huddleBaseRowCount() {
+    const tbody = document.querySelector('tbody[data-huddle-rows]');
+    return tbody ? (+tbody.dataset.huddleRows || 15) : 15;
+  }
+
+  function huddleRowKeys(rowIdx) {
+    const keys = [
+      'in_huddle_patient_' + rowIdx,
+      'in_huddle_balance_' + rowIdx,
+      'in_huddle_notes_' + rowIdx,
+      'bool_huddle_status_' + rowIdx,
+      'huddle_appt_' + rowIdx,
+      'huddle_time_' + rowIdx
+    ];
+    Object.keys(APPT_REQUIREMENTS).forEach(apptKey => {
+      APPT_REQUIREMENTS[apptKey].groups.forEach((group, groupIdx) => {
+        group.items.forEach((_, itemIdx) => {
+          keys.push(rowRequirementKey(rowIdx, apptKey, groupIdx + '_' + itemIdx));
+        });
+      });
+    });
+    UNIVERSAL_PATIENT_CHECKS.forEach((_, itemIdx) => {
+      keys.push(rowRequirementKey(rowIdx, 'universal', itemIdx));
+    });
+    return keys;
+  }
+
+  function getHuddleRowState(rowIdx) {
+    return huddleRowKeys(rowIdx).map(key => ({
+      hasValue: Object.prototype.hasOwnProperty.call(state, key),
+      value: state[key]
+    }));
+  }
+
+  function clearHuddleRowState(rowIdx) {
+    huddleRowKeys(rowIdx).forEach(key => delete state[key]);
+  }
+
+  function isHuddleRowEmpty(rowIdx) {
+    return !huddleRowKeys(rowIdx).some(key => {
+      const v = state[key];
+      if (typeof v === 'string') return v.trim() !== '';
+      if (typeof v === 'boolean') return v;
+      return !!v;
+    });
+  }
+
+  function copyHuddleRowState(fromIdx, toIdx) {
+    const fromKeys = huddleRowKeys(fromIdx);
+    const toKeys = huddleRowKeys(toIdx);
+    clearHuddleRowState(toIdx);
+    fromKeys.forEach((fromKey, idx) => {
+      if (Object.prototype.hasOwnProperty.call(state, fromKey)) state[toKeys[idx]] = state[fromKey];
+    });
+  }
+
+  function restoreHuddleRowState(rowIdx, values) {
+    clearHuddleRowState(rowIdx);
+    const keys = huddleRowKeys(rowIdx);
+    keys.forEach((key, idx) => {
+      if (values[idx] && values[idx].hasValue) state[key] = values[idx].value;
+    });
+  }
+
+  function refreshHuddleRow(rowIdx) {
+    ['patient', 'balance', 'notes'].forEach(field => {
+      const el = document.querySelector('[name="huddle_' + field + '_' + rowIdx + '"]');
+      const key = 'in_huddle_' + field + '_' + rowIdx;
+      if (el) el.value = state[key] || '';
+    });
+    const apptKey = state['huddle_appt_' + rowIdx] || null;
+    const apptBtn = document.querySelector('.appt-type-btn[data-row="' + rowIdx + '"]');
+    if (apptBtn) applyApptToButton(apptBtn, apptKey);
+    const timeBtn = document.querySelector('.time-btn[data-row="' + rowIdx + '"]');
+    if (timeBtn) applyTimeToButton(timeBtn, state['huddle_time_' + rowIdx] || '');
+    const status = document.querySelector('[name="huddle_status_' + rowIdx + '"]');
+    if (status) status.checked = !!state['bool_huddle_status_' + rowIdx];
+    renderRowRequirements(rowIdx, apptKey);
+  }
+
+  function swapHuddleRows(a, b) {
+    if (a < 0 || b < 0 || a >= huddleRowCount() || b >= huddleRowCount()) return;
+    const aValues = getHuddleRowState(a);
+    const bValues = getHuddleRowState(b);
+    restoreHuddleRowState(a, bValues);
+    restoreHuddleRowState(b, aValues);
+    refreshHuddleRow(a);
+    refreshHuddleRow(b);
+    scheduleSave();
+  }
+
+  function removeLastHuddleRow(tbody) {
+    const lastReq = tbody.querySelector('.huddle-requirements-row:last-child');
+    if (lastReq) lastReq.remove();
+    const lastMain = tbody.querySelector('tr:last-child');
+    if (lastMain) lastMain.remove();
+  }
+
+  function deleteHuddleRow(rowIdx) {
+    const total = huddleRowCount();
+    if (rowIdx < 0 || rowIdx >= total) return;
+    if (!isHuddleRowEmpty(rowIdx) && !confirm('Remove this patient row?')) return;
+    for (let i = rowIdx; i < total - 1; i++) copyHuddleRowState(i + 1, i);
+    clearHuddleRowState(total - 1);
+    const tbody = document.querySelector('tbody[data-huddle-rows]');
+    if (tbody && total > 1 && total > huddleBaseRowCount()) {
+      removeLastHuddleRow(tbody);
+      state.huddle_row_count = total - 1;
+    } else {
+      state.huddle_row_count = Math.max(total, huddleBaseRowCount());
+    }
+    for (let i = rowIdx; i < huddleRowCount(); i++) refreshHuddleRow(i);
+    updateHuddleNotDone();
+    scheduleSave();
+  }
+
   let pickerEls = null;
   function buildPicker() {
     if (pickerEls) return pickerEls;
@@ -1008,7 +1232,8 @@
     scheduleSave();
     const btn = document.querySelector('.appt-type-btn[data-row="' + rowIdx + '"]');
     if (btn) applyApptToButton(btn, apptKey);
-    applyChargeDefault(rowIdx, apptKey);
+    renderRowRequirements(rowIdx, apptKey);
+    updateHuddleNotDone();
   }
 
   function setRowPay(rowIdx, stateIdx) {
@@ -1189,43 +1414,304 @@
   function huddleRowHTML(i) {
     return (
       '<tr>' +
-        '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_patient_' + i + '" autocomplete="off" enterkeyhint="next" aria-label="Patient name row ' + (i + 1) + '"></textarea></td>' +
         '<td class="time-cell"><button class="time-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick time"></button></td>' +
+        '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_patient_' + i + '" autocomplete="off" enterkeyhint="next" aria-label="Patient name row ' + (i + 1) + '"></textarea></td>' +
         '<td class="appt-cell"><button class="appt-type-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick appointment type"></button></td>' +
-        '<td class="charge-cell" data-row="' + i + '"><input class="sop-text cell-input charge-input" name="huddle_charge_' + i + '" data-row="' + i + '" type="text" inputmode="decimal" autocomplete="off" placeholder="--" aria-label="Charge amount row ' + (i + 1) + '"></td>' +
-        '<td class="input-cell"><input class="sop-text cell-input cell-input-num" name="huddle_card_' + i + '" type="text" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="" aria-label="Card last 4 row ' + (i + 1) + '"></td>' +
-        '<td class="pay-cell"><button class="pay-btn cell-btn" type="button" data-row="' + i + '" aria-label="Cycle payment state"></button></td>' +
-        '<td class="nextappt-cell"><button class="nextappt-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick next appointment"></button></td>' +
-        '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_notes_' + i + '" autocomplete="off" aria-label="Notes row ' + (i + 1) + '"></textarea></td>' +
+        '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_balance_' + i + '" autocomplete="off" aria-label="Balance or payment note row ' + (i + 1) + '"></textarea></td>' +
+        '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_notes_' + i + '" autocomplete="off" aria-label="Huddle note row ' + (i + 1) + '"></textarea></td>' +
+        '<td class="huddle-status-cell"><label class="huddle-status-done"><input class="sop-bool huddle-done-check" name="huddle_status_' + i + '" type="checkbox" data-row="' + i + '"> Done</label></td>' +
+        '<td class="huddle-row-actions">' +
+          '<button type="button" data-huddle-row-delete data-row="' + i + '" aria-label="Remove row">Remove</button>' +
+        '</td>' +
+      '</tr>' +
+      '<tr class="huddle-requirements-row" data-req-row="' + i + '" hidden>' +
+        '<td class="huddle-requirements-cell" colspan="7"></td>' +
       '</tr>'
     );
+  }
+
+  function rowRequirementKey(rowIdx, apptKey, itemId) {
+    return 'huddle_req_' + rowIdx + '_' + apptKey + '_' + itemId;
+  }
+
+  function renderRowRequirements(rowIdx, apptKey) {
+    const row = document.querySelector('.huddle-requirements-row[data-req-row="' + rowIdx + '"]');
+    if (!row) return;
+    const cell = row.querySelector('.huddle-requirements-cell');
+    const req = APPT_REQUIREMENTS[apptKey];
+    if (!cell || !req) {
+      row.hidden = true;
+      if (cell) cell.innerHTML = '';
+      return;
+    }
+
+    const groupHtml = req.groups.map((group, groupIdx) => {
+      const items = group.items.map((item, itemIdx) => {
+        const key = rowRequirementKey(rowIdx, apptKey, groupIdx + '_' + itemIdx);
+        const checked = state[key] ? ' checked' : '';
+        return (
+          '<label class="huddle-req-item">' +
+            '<input class="huddle-req-check" type="checkbox" data-key="' + key + '"' + checked + '>' +
+            '<span>' + escapeHTML(item) + '</span>' +
+          '</label>'
+        );
+      }).join('');
+      return '<div class="huddle-req-group"><h4>' + escapeHTML(group.title) + '</h4>' + items + '</div>';
+    }).join('');
+
+    const universalHtml = UNIVERSAL_PATIENT_CHECKS.map((item, itemIdx) => {
+      const key = rowRequirementKey(rowIdx, 'universal', itemIdx);
+      const checked = state[key] ? ' checked' : '';
+      return (
+        '<label class="huddle-req-item huddle-req-universal">' +
+          '<input class="huddle-req-check" type="checkbox" data-key="' + key + '"' + checked + '>' +
+          '<span>' + escapeHTML(item) + '</span>' +
+        '</label>'
+      );
+    }).join('');
+
+    cell.innerHTML =
+      '<div class="huddle-req-panel">' +
+        '<div class="huddle-req-title">' +
+          '<strong>' + escapeHTML(req.title) + '</strong>' +
+          '<span>Patient-specific checklist</span>' +
+        '</div>' +
+        '<div class="huddle-req-items">' + groupHtml + '<div class="huddle-req-group universal"><h4>Universal Checks</h4>' + universalHtml + '</div></div>' +
+      '</div>';
+    row.hidden = false;
+
+    cell.querySelectorAll('.huddle-req-check').forEach(input => {
+      input.addEventListener('change', () => {
+        state[input.dataset.key] = input.checked;
+        scheduleSave();
+      });
+    });
+  }
+
+  // ---------- COMMAND CENTER ----------
+  const COMMAND_APPT_TYPES = [
+    { key: 'np', name: 'NP', chip: 'chip-green' },
+    { key: 'rof', name: 'ROF', chip: 'chip-red' },
+    { key: 'day3', name: 'Day 3', chip: 'chip-burgundy' },
+    { key: 'adjustment', name: 'Adjustment', chip: 'chip-blue' },
+    { key: 'swdisc', name: 'SoftWave Discovery', chip: 'chip-purple' },
+    { key: 'swfollow', name: 'SoftWave Follow-Up', chip: 'chip-purple' },
+    { key: 'reexam', name: 'Re-Exam', chip: 'chip-yellow' },
+    { key: 'exercise', name: 'Exercise Consult', chip: 'chip-grey' },
+    { key: 'wellness', name: 'Wellness', chip: 'chip-lightblue' }
+  ];
+  const COMMAND_APPT_BY_KEY = Object.fromEntries(COMMAND_APPT_TYPES.map(t => [t.key, t]));
+  const COMMAND_REQUIREMENTS = {
+    np: ['Appt/person entered to schedule & CT', 'NP intake imported/linked/scanned', 'Welcome email + confirmation call', 'Day 1 handout/tour/video ready', 'ROF next visit ready'],
+    rof: ['$55 ROF payment handled', 'Spouse/significant other expectation checked', 'Care plan offered', 'Commitment noted: PPV/PIF/monthly/undecided', 'ROF note + Day 3/future visits set'],
+    day3: ['EZ-Pay / signature-on-file handled', 'Auto debit/payment setup checked', 'PIN/app expectations handled', 'CT notes/alerts updated', 'Future schedule confirmed'],
+    adjustment: ['Payment/ledger/balance checked', 'Alerts/red letters checked', 'Next adjustment scheduled', 'Doctor instruction completed'],
+    swdisc: ['Confirmed by call, not text', '$25 deposit/payment checked', 'Treatment area + cancellation policy confirmed', 'SoftWave handout/aftercare ready', 'Next SoftWave scheduled'],
+    swfollow: ['Package/payment status checked', 'Treatment area/timer ready', 'Aftercare covered', 'Next SoftWave scheduled'],
+    reexam: ['Re-exam chart/paperwork ready', 'Payment/ledger checked', 'Doctor note/action captured', 'Next visit scheduled'],
+    exercise: ['$95 exercise consult status checked', 'Forms/tools ready', 'Instructions documented', 'Next action scheduled'],
+    wellness: ['Wellness/Maint case status checked', 'Payment/package checked', 'Care plan note if needed', 'Next wellness visit scheduled']
+  };
+  const COMMAND_UNIVERSAL_CHECKS = [
+    ['payment', 'Payment handled'],
+    ['ledger', 'Ledger checked'],
+    ['balance', 'Balance checked'],
+    ['alerts', 'Alerts checked'],
+    ['nextappt', 'Next appointment scheduled'],
+    ['confirmed', 'Date/time confirmed out loud'],
+    ['notesdone', 'Notes/action items completed'],
+    ['done', 'DONE']
+  ];
+
+  function commandTypeOptionsHTML() {
+    let html = '<option value="">Appt type</option>';
+    COMMAND_APPT_TYPES.forEach(type => {
+      html += '<option value="' + type.key + '">' + escapeHTML(type.name) + '</option>';
+    });
+    return html;
+  }
+
+  function commandRowHTML(i) {
+    const rowNum = i + 1;
+    const universalChecks = COMMAND_UNIVERSAL_CHECKS.map(([key, label]) => (
+      '<label class="' + (key === 'done' ? 'done-check' : '') + '">' +
+        '<input class="sop-bool command-row-check" name="command_row_' + key + '_' + rowNum + '" type="checkbox" data-command-check="' + key + '" data-command-row="' + rowNum + '"> ' +
+        escapeHTML(label) +
+      '</label>'
+    )).join('');
+
+    return (
+      '<article class="command-patient-card" data-command-row="' + rowNum + '">' +
+        '<div class="patient-card-head command-tracker-head">' +
+          '<input class="sop-text command-time-input" name="command_time_' + rowNum + '" type="text" placeholder="Time" autocomplete="off">' +
+          '<input class="sop-text command-name-input" name="command_patient_' + rowNum + '" type="text" placeholder="Patient" autocomplete="off">' +
+          '<select class="sop-select command-type-select" name="command_type_' + rowNum + '" data-command-type="' + rowNum + '">' + commandTypeOptionsHTML() + '</select>' +
+          '<div class="command-type-badge" data-command-badge="' + rowNum + '"></div>' +
+        '</div>' +
+        '<div class="patient-update-row command-field-row">' +
+          '<textarea class="sop-text autogrow" name="command_balance_note_' + rowNum + '" placeholder="Balance / payment note"></textarea>' +
+          '<textarea class="sop-text autogrow" name="command_ct_note_' + rowNum + '" placeholder="CT alert / note"></textarea>' +
+          '<textarea class="sop-text autogrow" name="command_huddle_note_' + rowNum + '" placeholder="Huddle note"></textarea>' +
+          '<textarea class="sop-text autogrow" name="command_next_action_' + rowNum + '" placeholder="Next action"></textarea>' +
+        '</div>' +
+        '<div class="patient-flag-grid command-universal-grid">' + universalChecks + '</div>' +
+        '<div class="command-type-requirements" data-command-requirements="' + rowNum + '" hidden></div>' +
+      '</article>'
+    );
+  }
+
+  function prepareCommandRows() {
+    if (PAGE_FILE !== '15-command-center.html') return;
+    const wrap = document.querySelector('[data-command-patient-rows]');
+    if (!wrap || wrap.children.length) return;
+    const n = Math.max(+wrap.dataset.commandPatientRows || 12, +state.command_row_count || 0);
+    state.command_row_count = n;
+    let html = '';
+    for (let i = 0; i < n; i++) html += commandRowHTML(i);
+    wrap.innerHTML = html;
   }
 
   function prepareHuddleRows() {
     if (PAGE_FILE !== HUDDLE_PAGE) return;
     const tbody = document.querySelector('tbody[data-huddle-rows]');
     if (!tbody || tbody.children.length) return;
-    const n = +tbody.dataset.huddleRows || 15;
+    const baseCount = +tbody.dataset.huddleRows || 15;
+    const n = Math.max(baseCount, +state.huddle_row_count || 0);
     let html = '';
     for (let i = 0; i < n; i++) html += huddleRowHTML(i);
     tbody.innerHTML = html;
+  }
+
+  function trackerDateKey(dateStr) {
+    return 'command-center-' + dateStr;
+  }
+
+  function formatDayFromISO(dateStr) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr || '');
+    if (!m) return '';
+    const d = new Date(+m[1], +m[2] - 1, +m[3]);
+    return DAYS_SHORT[d.getDay()];
+  }
+
+  function savedTrackerDates() {
+    const dates = [];
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const m = /^command-center-(\d{4}-\d{2}-\d{2})$/.exec(key || '');
+        if (m) dates.push(m[1]);
+      }
+    } catch {}
+    return dates.sort().reverse();
+  }
+
+  function saveCurrentTrackerNow() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+  }
+
+  function initHuddleDateControls() {
+    const dateInput = document.querySelector('[data-huddle-date]');
+    const dayInput = document.querySelector('[data-huddle-day]');
+    const savedSelect = document.querySelector('[data-huddle-saved-days]');
+    const meta = document.querySelector('.huddle-meta');
+    const currentDate = currentTrackerDate();
+
+    if (dateInput) dateInput.value = currentDate;
+    if (dayInput) dayInput.value = formatDayFromISO(currentDate);
+    if (meta) meta.textContent = 'Daily Shift Tracker · ' + currentDate;
+
+    if (savedSelect) {
+      const dates = savedTrackerDates();
+      savedSelect.innerHTML = '<option value="">Saved days</option>' + dates.map(date => {
+        const label = formatDayFromISO(date) + ' · ' + date;
+        return '<option value="' + date + '"' + (date === currentDate ? ' selected' : '') + '>' + escapeHTML(label) + '</option>';
+      }).join('');
+      savedSelect.addEventListener('change', () => {
+        if (!savedSelect.value || savedSelect.value === currentDate) return;
+        saveCurrentTrackerNow();
+        location.href = HUDDLE_PAGE + '?date=' + encodeURIComponent(savedSelect.value);
+      });
+    }
+
+    if (dateInput && !dateInput.dataset.huddleBound) {
+      dateInput.dataset.huddleBound = 'true';
+      dateInput.addEventListener('change', () => {
+        const nextDate = dateInput.value || todayISO();
+        if (dayInput) dayInput.value = formatDayFromISO(nextDate);
+        if (nextDate === currentDate) return;
+        saveCurrentTrackerNow();
+        location.href = HUDDLE_PAGE + '?date=' + encodeURIComponent(nextDate);
+      });
+    }
+  }
+
+  function updateShiftPanels() {
+    const shift = document.querySelector('[data-huddle-shift]')?.value || 'morning';
+    document.querySelectorAll('[data-shift-panel]').forEach(panel => {
+      panel.hidden = panel.dataset.shiftPanel !== shift;
+    });
+  }
+
+  function initHuddleShiftPanels() {
+    const shiftSelect = document.querySelector('[data-huddle-shift]');
+    if (shiftSelect) {
+      if (!shiftSelect.value) {
+        shiftSelect.value = 'morning';
+        state.sel_huddle_shift_type = 'morning';
+      }
+      if (!shiftSelect.dataset.huddlePanelBound) {
+        shiftSelect.dataset.huddlePanelBound = 'true';
+        shiftSelect.addEventListener('change', () => {
+          updateShiftPanels();
+        });
+      }
+    }
+    updateShiftPanels();
+  }
+
+  function rowHasVisibleHuddleContent(rowIdx) {
+    return ['in_huddle_patient_', 'in_huddle_balance_', 'in_huddle_notes_', 'huddle_appt_', 'huddle_time_'].some(prefix => {
+      const v = state[prefix + rowIdx];
+      return typeof v === 'string' ? v.trim() !== '' : !!v;
+    });
+  }
+
+  function updateHuddleNotDone() {
+    const box = document.querySelector('[data-huddle-not-done]');
+    if (!box) return;
+    const missing = [];
+    for (let i = 0; i < huddleRowCount(); i++) {
+      if (!rowHasVisibleHuddleContent(i)) continue;
+      if (state['bool_huddle_status_' + i]) continue;
+      const name = (state['in_huddle_patient_' + i] || '').trim() || 'Row ' + (i + 1);
+      const time = (state['huddle_time_' + i] || '').trim();
+      missing.push((time ? time + ' · ' : '') + name);
+    }
+    box.hidden = missing.length === 0;
+    box.innerHTML = missing.length
+      ? '<strong>Patients not marked Done:</strong> ' + missing.map(escapeHTML).join(' · ')
+      : '';
   }
 
   function initHuddle() {
     if (PAGE_FILE !== HUDDLE_PAGE) return;
     const table = document.querySelector('table[data-huddle="true"]');
     if (!table) return;
+    initHuddleDateControls();
     initHuddleJournal();
+    initHuddleShiftPanels();
     initHuddleLeaveGuard();
     buildPicker();
     buildTimePicker();
-    buildNextApptPicker();
 
-    table.querySelectorAll('.appt-type-btn').forEach(btn => {
+    function initHuddleControls(root) {
+      root.querySelectorAll('.appt-type-btn').forEach(btn => {
+        if (btn.dataset.huddleBound) return;
+        btn.dataset.huddleBound = 'true';
       const row = +btn.dataset.row;
       const saved = state['huddle_appt_' + row] || null;
       applyApptToButton(btn, saved);
-      refreshChargeDefault(row, saved);
+      renderRowRequirements(row, saved);
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -1233,7 +1719,9 @@
       });
     });
 
-    table.querySelectorAll('.time-btn').forEach(btn => {
+      root.querySelectorAll('.time-btn').forEach(btn => {
+        if (btn.dataset.huddleBound) return;
+        btn.dataset.huddleBound = 'true';
       const row = +btn.dataset.row;
       const saved = state['huddle_time_' + row] || '';
       applyTimeToButton(btn, saved);
@@ -1244,29 +1732,53 @@
       });
     });
 
-    table.querySelectorAll('.nextappt-btn').forEach(btn => {
-      const row = +btn.dataset.row;
-      const saved = state['huddle_nextappt_' + row] || null;
-      applyNextApptToButton(btn, saved);
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        nextApptPickerEls.open(row);
+      root.querySelectorAll('.huddle-done-check').forEach(btn => {
+        if (btn.dataset.huddleBound) return;
+        btn.dataset.huddleBound = 'true';
+        btn.addEventListener('change', () => {
+          updateHuddleNotDone();
+        });
       });
-    });
 
-    table.querySelectorAll('.pay-btn').forEach(btn => {
-      const row = +btn.dataset.row;
-      const saved = state['huddle_pay_' + row] || 0;
-      applyPayState(btn, saved);
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const current = state['huddle_pay_' + row] || 0;
-        const next = (current + 1) % PAY_STATES.length;
-        setRowPay(row, next);
+      root.querySelectorAll('[name^="huddle_patient_"], [name^="huddle_balance_"], [name^="huddle_notes_"]').forEach(el => {
+        if (el.dataset.huddleContentBound) return;
+        el.dataset.huddleContentBound = 'true';
+        el.addEventListener('input', () => {
+          updateHuddleNotDone();
+        });
       });
-    });
+
+      root.querySelectorAll('[data-huddle-row-delete]').forEach(btn => {
+        if (btn.dataset.huddleBound) return;
+        btn.dataset.huddleBound = 'true';
+        btn.addEventListener('click', () => {
+          deleteHuddleRow(+btn.dataset.row);
+        });
+      });
+    }
+
+    initHuddleControls(table);
+
+    const addRowBtn = document.querySelector('[data-huddle-add-row]');
+    const tbody = table.querySelector('tbody[data-huddle-rows]');
+    if (addRowBtn && tbody && !addRowBtn.dataset.huddleBound) {
+      addRowBtn.dataset.huddleBound = 'true';
+      addRowBtn.addEventListener('click', () => {
+        const nextIndex = tbody.querySelectorAll('.appt-type-btn').length;
+        tbody.insertAdjacentHTML('beforeend', huddleRowHTML(nextIndex));
+        state.huddle_row_count = nextIndex + 1;
+        scheduleSave();
+        initInputs(tbody);
+        initStandaloneCheckboxes(tbody);
+        initHuddleControls(tbody);
+        const nextPatient = tbody.querySelector('[name="huddle_patient_' + nextIndex + '"]');
+        if (nextPatient) {
+          nextPatient.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          nextPatient.focus({ preventScroll: true });
+        }
+      });
+    }
+    updateHuddleNotDone();
   }
 
   function hasHuddleContent() {
@@ -1288,43 +1800,20 @@
   let skipHuddleLeaveGuard = false;
 
   function initHuddleJournal() {
-    const meta = document.querySelector('.huddle-meta');
-    const id = currentHuddleId();
-    if (meta) {
-      meta.textContent = id ? '13 · Saved Huddle' : '13 · Current Huddle';
-    }
-
     const newBtn = document.querySelector('.huddle-new-btn');
     if (newBtn) {
       newBtn.addEventListener('click', () => {
-        if (!confirm('Start a fresh huddle? This one is auto-saved and will stay available unless you delete it.')) return;
-        if (!id && hasHuddleContent()) {
-          const savedId = addHuddle();
-          try {
-            localStorage.setItem('cofl_sop_' + HUDDLE_PAGE + '?id=' + savedId, JSON.stringify(state));
-          } catch {}
-        }
-        const nextId = addHuddle();
+        if (!confirm('Start this date fresh? This clears the daily sheet for the selected date.')) return;
         skipHuddleLeaveGuard = true;
-        location.href = HUDDLE_PAGE + '?id=' + nextId;
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
       });
     }
 
     const deleteBtn = document.querySelector('.huddle-delete-btn');
     if (deleteBtn) {
       deleteBtn.addEventListener('click', () => {
-        if (!confirm('Delete this huddle sheet? This clears the saved checkboxes, text, and pencil notes for this huddle.')) return;
-        if (id) {
-          deleteHuddle(id);
-          const remaining = getHuddleIndex();
-          skipHuddleLeaveGuard = true;
-          if (remaining.length) {
-            location.href = HUDDLE_PAGE + '?id=' + remaining[0].id;
-          } else {
-            location.href = HUDDLE_PAGE;
-          }
-          return;
-        }
+        if (!confirm('Clear this saved date? This removes the checkboxes, text, and patient rows for this day.')) return;
         skipHuddleLeaveGuard = true;
         localStorage.removeItem(STORAGE_KEY);
         location.reload();
@@ -1333,7 +1822,7 @@
   }
 
   function initHuddleLeaveGuard() {
-    const message = 'Leave this huddle? Your work is auto-saved, but this catches accidental taps.';
+    const message = 'Leave this shift tracker? Your work is auto-saved, but this catches accidental taps.';
     document.addEventListener('click', (e) => {
       if (skipHuddleLeaveGuard) return;
       const a = e.target.closest && e.target.closest('a[href]');
@@ -1399,43 +1888,249 @@
   // ---------- COMMAND CENTER ----------
   function initCommandCenter() {
     if (PAGE_FILE !== '15-command-center.html') return;
-    const select = document.querySelector('[data-shift-mode-select]');
-    const panels = Array.from(document.querySelectorAll('[data-shift-panel]'));
-    if (!select || !panels.length) return;
+    const page = document.querySelector('.command-page');
+    if (!page) return;
+    const rowsWrap = page.querySelector('[data-command-patient-rows]');
 
-    function applyShiftMode() {
-      const mode = select.value || 'morning';
-      panels.forEach(panel => {
-        panel.classList.toggle('is-active', panel.dataset.shiftPanel === mode);
+    function accordionKey(details) {
+      return 'command_acc_' + (details.dataset.commandAccordion || details.id || 'section');
+    }
+
+    page.querySelectorAll('details[data-command-accordion]').forEach(details => {
+      const key = accordionKey(details);
+      if (state[key] != null) details.open = !!state[key];
+      details.addEventListener('toggle', () => {
+        state[key] = details.open;
+        scheduleSave();
+      });
+    });
+
+    function typeFromRow(rowNum) {
+      const select = page.querySelector('[data-command-type="' + rowNum + '"]');
+      return select ? select.value : '';
+    }
+
+    function applyCommandBadge(rowNum, apptKey) {
+      const badge = page.querySelector('[data-command-badge="' + rowNum + '"]');
+      const type = COMMAND_APPT_BY_KEY[apptKey];
+      if (!badge) return;
+      badge.innerHTML = '';
+      badge.className = 'command-type-badge';
+      if (!type) {
+        badge.textContent = 'No type';
+        return;
+      }
+      badge.classList.add('has-type');
+      badge.innerHTML =
+        '<span class="appt-chip ' + type.chip + '"></span>' +
+        '<span>' + escapeHTML(type.name) + '</span>';
+    }
+
+    function commandReqKey(rowNum, apptKey, itemIdx) {
+      return 'command_type_req_' + rowNum + '_' + apptKey + '_' + itemIdx;
+    }
+
+    function renderCommandRequirements(rowNum, apptKey) {
+      const wrap = page.querySelector('[data-command-requirements="' + rowNum + '"]');
+      const type = COMMAND_APPT_BY_KEY[apptKey];
+      const items = COMMAND_REQUIREMENTS[apptKey];
+      if (!wrap || !type || !items) {
+        if (wrap) {
+          wrap.hidden = true;
+          wrap.innerHTML = '';
+        }
+        return;
+      }
+
+      wrap.innerHTML =
+        '<div class="command-type-req-head">' +
+          '<span class="appt-chip ' + type.chip + '"></span>' +
+          '<strong>' + escapeHTML(type.name) + '</strong>' +
+        '</div>' +
+        '<div class="command-type-req-grid">' +
+          items.map((item, itemIdx) => {
+            const key = commandReqKey(rowNum, apptKey, itemIdx);
+            const checked = state[key] ? ' checked' : '';
+            return (
+              '<label>' +
+                '<input class="command-type-req-check" type="checkbox" data-key="' + key + '"' + checked + '> ' +
+                escapeHTML(item) +
+              '</label>'
+            );
+          }).join('') +
+        '</div>';
+      wrap.hidden = false;
+
+      wrap.querySelectorAll('.command-type-req-check').forEach(input => {
+        input.addEventListener('change', () => {
+          state[input.dataset.key] = input.checked;
+          scheduleSave();
+          refreshCommandReview();
+        });
       });
     }
 
-    applyShiftMode();
-    select.addEventListener('change', applyShiftMode);
+    function initCommandRow(card) {
+      initInputs(card);
+      initSelects(card);
+      initStandaloneCheckboxes(card);
+      const select = card.querySelector('.command-type-select');
+      if (!select) return;
+      const rowNum = select.dataset.commandType;
+      applyCommandBadge(rowNum, select.value);
+      renderCommandRequirements(rowNum, select.value);
+      select.addEventListener('change', () => {
+        applyCommandBadge(rowNum, select.value);
+        renderCommandRequirements(rowNum, select.value);
+        refreshCommandReview();
+      });
+      refreshRowComplete(card);
+    }
+
+    function rowHasContent(card) {
+      return Array.from(card.querySelectorAll('input.sop-text, textarea.sop-text, select.sop-select')).some(el => {
+        return (el.value || '').trim() !== '';
+      });
+    }
+
+    function rowLabel(card) {
+      const rowNum = card.dataset.commandRow;
+      const time = card.querySelector('[name="command_time_' + rowNum + '"]')?.value.trim() || '';
+      const patient = card.querySelector('[name="command_patient_' + rowNum + '"]')?.value.trim() || '';
+      return [time, patient || 'Row ' + rowNum].filter(Boolean).join(' - ');
+    }
+
+    function checked(card, key) {
+      const input = card.querySelector('[data-command-check="' + key + '"]');
+      return !!(input && input.checked);
+    }
+
+    function refreshRowComplete(card) {
+      card.classList.toggle('is-done', checked(card, 'done'));
+    }
+
+    function refreshCommandReview() {
+      const list = page.querySelector('[data-command-review-list]');
+      if (!list) return;
+      const issues = [];
+      page.querySelectorAll('.command-patient-card[data-command-row]').forEach(card => {
+        if (!rowHasContent(card)) return;
+        refreshRowComplete(card);
+        const label = rowLabel(card);
+        if (!checked(card, 'done')) issues.push(label + ': not marked DONE');
+        if (!checked(card, 'payment')) issues.push(label + ': payment not checked');
+        if (!checked(card, 'nextappt')) issues.push(label + ': next appointment not checked');
+      });
+
+      const callbacks = (state.in_command_callbacks || '').trim();
+      const doctor = (state.in_command_doctor || '').trim();
+      const money = (state.in_command_money || '').trim();
+      const scheduling = (state.in_command_scheduling_issues || '').trim();
+      if (callbacks) issues.push('Open callbacks still listed');
+      if (doctor) issues.push('Waiting on doctor still listed');
+      if (money) issues.push('Cash Practice / payment issues still listed');
+      if (scheduling) issues.push('Scheduling issues still listed');
+
+      if (!issues.length) {
+        list.innerHTML = '<p class="command-review-empty">Nothing flagged yet.</p>';
+        return;
+      }
+      list.innerHTML = issues.map(item => '<div class="command-review-item">' + escapeHTML(item) + '</div>').join('');
+    }
+
+    page.querySelectorAll('.command-patient-card[data-command-row]').forEach(card => {
+      initCommandRow(card);
+    });
+
+    const addRowBtn = page.querySelector('[data-command-add-row]');
+    if (addRowBtn && rowsWrap) {
+      addRowBtn.addEventListener('click', () => {
+        const nextRow = rowsWrap.querySelectorAll('.command-patient-card[data-command-row]').length + 1;
+        state.command_row_count = nextRow;
+        rowsWrap.insertAdjacentHTML('beforeend', commandRowHTML(nextRow - 1));
+        const card = rowsWrap.querySelector('.command-patient-card[data-command-row="' + nextRow + '"]');
+        if (card) initCommandRow(card);
+        scheduleSave();
+        refreshCommandReview();
+        if (card) card.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      });
+    }
+
+    const tabButtons = Array.from(page.querySelectorAll('[data-command-tab]'));
+    const tabPanels = Array.from(page.querySelectorAll('[data-command-tab-panel]'));
+    function applyCommandTab(tabName) {
+      const active = tabName || 'np';
+      tabButtons.forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.commandTab === active);
+      });
+      tabPanels.forEach(panel => {
+        panel.classList.toggle('is-active', panel.dataset.commandTabPanel === active);
+      });
+      state.command_active_tab = active;
+      scheduleSave();
+    }
+    if (tabButtons.length && tabPanels.length) {
+      applyCommandTab(state.command_active_tab || 'np');
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => applyCommandTab(btn.dataset.commandTab));
+      });
+    }
+
+    page.addEventListener('input', (e) => {
+      if (e.target.matches('input.sop-text, textarea.sop-text, select.sop-select')) {
+        refreshCommandReview();
+      }
+    });
+    page.addEventListener('change', (e) => {
+      if (e.target.matches('input[type="checkbox"], select.sop-select')) {
+        const card = e.target.closest('.command-patient-card[data-command-row]');
+        if (card) refreshRowComplete(card);
+        refreshCommandReview();
+      }
+    });
+
+    refreshCommandReview();
   }
 
   // ---------- INIT ----------
+  function runInit(label, fn) {
+    try {
+      fn();
+    } catch (err) {
+      console.error('Cafe SOP init failed: ' + label, err);
+    }
+  }
+
   function init() {
-    if (ensureNoteRouted()) return;
-    blockStylusScroll();
+    let routed = false;
+    try {
+      routed = ensureNoteRouted();
+    } catch (err) {
+      console.error('Cafe SOP init failed: ensureNoteRouted', err);
+    }
+    if (routed) return;
+
+    runInit('initDrawer', initDrawer);
+    runInit('blockStylusScroll', blockStylusScroll);
     // Huddle rows must exist before initInputs binds their text fields
-    prepareHuddleRows();
+    runInit('prepareHuddleRows', prepareHuddleRows);
+    // Command tracker rows must exist before generic autosave binding
+    runInit('prepareCommandRows', prepareCommandRows);
     // Order matters: restore contenteditable text first, THEN inject checkboxes
-    initEditables();
-    initCheckboxes();
-    initStandaloneCheckboxes();
-    initSelects();
-    initInputs();
-    initPencil();
-    initToolbar();
-    initSaveBar();
-    initPageResetButtons();
-    initDrawer();
-    initQuickSearch();
-    initHuddle();
-    initNotesPage();
-    initCommandCenter();
-    initHint();
+    runInit('initEditables', initEditables);
+    runInit('initCheckboxes', initCheckboxes);
+    runInit('initStandaloneCheckboxes', initStandaloneCheckboxes);
+    runInit('initSelects', initSelects);
+    runInit('initInputs', initInputs);
+    runInit('initPencil', initPencil);
+    runInit('initToolbar', initToolbar);
+    runInit('initSaveBar', initSaveBar);
+    runInit('initPageResetButtons', initPageResetButtons);
+    runInit('initQuickSearch', initQuickSearch);
+    runInit('initHuddle', initHuddle);
+    runInit('initNotesPage', initNotesPage);
+    runInit('initCommandCenter', initCommandCenter);
+    runInit('initHint', initHint);
   }
 
   if (document.readyState === 'loading') {

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>13 &middot; Daily Huddle Sheet &middot; Café of Life SOP</title>
-<link rel="stylesheet" href="styles.css?v=20260623-daily-rules">
+<title>Daily Shift Tracker &middot; Café of Life SOP</title>
+<link rel="stylesheet" href="styles.css?v=20260623-daily-sheet">
 </head>
 <body>
 
@@ -12,18 +12,17 @@
   <span class="brand">&#127800; Café of Life &middot; SOP</span>
   <span class="nav-links">
     <a href="index.html">Contents</a>
-    <a href="12-rules-colors.html">&lsaquo; Prev</a>
-    <a href="14-notes.html">Next &rsaquo;</a>
+    <a href="02-opening.html">Opening SOP &rsaquo;</a>
   </span>
 </nav>
 
 <section class="page huddle-page">
   <header class="page-header">
-    <span class="eyebrow">Section 13</span>
-    <h1>Daily Huddle Sheet</h1>
+    <span class="eyebrow">Page One &middot; Daily Workspace</span>
+    <h1>Daily Shift Tracker</h1>
     <div class="huddle-actions">
-      <button class="notes-delete-btn huddle-new-btn" type="button">New huddle</button>
-      <button class="notes-delete-btn huddle-delete-btn" type="button">Delete this huddle</button>
+      <button class="notes-delete-btn huddle-new-btn" type="button">Fresh sheet</button>
+      <button class="notes-delete-btn huddle-delete-btn" type="button">Clear this date</button>
     </div>
     <span class="flourish"></span>
   </header>
@@ -31,209 +30,177 @@
   <div class="huddle-header">
     <div>
       <label>Date</label>
-      <input class="sop-text" name="huddle_date" type="text" placeholder="">
+      <input class="sop-text" name="huddle_date" type="date" data-huddle-date>
     </div>
     <div>
       <label>Day</label>
-      <input class="sop-text" name="huddle_day" type="text" placeholder="">
+      <input class="sop-text" name="huddle_day" type="text" data-huddle-day readonly>
+    </div>
+    <div>
+      <label>Shift</label>
+      <select class="sop-select" name="huddle_shift_type" data-huddle-shift>
+        <option value="morning">Morning Shift</option>
+        <option value="afternoon">Afternoon Shift</option>
+      </select>
+    </div>
+    <div>
+      <label>Journal / Saved Days</label>
+      <select class="sop-select" data-huddle-saved-days>
+        <option value="">Saved days</option>
+      </select>
     </div>
     <div>
       <label>Today's Focus</label>
-      <textarea class="sop-text autogrow" name="huddle_focus" placeholder=""></textarea>
+      <textarea class="sop-text autogrow" name="huddle_focus" placeholder="Main things to watch today"></textarea>
     </div>
   </div>
 
-  <div class="day-map-grid">
-    <article class="day-map-card priority">
-      <h3>Today Map</h3>
-      <ul>
-        <li><strong>Mon / Wed / Fri:</strong> New Patients and Day 1s. Confirm appointment, deposit, intake, and do not stack more than one new patient at the same time.</li>
-        <li><strong>Tue / Thu afternoons:</strong> ROF / Day 2 focus. Watch $55, care plan, commitment, Day 3, and payment setup.</li>
-        <li><strong>SoftWave days:</strong> Confirm by call, check deposit/payment, treatment area, and next SoftWave before they leave.</li>
-      </ul>
-    </article>
-
-    <article class="day-map-card">
-      <h3>Move Notes First</h3>
-      <ul>
-        <li>Before deleting or rescheduling an appointment, move any appointment notes to the next appointment.</li>
-        <li>Do not delete if a red letter, money issue, form, doctor note, or CT chat instruction still needs to follow the patient.</li>
-        <li>After moving notes, write the new date/time so checkout can say it out loud.</li>
-      </ul>
-    </article>
-
-    <article class="day-map-card">
-      <h3>Quick Rules</h3>
-      <div class="rule-pill-row">
-        <span class="rule-pill">24 hr change policy</span>
-        <span class="rule-pill">2 hr same-day delete rule</span>
-        <span class="rule-pill">NP deposit</span>
-        <span class="rule-pill">SW $25 deposit</span>
+  <details class="huddle-day-section" open>
+    <summary>1. Start Shift / First Hour Prep</summary>
+    <div class="huddle-day-grid huddle-start-panel" data-shift-panel="morning">
+      <div>
+        <h3>Open Office</h3>
+        <div class="compact-check-grid">
+          <label><input class="sop-bool" name="huddle_open_lights_alarm" type="checkbox"> Lights and Alarm OFF</label>
+          <label><input class="sop-bool" name="huddle_open_tidy" type="checkbox"> Tidy up office / clean floor &amp; carpet Tue, Thu, Fri</label>
+          <label><input class="sop-bool" name="huddle_open_alexa_tvs" type="checkbox"> Turn on Alexa / all TVs</label>
+          <label><input class="sop-bool" name="huddle_open_diffuser" type="checkbox"> Diffuser</label>
+          <label><input class="sop-bool" name="huddle_open_computers" type="checkbox"> Turn on computers / log in check-in station</label>
+          <label><input class="sop-bool" name="huddle_open_xray" type="checkbox"> Turn on X-ray computer if needed</label>
+          <label><input class="sop-bool" name="huddle_open_ac" type="checkbox"> Turn AC to 72 before patients come in</label>
+        </div>
       </div>
-      <ul>
-        <li>For missed appointments, call/text within 15 minutes and log the attempt.</li>
-        <li>If same-day cancellation is at least 2 hours ahead, delete/reschedule per office rule.</li>
-        <li>If unsure, keep it visible and ask Dr. Jen/manager before clearing it.</li>
-      </ul>
-    </article>
+      <div>
+        <h3>Systems / Messages</h3>
+        <div class="compact-check-grid">
+          <label><input class="sop-bool" name="huddle_open_cash_log" type="checkbox"> Fill out Google Sheet Cash Log / enter N/A</label>
+          <label><input class="sop-bool" name="huddle_open_voicemail" type="checkbox"> Check voicemail / write down messages</label>
+          <label><input class="sop-bool" name="huddle_open_email" type="checkbox"> Office email</label>
+          <label><input class="sop-bool" name="huddle_open_review_wave" type="checkbox"> Review Wave Text Service</label>
+          <label><input class="sop-bool" name="huddle_open_cp_import" type="checkbox"> Upload Cash Practice payments</label>
+          <label><input class="sop-bool" name="huddle_open_declines" type="checkbox"> Check Cash Practice declines / red items</label>
+          <label><input class="sop-bool" name="huddle_open_return_calls" type="checkbox"> Return patient voicemail calls / Text</label>
+        </div>
+      </div>
+      <div>
+        <h3>Appointment Planner Prep</h3>
+        <div class="compact-check-grid">
+          <label><input class="sop-bool" name="huddle_sched_ledger" type="checkbox"> Checked each patient's ledger</label>
+          <label><input class="sop-bool" name="huddle_sched_alerts" type="checkbox"> Checked alerts / red letters</label>
+          <label><input class="sop-bool" name="huddle_sched_future" type="checkbox"> Checked future appointments</label>
+          <label><input class="sop-bool" name="huddle_sched_specials" type="checkbox"> Identified NP, ROF, Day 3, SoftWave, re-exams</label>
+          <label><input class="sop-bool" name="huddle_sched_balances" type="checkbox"> Identified balances / open items</label>
+          <label><input class="sop-bool" name="huddle_open_charts" type="checkbox"> Prepare charts: NP, re-exams, ROF, special appointments</label>
+        </div>
+      </div>
+    </div>
+    <div class="huddle-day-grid huddle-start-panel" data-shift-panel="afternoon" hidden>
+      <div>
+        <h3>Start Afternoon Shift</h3>
+        <div class="compact-check-grid">
+          <label><input class="sop-bool" name="huddle_pm_clock_in" type="checkbox"> Clock in</label>
+          <label><input class="sop-bool" name="huddle_pm_systems" type="checkbox"> Open CT, Review Wave, Cash Practice, email, voicemail</label>
+          <label><input class="sop-bool" name="huddle_pm_room_reset" type="checkbox"> Reset rooms, face paper, front desk supplies</label>
+          <label><input class="sop-bool" name="huddle_pm_ac" type="checkbox"> AC / diffuser / TVs checked if needed</label>
+        </div>
+      </div>
+      <div>
+        <h3>Midday Systems</h3>
+        <div class="compact-check-grid">
+          <label><input class="sop-bool" name="huddle_pm_voicemail" type="checkbox"> Check voicemail / write down messages</label>
+          <label><input class="sop-bool" name="huddle_pm_email" type="checkbox"> Office email</label>
+          <label><input class="sop-bool" name="huddle_pm_review_wave" type="checkbox"> Review Wave Text Service</label>
+          <label><input class="sop-bool" name="huddle_pm_declines" type="checkbox"> Check Cash Practice declines / red items</label>
+          <label><input class="sop-bool" name="huddle_pm_calls" type="checkbox"> Return patient voicemail calls / Text</label>
+        </div>
+      </div>
+      <div>
+        <h3>Afternoon Schedule Review</h3>
+        <div class="compact-check-grid">
+          <label><input class="sop-bool" name="huddle_pm_ledgers" type="checkbox"> Checked each patient's ledger</label>
+          <label><input class="sop-bool" name="huddle_pm_alerts" type="checkbox"> Checked alerts / red letters</label>
+          <label><input class="sop-bool" name="huddle_pm_future" type="checkbox"> Checked future appointments</label>
+          <label><input class="sop-bool" name="huddle_pm_specials" type="checkbox"> Identified NP, ROF, Day 3, SoftWave, re-exams</label>
+          <label><input class="sop-bool" name="huddle_pm_open_items" type="checkbox"> Identified balances / open items</label>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <div class="huddle-tracker-tools">
+    <div>
+      <h2>Daily Shift Tracker</h2>
+      <p>Enter today's ChiroTouch appointments, then check each patient through before, during, and before-leaving steps.</p>
+    </div>
+    <button class="command-add-row huddle-add-row" type="button" data-huddle-add-row>Add patient row</button>
   </div>
 
   <div class="huddle-scroll">
   <table class="huddle-table" data-huddle="true">
     <thead>
       <tr>
-        <th style="width:19%;">Patient Name</th>
-        <th style="width:8%;">Time</th>
-        <th style="width:12%;">Appt Type</th>
-        <th style="width:7%;">Charge</th>
-        <th style="width:7%;">Card</th>
-        <th style="width:11%;">Pay</th>
-        <th style="width:16%;">Next Appt</th>
-        <th>Notes</th>
+        <th style="width:10%;">Time</th>
+        <th style="width:18%;">Patient Name</th>
+        <th style="width:15%;">Appt Type</th>
+        <th style="width:18%;">Balance / Payment Note</th>
+        <th>Huddle Note</th>
+        <th style="width:9%;">Status</th>
+        <th style="width:7%;">Remove</th>
       </tr>
     </thead>
-    <tbody data-huddle-rows="15"></tbody>
+    <tbody data-huddle-rows="5"></tbody>
   </table>
   </div>
 
-  <h2 class="section-heading"><span class="icon">&#127799;</span> Appointment Requirements</h2>
-  <div class="appt-requirements-grid huddle-requirements-grid">
-    <article class="appt-require-card np">
-      <h3>New Patient</h3>
-      <p>Needs before visit:</p>
-      <label><input class="sop-bool" name="huddle_req_np_confirmed" type="checkbox"> Appointment confirmed</label>
-      <label><input class="sop-bool" name="huddle_req_np_deposit" type="checkbox"> Deposit / payment checked</label>
-      <label><input class="sop-bool" name="huddle_req_np_intake" type="checkbox"> New intake form received or sent</label>
-      <label><input class="sop-bool" name="huddle_req_np_alerts" type="checkbox"> Alerts, balance, red letters checked</label>
-      <div class="if-missing">If missing: call patient, write attempt in notes, add to Open Loops / Command Center.</div>
-    </article>
-
-    <article class="appt-require-card day1">
-      <h3>Day 1</h3>
-      <p>Before they leave:</p>
-      <label><input class="sop-bool" name="huddle_req_day1_forms" type="checkbox"> Intake, ID / insurance, forms handled</label>
-      <label><input class="sop-bool" name="huddle_req_day1_payment" type="checkbox"> Payment, ledger, balance checked</label>
-      <label><input class="sop-bool" name="huddle_req_day1_scan" type="checkbox"> Scan / file items handled</label>
-      <label><input class="sop-bool" name="huddle_req_day1_next" type="checkbox"> Next appointment scheduled</label>
-      <div class="if-missing">If missing: do not mark Done; write the exact missing item in the row notes.</div>
-    </article>
-
-    <article class="appt-require-card rof">
-      <h3>ROF / Day 2</h3>
-      <p>Care plan moment:</p>
-      <label><input class="sop-bool" name="huddle_req_rof_payment" type="checkbox"> ROF fee / payment handled</label>
-      <label><input class="sop-bool" name="huddle_req_rof_plan" type="checkbox"> Plan offered and commitment noted</label>
-      <label><input class="sop-bool" name="huddle_req_rof_note" type="checkbox"> ROF note added in CT</label>
-      <label><input class="sop-bool" name="huddle_req_rof_next" type="checkbox"> Next appointment scheduled</label>
-      <div class="if-missing">If undecided: write undecided, add follow-up, update once they choose.</div>
-    </article>
-
-    <article class="appt-require-card day3">
-      <h3>Day 3</h3>
-      <p>Setup check:</p>
-      <label><input class="sop-bool" name="huddle_req_day3_autodebit" type="checkbox"> Auto debit / payment setup checked</label>
-      <label><input class="sop-bool" name="huddle_req_day3_app" type="checkbox"> App / expectations handled</label>
-      <label><input class="sop-bool" name="huddle_req_day3_alerts" type="checkbox"> CT notes, alerts, red letters updated</label>
-      <label><input class="sop-bool" name="huddle_req_day3_next" type="checkbox"> Future appointments scheduled</label>
-      <div class="if-missing">If missing: add it to post-shift follow-up before you leave.</div>
-    </article>
-
-    <article class="appt-require-card softwave">
-      <h3>SoftWave</h3>
-      <p>Call confirmation:</p>
-      <label><input class="sop-bool" name="huddle_req_sw_call" type="checkbox"> Confirmed by call, not text</label>
-      <label><input class="sop-bool" name="huddle_req_sw_details" type="checkbox"> Area, deposit / payment, cancellation policy confirmed</label>
-      <label><input class="sop-bool" name="huddle_req_sw_doc" type="checkbox"> Call documented</label>
-      <label><input class="sop-bool" name="huddle_req_sw_next" type="checkbox"> Aftercare and next SoftWave handled</label>
-      <div class="if-missing">If missing: call, document attempt, flag it so it does not get skipped.</div>
-    </article>
-
-    <article class="appt-require-card special">
-      <h3>Special / Other</h3>
-      <p>Catch-fall check:</p>
-      <label><input class="sop-bool" name="huddle_req_special_money" type="checkbox"> Ledger, balance, payment checked</label>
-      <label><input class="sop-bool" name="huddle_req_special_color" type="checkbox"> CT color / red letter update checked</label>
-      <label><input class="sop-bool" name="huddle_req_special_price" type="checkbox"> Special pricing documented</label>
-      <label><input class="sop-bool" name="huddle_req_special_next" type="checkbox"> Next action written clearly</label>
-      <div class="if-missing">If unsure: write the question and mark Waiting on Dr. / manager.</div>
-    </article>
-  </div>
-
-  <div class="cols-3" style="margin-top:18px; gap:14px;">
-    <div class="col">
-      <h3 class="sub-heading with-bar">&#127799; Appt Colors</h3>
-      <table class="color-table compact">
-        <tr><td><span class="chip chip-green"></span></td><td><strong>New Patient</strong></td></tr>
-        <tr><td><span class="chip chip-blue"></span></td><td><strong>Adjustment</strong></td></tr>
-        <tr><td><span class="chip chip-lightblue"></span></td><td><strong>Adj / Wellness</strong></td></tr>
-        <tr><td><span class="chip chip-yellow"></span></td><td><strong>Re-Exam</strong></td></tr>
-        <tr><td><span class="chip chip-brown"></span></td><td><strong>Reactivation</strong></td></tr>
-        <tr><td><span class="chip chip-red"></span></td><td><strong>ROF</strong></td></tr>
-        <tr><td><span class="chip chip-pink"></span></td><td><strong>Maintenance</strong></td></tr>
-        <tr><td><span class="chip chip-grey"></span></td><td><strong>Exercise Consult</strong></td></tr>
-        <tr><td><span class="chip chip-purple"></span></td><td><strong>SoftWave</strong></td></tr>
-        <tr><td><span style="display:inline-block;width:18px;height:12px;border-radius:3px;border:1px solid rgba(0,0,0,0.15);background:#1d1d1d;"></span></td><td><strong>X-Ray</strong></td></tr>
-        <tr><td><span class="chip chip-burgundy"></span></td><td><strong>Day 3</strong></td></tr>
-      </table>
+  <details class="huddle-day-section" open>
+    <summary>2. Huddle Notes / Open Loops</summary>
+    <div class="huddle-note-board">
+      <label>Payment issues<textarea class="sop-text autogrow" name="huddle_live_payment_issues"></textarea></label>
+      <label>Doctor questions<textarea class="sop-text autogrow" name="huddle_live_doctor_questions"></textarea></label>
+      <label>Forms missing<textarea class="sop-text autogrow" name="huddle_live_forms_missing"></textarea></label>
+      <label>SoftWave candidates<textarea class="sop-text autogrow" name="huddle_live_softwave_candidates"></textarea></label>
+      <label>ROF / care plan notes<textarea class="sop-text autogrow" name="huddle_live_rof_notes"></textarea></label>
+      <label>Patient follow-up<textarea class="sop-text autogrow" name="huddle_live_patient_followup"></textarea></label>
+      <label>Scheduling issues<textarea class="sop-text autogrow" name="huddle_live_scheduling_issues"></textarea></label>
     </div>
+  </details>
 
-    <div class="col">
-      <h3 class="sub-heading with-bar">&#127799; Alert Legend</h3>
-      <table class="color-table compact">
-        <tr><td><span class="alert-tag alert-green">GREEN</span></td><td>Money alert</td></tr>
-        <tr><td><span class="alert-tag alert-orange">ORANGE</span></td><td>Urgent comm.</td></tr>
-        <tr><td><span class="alert-whitered">WHITE+RED</span></td><td>Alert</td></tr>
-        <tr><td><span class="alert-yellowred">YEL+RED</span></td><td>Thermal review</td></tr>
-        <tr><td><span class="alert-blackred">BLK+RED</span></td><td>X-ray review</td></tr>
-        <tr><td><span class="alert-greyblock">GREY</span></td><td>WT Ray</td></tr>
-        <tr><td><span class="alert-greyred">GREY+RED</span></td><td>WT X-ray rev.</td></tr>
-      </table>
+  <details class="huddle-day-section">
+    <summary>3. Post-Huddle / End Shift Review</summary>
+    <div class="huddle-not-done" data-huddle-not-done hidden></div>
+    <div class="huddle-day-grid huddle-closing-grid">
+      <div>
+        <h3>Review Before Leaving</h3>
+        <div class="compact-check-grid">
+          <label><input class="sop-bool" name="huddle_end_all_patients" type="checkbox"> All patients reviewed</label>
+          <label><input class="sop-bool" name="huddle_end_payments" type="checkbox"> All payments reviewed</label>
+          <label><input class="sop-bool" name="huddle_end_next_appts" type="checkbox"> All next appointments reviewed</label>
+          <label><input class="sop-bool" name="huddle_end_receipts" type="checkbox"> Receipts scanned/shredded</label>
+          <label><input class="sop-bool" name="huddle_end_open_loops" type="checkbox"> Open loops handled or carried to next day</label>
+          <label><input class="sop-bool" name="huddle_end_tomorrow" type="checkbox"> Tomorrow NP / ROF / SW / re-exams reviewed</label>
+        </div>
+      </div>
+      <div>
+        <h3>Closing Duties</h3>
+        <div class="compact-check-grid">
+          <label><input class="sop-bool" name="huddle_end_review_wave" type="checkbox"> Review Wave checked</label>
+          <label><input class="sop-bool" name="huddle_end_voicemail" type="checkbox"> Voicemail checked</label>
+          <label><input class="sop-bool" name="huddle_end_email" type="checkbox"> Email checked</label>
+          <label><input class="sop-bool" name="huddle_end_money" type="checkbox"> Money report / cash log handled</label>
+          <label><input class="sop-bool" name="huddle_end_closing_duties" type="checkbox"> Closing duties completed</label>
+          <label><input class="sop-bool" name="huddle_end_alarm" type="checkbox"> Set Alarm AWAY</label>
+        </div>
+      </div>
     </div>
-
-    <div class="col">
-      <h3 class="sub-heading with-bar">&#127799; Needs Codes</h3>
-      <table class="info-table compact" style="font-size:11px;">
-        <tr><th style="width:30%;"><strong class="plum">FR</strong></th><td>Foam roller</td></tr>
-        <tr><th><strong class="plum">SH</strong></th><td>Shiatsu / tool</td></tr>
-        <tr><th><strong class="plum">APP</strong></th><td>App download</td></tr>
-        <tr><th><strong class="plum">SW-V</strong></th><td>SoftWave video</td></tr>
-        <tr><th><strong class="plum">D3</strong></th><td>Day 3 setup</td></tr>
-        <tr><th><strong class="plum">BAL</strong></th><td>Balance talk</td></tr>
-        <tr><th><strong class="plum">FORMS</strong></th><td>Paperwork</td></tr>
-        <tr><th><strong class="plum">BALL</strong></th><td>Exercise ball</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="cols-2" style="margin-top:14px; gap:18px;">
-    <div class="col">
-      <h3 class="sub-heading with-bar">&#127799; Morning</h3>
-      <ul class="checklist" style="font-size:13px;">
-        <li>Clock in and open CT, Review Wave, Cash Practice, email, and voicemail.</li>
-        <li>Scan schedule for NP, Day 1, ROF, Day 3, SoftWave, re-exams, and special cases.</li>
-        <li>Check red letters, balances, deposits, declined payments, and forms before patients arrive.</li>
-        <li>Write must-handle items in the patient rows before huddle starts.</li>
-      </ul>
-    </div>
-
-    <div class="col">
-      <h3 class="sub-heading with-bar">&#127799; Closing</h3>
-      <ul class="checklist" style="font-size:13px;">
-        <li>Every patient reviewed: payment, ledger, balance, alerts, and next appointment.</li>
-        <li>Move any appointment notes forward before deleting or rescheduling.</li>
-        <li>Receipts scanned/shredded, Review Wave, voicemail, email, and cash log checked.</li>
-        <li>Tomorrow's NP, ROF, Day 3, SoftWave, and re-exams checked.</li>
-      </ul>
-    </div>
-  </div>
+  </details>
 
   <div class="page-footer">
-    <a class="nav-link-back" href="12-rules-colors.html">&lsaquo; Rules &amp; Colors</a>
-    <span class="page-num huddle-meta">13 &middot; Daily Huddle</span>
-    <a href="index.html">Back to Contents</a>
+    <a class="nav-link-back" href="index.html">&lsaquo; Contents</a>
+    <span class="page-num huddle-meta">Daily Shift Tracker</span>
+    <a href="02-opening.html">Opening SOP &rsaquo;</a>
   </div>
 </section>
 
-<script src="form.js?v=20260623-daily-rules" defer></script>
+<script src="form.js?v=20260623-daily-sheet" defer></script>
 </body>
 </html>
