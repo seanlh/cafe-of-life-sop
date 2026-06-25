@@ -1115,7 +1115,7 @@
     if (!type) return '';
     if (type.key === 'newpt') {
       const deposit = type.deposit || 25;
-      const total = type.charge || 75;
+      const total = type.charge || 115;
       return 'NP: ' + formatMoney(total) + ' first visit - ' + formatMoney(deposit) + ' deposit = ' + formatMoney(total - deposit) + ' remainder due';
     }
     if (type.key === 'swcrm') {
@@ -1131,6 +1131,12 @@
       return 'Collect ' + formatMoney(type.charge);
     }
     return '';
+  }
+
+  function isAutoPaymentNote(value) {
+    const text = (value || '').trim();
+    if (!text) return true;
+    return APPT_TYPES.some(type => defaultPaymentNote(type) === text);
   }
 
   function applyChargeDefault(rowIdx, apptKey) {
@@ -1393,9 +1399,9 @@
   function setRowAppt(rowIdx, apptKey) {
     state['huddle_appt_' + rowIdx] = apptKey || '';
     const paymentKey = 'in_huddle_balance_' + rowIdx;
-    if (!state[paymentKey]) {
+    if (isAutoPaymentNote(state[paymentKey])) {
       const note = defaultPaymentNote(APPT_BY_KEY[apptKey]);
-      if (note) state[paymentKey] = note;
+      state[paymentKey] = note || '';
     }
     scheduleSave();
     const btn = document.querySelector('.appt-type-btn[data-row="' + rowIdx + '"]');
@@ -1590,34 +1596,51 @@
 
   function huddleRowHTML(i) {
     return (
-      '<tr>' +
+      '<tr class="huddle-main-row">' +
         '<td class="time-cell"><button class="time-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick time"></button></td>' +
-        '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_patient_' + i + '" autocomplete="off" enterkeyhint="next" aria-label="Patient name row ' + (i + 1) + '"></textarea></td>' +
-        '<td class="input-cell"><input class="sop-text cell-input huddle-provider-input" name="huddle_provider_' + i + '" autocomplete="off" aria-label="Provider row ' + (i + 1) + '" placeholder="Dr"></td>' +
+        '<td class="input-cell huddle-patient-cell">' +
+          '<textarea class="sop-text cell-input autogrow" name="huddle_patient_' + i + '" autocomplete="off" enterkeyhint="next" aria-label="Patient name row ' + (i + 1) + '" placeholder="Patient name"></textarea>' +
+        '</td>' +
         '<td class="appt-cell"><button class="appt-type-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick appointment type"></button></td>' +
         '<td class="input-cell payment-cell"><div class="payment-cell-wrap">' +
           '<button class="pay-btn cell-btn" type="button" data-row="' + i + '" aria-label="Cycle payment status row ' + (i + 1) + '"></button>' +
-          '<textarea class="sop-text cell-input autogrow" name="huddle_balance_' + i + '" autocomplete="off" aria-label="Balance or payment note row ' + (i + 1) + '"></textarea>' +
+          '<textarea class="sop-text cell-input autogrow" name="huddle_balance_' + i + '" autocomplete="off" aria-label="Balance or payment note row ' + (i + 1) + '" placeholder="Auto math. You can edit."></textarea>' +
         '</div></td>' +
-        '<td class="huddle-status-cell"><div class="huddle-status-grid">' +
-          '<label><input class="sop-bool" name="huddle_ledger_' + i + '" type="checkbox"> Ledger</label>' +
-          '<label><input class="sop-bool" name="huddle_card_' + i + '" type="checkbox"> Card</label>' +
-          '<label><input class="sop-bool" name="huddle_pif_' + i + '" type="checkbox"> PIF</label>' +
-          '<label><input class="sop-bool" name="huddle_ppv_' + i + '" type="checkbox"> PPV</label>' +
-          '<label><input class="sop-bool" name="huddle_unable_confirm_' + i + '" type="checkbox"> Unable</label>' +
-        '</div></td>' +
-        '<td class="input-cell"><textarea class="sop-text cell-input autogrow" name="huddle_notes_' + i + '" autocomplete="off" aria-label="Huddle note row ' + (i + 1) + '"></textarea></td>' +
-        '<td class="nextappt-cell"><button class="nextappt-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick next appointment"></button></td>' +
-        '<td class="input-cell post-update-cell"><textarea class="sop-text cell-input autogrow" name="huddle_post_' + i + '" autocomplete="off" aria-label="Post-shift update or question row ' + (i + 1) + '"></textarea></td>' +
-        '<td class="huddle-row-actions">' +
-          '<button class="huddle-send-note" type="button" data-row="' + i + '">Send to notes</button>' +
-          '<button class="huddle-row-up" type="button" data-row="' + i + '">Up</button>' +
-          '<button class="huddle-row-down" type="button" data-row="' + i + '">Down</button>' +
-          '<button class="huddle-row-delete" type="button" data-row="' + i + '">Delete</button>' +
+        '<td class="input-cell huddle-notes-cell">' +
+          '<textarea class="sop-text cell-input autogrow" name="huddle_notes_' + i + '" autocomplete="off" aria-label="Huddle note row ' + (i + 1) + '" placeholder="Only what matters"></textarea>' +
+          '<div class="huddle-note-actions">' +
+            '<button class="huddle-send-note" type="button" data-row="' + i + '" title="Copy this row into Extra Notes">Copy note</button>' +
+            '<button class="huddle-row-delete" type="button" data-row="' + i + '">Remove</button>' +
+          '</div>' +
+          '<details class="huddle-row-more">' +
+            '<summary>Need help?</summary>' +
+            '<div class="huddle-row-more-grid">' +
+              '<section class="huddle-row-more-card">' +
+                '<h4>Quick checks</h4>' +
+                '<input class="sop-text cell-input huddle-provider-input" name="huddle_provider_' + i + '" autocomplete="off" aria-label="Provider row ' + (i + 1) + '" placeholder="Dr / provider">' +
+                '<div class="huddle-status-grid">' +
+                  '<label><input class="sop-bool" name="huddle_ledger_' + i + '" type="checkbox"> Ledger</label>' +
+                  '<label><input class="sop-bool" name="huddle_card_' + i + '" type="checkbox"> Card</label>' +
+                  '<label><input class="sop-bool" name="huddle_pif_' + i + '" type="checkbox"> PIF</label>' +
+                  '<label><input class="sop-bool" name="huddle_ppv_' + i + '" type="checkbox"> PPV</label>' +
+                  '<label><input class="sop-bool" name="huddle_unable_confirm_' + i + '" type="checkbox"> Unable</label>' +
+                '</div>' +
+              '</section>' +
+              '<section class="huddle-row-more-card nextappt-cell">' +
+                '<h4>Next Appt</h4>' +
+                '<button class="nextappt-btn cell-btn is-empty" type="button" data-row="' + i + '" aria-label="Pick next appointment"></button>' +
+              '</section>' +
+              '<label class="huddle-row-more-card post-update-cell">' +
+                '<span>Post-shift note</span>' +
+                '<textarea class="sop-text cell-input autogrow" name="huddle_post_' + i + '" autocomplete="off" aria-label="Post-shift update or question row ' + (i + 1) + '" placeholder="Question, follow-up, or carry-over"></textarea>' +
+              '</label>' +
+            '</div>' +
+            '<details class="huddle-row-checklist" data-row-checklist="' + i + '" hidden>' +
+              '<summary>Steps for this appt</summary>' +
+              '<div class="huddle-row-checklist-body"></div>' +
+            '</details>' +
+          '</details>' +
         '</td>' +
-      '</tr>' +
-      '<tr class="huddle-requirements-row" data-req-row="' + i + '" hidden>' +
-        '<td class="huddle-requirements-cell" colspan="10"></td>' +
       '</tr>'
     );
   }
@@ -1643,13 +1666,14 @@
   }
 
   function renderRowRequirements(rowIdx, apptKey) {
-    const row = document.querySelector('.huddle-requirements-row[data-req-row="' + rowIdx + '"]');
-    if (!row) return;
-    const cell = row.querySelector('.huddle-requirements-cell');
+    const box = document.querySelector('.huddle-row-checklist[data-row-checklist="' + rowIdx + '"]');
+    const body = box ? (box.querySelector('.huddle-row-checklist-body') || box) : null;
     const req = APPT_REQUIREMENTS[apptKey];
-    if (!cell || !req) {
-      row.hidden = true;
-      if (cell) cell.innerHTML = '';
+    if (!box || !req) {
+      if (box) {
+        box.hidden = true;
+        if (body) body.innerHTML = '';
+      }
       return;
     }
 
@@ -1667,7 +1691,7 @@
       return '<div class="huddle-req-group' + (group.universal ? ' universal' : '') + '"><h4>' + escapeHTML(group.title) + '</h4>' + items + '</div>';
     }).join('');
 
-    cell.innerHTML =
+    body.innerHTML =
       '<div class="huddle-req-panel">' +
         '<div class="huddle-req-title">' +
           '<strong>' + escapeHTML(req.title) + '</strong>' +
@@ -1676,9 +1700,9 @@
         '</div>' +
         '<div class="huddle-req-items">' + groupHtml + '</div>' +
       '</div>';
-    row.hidden = false;
+    box.hidden = false;
 
-    cell.querySelectorAll('.huddle-req-check').forEach(input => {
+    body.querySelectorAll('.huddle-req-check').forEach(input => {
       input.addEventListener('change', () => {
         state[input.dataset.key] = input.checked;
         scheduleSave();

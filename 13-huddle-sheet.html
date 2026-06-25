@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>All-Day Daily Tracker &middot; Café of Life SOP</title>
-<link rel="stylesheet" href="styles.css?v=20260623-process-links-v1">
+<title>Daily Sheet &middot; Café of Life SOP</title>
+<link rel="stylesheet" href="styles.css?v=20260625-calm-v1">
 </head>
 <body>
 
@@ -18,16 +18,12 @@
 
 <section class="page huddle-page">
   <header class="page-header">
-    <span class="eyebrow">Page One &middot; Daily Workspace</span>
-    <h1>All-Day Daily Tracker</h1>
-    <div class="huddle-actions">
-      <button class="notes-delete-btn huddle-new-btn" type="button">Fresh sheet</button>
-      <button class="notes-delete-btn huddle-delete-btn" type="button">Clear this date</button>
-    </div>
+    <span class="eyebrow">Today Only</span>
+    <h1>Daily Sheet</h1>
     <span class="flourish"></span>
   </header>
 
-  <div class="huddle-header">
+  <div class="huddle-header huddle-header-calm">
     <div>
       <label>Date</label>
       <input class="sop-text" name="huddle_date" type="date" data-huddle-date>
@@ -43,58 +39,39 @@
         <option value="afternoon">Afternoon Shift</option>
       </select>
     </div>
-    <div>
-      <label>Journal / Saved Days</label>
-      <select class="sop-select" data-huddle-saved-days>
-        <option value="">Saved days</option>
-      </select>
-    </div>
-    <div>
-      <label>Today's Focus</label>
-      <textarea class="sop-text autogrow" name="huddle_focus" placeholder="Main things to watch today"></textarea>
-    </div>
   </div>
 
-  <details class="huddle-reference huddle-script-legend" open>
-    <summary>Little Scripts / Handout Legend</summary>
-    <div class="script-legend-grid">
-      <article>
-        <h3>NP / Day 1</h3>
-        <p><strong>Handout:</strong> Day 1 &mdash; Finding the Cause of My Condition</p>
-        <p><strong>Video:</strong> Video 1 &mdash; chiropractic approach video</p>
-        <p><strong>Tour:</strong> Office Tour Script &mdash; adjusting rooms, exercise area, SoftWave room, doctor offices, X-ray room/restroom, then back to exam room.</p>
-      </article>
-      <article>
-        <h3>ROF / Day 2</h3>
-        <p><strong>Handout:</strong> Day 2 &mdash; Your Health &amp; Life How to Make the Right Choice</p>
-        <p><strong>Video:</strong> Normal versus abnormal X-rays video</p>
-        <p><strong>Say:</strong> Welcome back; spouse/significant other line if present; do not ask handout questions until trained.</p>
-      </article>
-      <article>
-        <h3>Next Visit / Doctor Report</h3>
-        <p><strong>Handout:</strong> Your Next Visit... The Doctor&rsquo;s Report</p>
-        <p><strong>Reminder:</strong> arrive 15 minutes early, spouse/significant other if needed, method of payment, recommendation video before next visit.</p>
-      </article>
-      <article>
-        <h3>Payments / Day 3</h3>
-        <p><strong>Form:</strong> EZ-Pay Signature-On-File Authorization</p>
-        <p><strong>Day 3:</strong> Auto-debit, PIN / subjective, patient office flow, schedule copy, 24 hr &amp; 2 hr text / appt policy.</p>
-      </article>
-      <article>
-        <h3>SoftWave</h3>
-        <p><strong>Aftercare:</strong> What Just Happened in Your Body / stem cell boost / what to expect</p>
-        <p><strong>Reminders:</strong> no ice, Advil, or ibuprofen; avoid intense exercise for 2-3 days; schedule next SoftWave.</p>
-      </article>
-      <article>
-        <h3>ROF Note</h3>
-        <p><strong>CT note:</strong> Category ROF, Subject Type Care Plan</p>
-        <p><strong>Write:</strong> Offered care plan and Commitment: PPV, PIF amount/visits, monthly payments, or undecided.</p>
-      </article>
+  <details class="huddle-sheet-options huddle-planning-options">
+    <summary>Saved days / focus</summary>
+    <div class="huddle-header huddle-header-extra">
+      <div>
+        <label>Journal / Saved Days</label>
+        <select class="sop-select" data-huddle-saved-days>
+          <option value="">Saved days</option>
+        </select>
+      </div>
+      <div>
+        <label>Today's Focus</label>
+        <textarea class="sop-text autogrow" name="huddle_focus" placeholder="Main things to watch today"></textarea>
+      </div>
     </div>
   </details>
 
-  <details class="huddle-day-section" open>
-    <summary>1. Start Shift / First Hour Prep</summary>
+  <details class="huddle-sheet-options">
+    <summary>Reset options</summary>
+    <div class="huddle-actions">
+      <button class="notes-delete-btn huddle-new-btn" type="button">Fresh sheet</button>
+      <button class="notes-delete-btn huddle-delete-btn" type="button">Clear this date</button>
+    </div>
+  </details>
+
+  <div class="huddle-simple-guide" aria-label="Daily shift flow">
+    <strong>Today:</strong>
+    <span>Add each patient -> choose type -> check payment -> write one note. Open Need help? only when stuck.</span>
+  </div>
+
+  <details class="huddle-day-section">
+    <summary>Opening checks</summary>
     <div class="process-shortcuts" aria-label="Daily tracker process shortcuts">
       <a class="process-link" href="02-opening.html">Opening steps</a>
       <a class="process-link" href="03-new-patient-call.html">NP call / intake</a>
@@ -172,37 +149,32 @@
 
   <div class="huddle-tracker-tools">
     <div>
-      <h2>Daily Patient Tracker</h2>
-      <p>Enter today's appointments once, work each row live, then use the same rows for huddle and post-shift closeout.</p>
+      <h2>Patients</h2>
+      <p>Keep this part open all day. The rest can stay closed.</p>
     </div>
     <div class="huddle-tracker-buttons">
-      <button class="command-add-row huddle-add-row" type="button" data-huddle-add-row>Add patient row</button>
+      <button class="command-add-row huddle-add-row" type="button" data-huddle-add-row>Add patient</button>
       <button class="command-add-row huddle-end-day-btn" type="button" data-open-end-day>End of Day</button>
     </div>
   </div>
 
   <div class="huddle-scroll">
-  <table class="huddle-table" data-huddle="true">
+  <table class="huddle-table simple-huddle-table" data-huddle="true">
     <thead>
       <tr>
-        <th style="width:9%;">Time</th>
-        <th style="width:15%;">Patient Name</th>
-        <th style="width:10%;">Provider</th>
-        <th style="width:13%;">Appt Type</th>
-        <th style="width:16%;">Payment / Balance Note</th>
-        <th style="width:13%;">Ledger / PIF / PPV</th>
-        <th>Notes / Alerts / Huddle</th>
-        <th style="width:12%;">Next Appointment</th>
-        <th>Post-Shift Update / Question</th>
-        <th style="width:10%;">Actions</th>
+        <th style="width:10%;">Time</th>
+        <th style="width:20%;">Patient</th>
+        <th style="width:14%;">Type</th>
+        <th style="width:22%;">Payment</th>
+        <th>Notes</th>
       </tr>
     </thead>
     <tbody data-huddle-rows="0"></tbody>
   </table>
   </div>
 
-  <details class="huddle-day-section huddle-notebook-section" open>
-    <summary>2. Shift Notes / Huddle Notebook</summary>
+  <details class="huddle-day-section huddle-notebook-section">
+    <summary>Extra notes</summary>
     <div class="huddle-notebook-toolbar">
       <button type="button" class="command-mini" data-huddle-add-timestamp>Add timestamp</button>
       <button type="button" class="command-mini" data-huddle-add-bullet>Add bullet</button>
@@ -213,7 +185,7 @@
       <textarea class="sop-text autogrow huddle-main-notebook" name="huddle_shift_notebook" data-huddle-main-notes placeholder="Type freely here all day. Patient row buttons can append notes here with a timestamp."></textarea>
     </label>
     <div class="huddle-notebook-folders">
-      <details open>
+      <details>
         <summary>Huddle Notes</summary>
         <textarea class="sop-text autogrow" name="huddle_sub_huddle_notes" placeholder="Morning huddle, afternoon huddle, doctor reminders, important patient updates"></textarea>
       </details>
@@ -241,7 +213,7 @@
   </details>
 
   <details class="huddle-day-section" id="end-of-day">
-    <summary>3. End of Day Checklist / Post-Shift Review</summary>
+    <summary>End-of-day summary + closing</summary>
     <div class="huddle-not-done" data-huddle-not-done hidden></div>
     <div class="huddle-note-board post-shift-board">
       <label>Patient updates from today<textarea class="sop-text autogrow" name="huddle_post_patient_updates"></textarea></label>
@@ -280,7 +252,7 @@
   </details>
 
   <details class="huddle-day-section huddle-sop-library">
-    <summary>4. SOP Library / Process Links</summary>
+    <summary>Step links</summary>
     <div class="sop-library-grid">
       <a href="02-opening.html">Opening Shift</a>
       <a href="10-closing.html">Closing Shift</a>
@@ -299,11 +271,11 @@
 
   <div class="page-footer">
     <a class="nav-link-back" href="index.html">&lsaquo; Contents</a>
-    <span class="page-num huddle-meta">All-Day Daily Tracker</span>
+    <span class="page-num huddle-meta">Daily Sheet</span>
     <a href="02-opening.html">Opening SOP &rsaquo;</a>
   </div>
 </section>
 
-<script src="form.js?v=20260623-live-tracker-v2" defer></script>
+<script src="form.js?v=20260625-calm-v1" defer></script>
 </body>
 </html>

@@ -794,6 +794,17 @@ h3.sub-heading.with-bar::after {
   font-weight: 600;
 }
 
+.huddle-header-calm {
+  grid-template-columns: minmax(130px, 0.8fr) minmax(90px, 0.45fr) minmax(150px, 0.75fr);
+  max-width: 590px;
+}
+
+.huddle-header-extra {
+  grid-template-columns: minmax(190px, 0.8fr) minmax(240px, 1.2fr);
+  margin: 8px 0 0;
+  text-align: left;
+}
+
 .huddle-header div {
   border-bottom: 1px solid var(--rose);
   padding-bottom: 4px;
@@ -805,6 +816,36 @@ h3.sub-heading.with-bar::after {
   gap: 10px;
   margin-top: 12px;
   flex-wrap: wrap;
+}
+
+.huddle-sheet-options {
+  margin: -4px 0 10px;
+  font-family: var(--sans);
+  text-align: right;
+}
+
+.huddle-sheet-options > summary {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  padding: 2px 9px;
+  border: 1px solid rgba(102, 44, 57, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--plum);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.huddle-sheet-options .huddle-actions {
+  justify-content: flex-end;
+  margin-top: 7px;
+}
+
+.huddle-planning-options {
+  margin: -2px 0 6px;
+  text-align: left;
 }
 
 .huddle-day-section,
@@ -3078,6 +3119,96 @@ body.sop-drawer-open {
   height: auto;
 }
 
+.huddle-simple-guide {
+  display: block;
+  margin: 10px 0 12px;
+  padding: 9px 12px;
+  border: 1px solid rgba(102, 44, 57, 0.16);
+  border-left: 4px solid var(--rose);
+  border-radius: 6px;
+  background: rgba(255, 248, 244, 0.78);
+  color: var(--plum);
+  font-family: var(--sans);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.huddle-simple-guide strong {
+  color: var(--burgundy);
+  font-weight: 900;
+  margin-right: 4px;
+}
+
+.huddle-simple-guide span {
+  font-weight: 700;
+}
+
+.simple-huddle-table {
+  min-width: 780px;
+  font-size: 12px;
+}
+
+.simple-huddle-table th,
+.simple-huddle-table td {
+  height: auto;
+}
+
+.simple-huddle-table .huddle-main-row td {
+  min-height: 72px;
+}
+
+.simple-huddle-table .huddle-main-row + .huddle-requirements-row td {
+  border-top: 0;
+}
+
+.huddle-patient-cell {
+  display: block;
+  min-height: 76px;
+}
+
+.huddle-patient-cell .huddle-provider-input {
+  min-height: 30px;
+  height: 30px;
+  border-top: 1px solid rgba(102, 44, 57, 0.12);
+  font-size: 11px;
+}
+
+.simple-huddle-table .payment-cell-wrap {
+  min-height: 76px;
+}
+
+.simple-huddle-table .huddle-notes-cell textarea.cell-input {
+  min-height: 58px;
+}
+
+.huddle-notes-cell {
+  display: grid;
+  grid-template-rows: minmax(58px, 1fr) auto auto;
+  min-height: 76px;
+}
+
+.huddle-note-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 4px 5px 5px;
+  border-top: 1px solid rgba(102, 44, 57, 0.1);
+  background: rgba(255, 248, 244, 0.68);
+}
+
+.huddle-note-actions button {
+  min-height: 24px;
+  padding: 3px 7px;
+  border: 1px solid rgba(102, 44, 57, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--burgundy);
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 900;
+}
+
 .huddle-table input.charge-input {
   min-width: 82px;
   text-align: center;
@@ -3098,6 +3229,120 @@ body.sop-drawer-open {
   padding: 0;
   background: rgba(255, 248, 244, 0.72);
   border-top: 0;
+}
+
+.simple-huddle-table .huddle-requirements-cell {
+  padding: 4px 8px 8px;
+}
+
+.huddle-row-more {
+  margin: 4px 5px 6px;
+}
+
+.huddle-row-more > summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 8px;
+  border: 1px solid rgba(102, 44, 57, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--burgundy);
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.huddle-row-more[open] > summary {
+  background: rgba(255, 197, 211, 0.24);
+}
+
+.huddle-row-more-grid {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.7fr) minmax(120px, 0.6fr) minmax(220px, 1.3fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.huddle-notes-cell .huddle-row-more-grid,
+.huddle-notes-cell .huddle-req-items {
+  grid-template-columns: 1fr;
+}
+
+.huddle-notes-cell .huddle-req-panel {
+  grid-template-columns: 1fr;
+  padding: 8px;
+}
+
+.huddle-row-more-card {
+  display: block;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid rgba(102, 44, 57, 0.12);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.72);
+  font-family: var(--sans);
+}
+
+.huddle-row-more-card h4,
+.huddle-row-more-card > span {
+  display: block;
+  margin: 0 0 6px;
+  color: var(--burgundy);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.huddle-row-more-card .nextappt-btn {
+  min-height: 34px;
+  border: 1px solid rgba(102, 44, 57, 0.14);
+  border-radius: 6px;
+  background: rgba(255, 248, 244, 0.82);
+}
+
+.huddle-row-more-card textarea.cell-input {
+  min-height: 52px;
+  border: 1px solid rgba(102, 44, 57, 0.12);
+  border-radius: 6px;
+  background: rgba(255, 248, 244, 0.72);
+}
+
+.huddle-row-more-card .huddle-provider-input {
+  min-height: 30px;
+  height: 30px;
+  margin: 0 0 7px;
+  border: 1px solid rgba(102, 44, 57, 0.12);
+  border-radius: 6px;
+  background: rgba(255, 248, 244, 0.72);
+  font-size: 11px;
+}
+
+.huddle-row-checklist[hidden] {
+  display: none !important;
+}
+
+.huddle-row-checklist {
+  margin-top: 8px;
+  font-family: var(--sans);
+}
+
+.huddle-row-checklist > summary {
+  cursor: pointer;
+  padding: 7px 9px;
+  border: 1px solid rgba(102, 44, 57, 0.12);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--burgundy);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.huddle-row-checklist[open] > summary {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .huddle-row-actions {
@@ -4198,8 +4443,13 @@ body.sop-drawer-open {
   }
 
   .huddle-req-panel,
-  .huddle-req-items {
+  .huddle-req-items,
+  .huddle-row-more-grid {
     grid-template-columns: 1fr;
+  }
+
+  .simple-huddle-table {
+    min-width: 700px;
   }
 
   .huddle-tracker-buttons,
